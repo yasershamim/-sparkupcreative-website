@@ -1,0 +1,10 @@
+# Ignore everything
+*
+
+# Except the website folder
+!sparkupcreative-website/
+!sparkupcreative-website/**
+
+# Ignore system files inside website folder
+.DS_Store
+*.DS_Store
