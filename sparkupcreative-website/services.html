@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SparkUp Creative — Services</title>
+  <meta name="description" content="AI Automation, Content Creation, Training, Social Automation, and AI Marketing — all in one place."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    .page-body { opacity:0; transition:opacity .5s; }
+
+    /* ── SERVICES GRID ──────────────────── */
+    #services-main {
+      padding:100px 56px 120px;
+      position:relative; z-index:1;
+    }
+    .services-intro {
+      max-width:1180px; margin:0 auto 80px;
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:64px; align-items:end;
+    }
+    .si-left .section-h { margin-top:12px; }
+    .si-right { padding-bottom:8px; }
+    .si-right p { font-size:16px; color:var(--muted); font-weight:300; line-height:1.8; margin-bottom:20px; }
+
+    .svc-grid {
+      max-width:1180px; margin:0 auto;
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:20px;
+    }
+
+    .svc-card {
+      background:var(--bg1);
+      border:1px solid var(--border);
+      padding:44px 38px 40px;
+      position:relative; overflow:hidden;
+      cursor:none;
+      transition:border-color .3s, transform .4s cubic-bezier(.2,0,0,1);
+      transform-style:preserve-3d;
+    }
+    .svc-card:hover { border-color:var(--border-lime); }
+    .svc-card::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg,var(--lime-06) 0%,transparent 55%);
+      opacity:0; transition:opacity .4s;
+    }
+    .svc-card:hover::before { opacity:1; }
+    .svc-card::after {
+      content:''; position:absolute;
+      top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,var(--lime),transparent);
+      transform:scaleX(0); transform-origin:left;
+      transition:transform .5s var(--ease-out);
+    }
+    .svc-card:hover::after { transform:scaleX(1); }
+
+    .svc-bg-num {
+      position:absolute; top:8px; right:16px;
+      font-family:var(--F1); font-size:110px; line-height:1;
+      color:rgba(200,255,0,.055); pointer-events:none;
+      transition:color .4s;
+    }
+    .svc-card:hover .svc-bg-num { color:rgba(200,255,0,.10); }
+
+    .svc-icon-box {
+      width:56px; height:56px;
+      background:var(--lime-06); border:1px solid var(--border-lime);
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:28px; position:relative; z-index:1;
+      transition:background .3s;
+    }
+    .svc-card:hover .svc-icon-box { background:var(--lime-12); }
+    .svc-icon-box svg { width:26px; height:26px; stroke:var(--lime); fill:none; stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round; }
+
+    .svc-title {
+      font-family:var(--F1); font-size:clamp(22px,2vw,28px);
+      letter-spacing:.04em; margin-bottom:14px;
+      position:relative; z-index:1;
+    }
+    .svc-body {
+      font-size:14px; color:var(--muted);
+      line-height:1.75; font-weight:300;
+      position:relative; z-index:1;
+    }
+    .svc-features {
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin-top:24px; position:relative; z-index:1;
+    }
+    .svc-tag {
+      font-family:var(--F3); font-size:9px;
+      letter-spacing:.14em; text-transform:uppercase;
+      color:var(--lime); background:var(--lime-06);
+      border:1px solid var(--border-lime);
+      padding:5px 12px;
+    }
+    .svc-more {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:var(--F3); font-size:9.5px;
+      letter-spacing:.15em; text-transform:uppercase;
+      color:var(--lime); margin-top:28px;
+      opacity:0; transform:translateX(-8px);
+      transition:opacity .25s, transform .25s;
+      position:relative; z-index:1;
+    }
+    .svc-card:hover .svc-more { opacity:1; transform:translateX(0); }
+
+    /* Full-width CTA card */
+    .svc-cta-card {
+      grid-column:1/-1;
+      background:linear-gradient(135deg,var(--lime-06) 0%,var(--bg1) 60%);
+      border:1px solid var(--border-lime);
+      padding:60px 56px;
+      display:flex; align-items:center;
+      justify-content:space-between; flex-wrap:wrap; gap:32px;
+    }
+    .scc-left {}
+    .scc-label { font-family:var(--F3); font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--lime); margin-bottom:12px; }
+    .scc-h { font-family:var(--F1); font-size:clamp(36px,4vw,60px); line-height:.95; letter-spacing:.03em; }
+    .scc-h span { color:var(--lime); }
+
+    /* ── PROCESS ────────────────────────── */
+    #process {
+      position:relative; z-index:1;
+      background:var(--bg2);
+      border-top:1px solid var(--border);
+      padding:120px 56px;
+    }
+    .process-inner { max-width:1180px; margin:0 auto; }
+    .process-hd { text-align:center; margin-bottom:72px; }
+    .steps {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:0; position:relative;
+    }
+    .steps::before {
+      content:''; position:absolute;
+      top:36px; left:10%; right:10%; height:1px;
+      background:linear-gradient(90deg,transparent,var(--lime-30),transparent);
+    }
+    .step { text-align:center; padding:0 24px; }
+    .step-num-wrap {
+      width:72px; height:72px; border-radius:50%;
+      background:var(--bg); border:1px solid var(--border-lime);
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 24px;
+      transition:border-color .3s, background .3s;
+      position:relative; z-index:1;
+    }
+    .step:hover .step-num-wrap { background:var(--lime-12); border-color:var(--lime); }
+    .step-num {
+      font-family:var(--F1); font-size:28px;
+      color:var(--lime); letter-spacing:.05em;
+    }
+    .step-title { font-family:var(--F1); font-size:20px; letter-spacing:.05em; margin-bottom:10px; }
+    .step-desc { font-size:13px; color:var(--muted); line-height:1.65; font-weight:300; }
+
+    /* ── FAQ ────────────────────────────── */
+    #faq {
+      position:relative; z-index:1;
+      padding:120px 56px;
+      border-top:1px solid var(--border);
+    }
+    .faq-inner { max-width:860px; margin:0 auto; }
+    .faq-hd { margin-bottom:56px; }
+    .faq-item {
+      border-bottom:1px solid var(--border);
+      overflow:hidden;
+    }
+    .faq-q {
+      display:flex; align-items:center;
+      justify-content:space-between;
+      padding:24px 0; cursor:pointer;
+      gap:16px;
+    }
+    .faq-q-text { font-family:var(--F1); font-size:20px; letter-spacing:.04em; }
+    .faq-icon {
+      width:28px; height:28px; flex-shrink:0;
+      border:1px solid var(--border-lime);
+      border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--lime); font-size:18px; font-family:var(--F1);
+      transition:transform .3s var(--ease-out);
+    }
+    .faq-item.open .faq-icon { transform:rotate(45deg); }
+    .faq-a {
+      max-height:0; overflow:hidden;
+      transition:max-height .4s var(--ease-out);
+    }
+    .faq-item.open .faq-a { max-height:200px; }
+    .faq-a p {
+      padding:0 0 24px;
+      font-size:14px; color:var(--muted);
+      line-height:1.8; font-weight:300;
+    }
+
+    @media(max-width:960px){
+      #services-main, #process, #faq { padding:80px 20px; }
+      .services-intro { grid-template-columns:1fr; gap:32px; }
+      .svc-grid { grid-template-columns:1fr; }
+      .steps { grid-template-columns:1fr 1fr; gap:40px; }
+      .steps::before { display:none; }
+      .scc-left { max-width:100%; }
+    }
+    @media(max-width:520px){ .steps{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+<div class="page-body">
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="ph-bg-grid"></div>
+    <div class="noise-layer"></div>
+    <div class="inner rv scl">
+      <div class="tag-badge"><span class="badge-dot"></span>Our Services</div>
+      <div class="section-h">AI SERVICES<br/>THAT <span class="hl">ACTUALLY</span> WORK</div>
+      <p class="section-sub" style="max-width:520px;margin:18px auto 0;">Five AI-native services engineered for measurable outcomes. No buzzwords. No hype. Just results.</p>
+    </div>
+  </div>
+
+  <!-- MARQUEE -->
+  <div class="marquee-bar"><div class="mq-track" id="mq1"></div></div>
+
+  <!-- MAIN SERVICES -->
+  <section id="services-main">
+    <div class="services-intro">
+      <div class="si-left rv lft">
+        <div class="tag">// What We Build</div>
+        <div class="section-h">FIVE WAYS<br/>WE <span class="hl">GROW</span><br/>YOUR BUSINESS</div>
+      </div>
+      <div class="si-right rv rgt">
+        <p>Every service we offer is built around one principle: AI should create real, measurable business value. Whether you're a startup or an established enterprise, our AI solutions are designed to integrate, automate, and accelerate.</p>
+        <a href="contact.html" class="btn btn-lime">Start a Project →</a>
+      </div>
+    </div>
+
+    <div class="svc-grid">
+
+      <!-- 01 -->
+      <div class="svc-card rv" id="automation">
+        <div class="svc-bg-num">01</div>
+        <div class="svc-icon-box">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div class="svc-title">AI AUTOMATION FOR BUSINESSES</div>
+        <div class="svc-body">Stop wasting human talent on repetitive tasks. We design and deploy custom AI agents, n8n workflows, API integrations, and intelligent automation pipelines that save thousands of hours annually and reduce errors to near zero.</div>
+        <div class="svc-features">
+          <span class="svc-tag">Workflow Design</span>
+          <span class="svc-tag">n8n Pipelines</span>
+          <span class="svc-tag">API Integration</span>
+          <span class="svc-tag">AI Agents</span>
+          <span class="svc-tag">Zapier Flows</span>
+        </div>
+        <div class="svc-more">Learn More <span>→</span></div>
+      </div>
+
+      <!-- 02 -->
+      <div class="svc-card rv" id="content">
+        <div class="svc-bg-num">02</div>
+        <div class="svc-icon-box">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8l3 3-3 3M13 14h4"/></svg>
+        </div>
+        <div class="svc-title">AI CONTENT CREATION</div>
+        <div class="svc-body">From YouTube scripts to Instagram reels, blog articles to ad copy — we produce AI-native content at scale that matches your brand voice and converts browsers into buyers. Consistent, fast, and brand-accurate every time.</div>
+        <div class="svc-features">
+          <span class="svc-tag">Video Scripts</span>
+          <span class="svc-tag">Blog Articles</span>
+          <span class="svc-tag">Ad Creatives</span>
+          <span class="svc-tag">Reels & Shorts</span>
+          <span class="svc-tag">AI Visuals</span>
+        </div>
+        <div class="svc-more">Learn More <span>→</span></div>
+      </div>
+
+      <!-- 03 -->
+      <div class="svc-card rv" id="training">
+        <div class="svc-bg-num">03</div>
+        <div class="svc-icon-box">
+          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        </div>
+        <div class="svc-title">AI TRAINING & WORKSHOPS</div>
+        <div class="svc-body">Hands-on, practical AI training for teams, entrepreneurs, and students. We run immersive workshops covering ChatGPT, custom GPTs, AI agents, automation tools, and more — all with real-world project delivery, not just theory.</div>
+        <div class="svc-features">
+          <span class="svc-tag">ChatGPT Mastery</span>
+          <span class="svc-tag">Custom GPTs</span>
+          <span class="svc-tag">AI Agents</span>
+          <span class="svc-tag">Team Workshops</span>
+          <span class="svc-tag">Women's Batch</span>
+        </div>
+        <div class="svc-more">Learn More <span>→</span></div>
+      </div>
+
+      <!-- 04 -->
+      <div class="svc-card rv" id="social">
+        <div class="svc-bg-num">04</div>
+        <div class="svc-icon-box">
+          <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+        </div>
+        <div class="svc-title">YOUTUBE & SOCIAL AUTOMATION</div>
+        <div class="svc-body">Build faceless YouTube channels that generate revenue on autopilot. We set up end-to-end content pipelines — ideation, scripting, AI voiceover, editing, SEO, and upload scheduling — so your channel grows even when you're offline.</div>
+        <div class="svc-features">
+          <span class="svc-tag">Faceless Channels</span>
+          <span class="svc-tag">TikTok Automation</span>
+          <span class="svc-tag">Scheduling</span>
+          <span class="svc-tag">SEO Strategy</span>
+          <span class="svc-tag">AI Voiceover</span>
+        </div>
+        <div class="svc-more">Learn More <span>→</span></div>
+      </div>
+
+      <!-- 05 -->
+      <div class="svc-card rv" id="marketing">
+        <div class="svc-bg-num">05</div>
+        <div class="svc-icon-box">
+          <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        </div>
+        <div class="svc-title">AI-POWERED MARKETING</div>
+        <div class="svc-body">Performance marketing supercharged by artificial intelligence. We run AI-optimised ad campaigns, use machine learning for targeting precision, generate high-converting creatives, and track everything with AI-powered analytics dashboards.</div>
+        <div class="svc-features">
+          <span class="svc-tag">Meta Ads AI</span>
+          <span class="svc-tag">Google Ads</span>
+          <span class="svc-tag">AI Creatives</span>
+          <span class="svc-tag">Analytics</span>
+          <span class="svc-tag">ROI Tracking</span>
+        </div>
+        <div class="svc-more">Learn More <span>→</span></div>
+      </div>
+
+      <!-- CTA CARD -->
+      <div class="svc-cta-card rv scl">
+        <div class="scc-left">
+          <div class="scc-label">// Ready to Scale?</div>
+          <div class="scc-h">Let's Build Something<br/><span>That Actually Works.</span></div>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <a href="contact.html" class="btn btn-lime">Start a Project →</a>
+          <a href="about.html"   class="btn btn-outline">Meet the Team</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="process-inner">
+      <div class="process-hd rv">
+        <div class="tag">// How We Work</div>
+        <div class="section-h">OUR <span class="hl">PROCESS</span></div>
+        <p class="section-sub" style="max-width:480px;margin:16px auto 0;">From first conversation to deployed system — here's how we turn your goals into AI-powered results.</p>
+      </div>
+      <div class="steps">
+        <div class="step rv">
+          <div class="step-num-wrap"><div class="step-num">01</div></div>
+          <div class="step-title">DISCOVER</div>
+          <div class="step-desc">We start by understanding your business, goals, bottlenecks, and what success looks like. Deep discovery, no assumptions.</div>
+        </div>
+        <div class="step rv">
+          <div class="step-num-wrap"><div class="step-num">02</div></div>
+          <div class="step-title">DESIGN</div>
+          <div class="step-desc">We design your AI strategy — which tools, which workflows, what to automate, and how to measure impact.</div>
+        </div>
+        <div class="step rv">
+          <div class="step-num-wrap"><div class="step-num">03</div></div>
+          <div class="step-title">DEPLOY</div>
+          <div class="step-desc">We build and deploy your AI systems — live, tested, and optimized for real-world performance from day one.</div>
+        </div>
+        <div class="step rv">
+          <div class="step-num-wrap"><div class="step-num">04</div></div>
+          <div class="step-title">GROW</div>
+          <div class="step-desc">We monitor, iterate, and scale your AI stack as your business grows — continuous improvement is built in.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="faq-inner">
+      <div class="faq-hd rv">
+        <div class="tag">// FAQ</div>
+        <div class="section-h">COMMON<br/><span class="hl">QUESTIONS</span></div>
+      </div>
+      <div id="faq-list" class="rv">
+        <div class="faq-item">
+          <div class="faq-q"><span class="faq-q-text">Do I need a technical background to work with you?</span><span class="faq-icon">+</span></div>
+          <div class="faq-a"><p>Not at all. We handle all the technical complexity. You bring your business goals — we bring the AI. Our onboarding process is designed for non-technical founders and teams.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q"><span class="faq-q-text">How long does a typical project take?</span><span class="faq-icon">+</span></div>
+          <div class="faq-a"><p>Automation projects typically take 2–4 weeks. Training programs run 7–30 days. Content pipelines can be live in under 2 weeks. We always define timelines clearly upfront.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q"><span class="faq-q-text">What's the Women Empowerment Initiative?</span><span class="faq-icon">+</span></div>
+          <div class="faq-a"><p>We run free AI training batches for women — 10 per cohort — covering practical AI tools for business and freelancing. Contact us to apply for the next batch.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q"><span class="faq-q-text">Do you work with international clients?</span><span class="faq-icon">+</span></div>
+          <div class="faq-a"><p>Yes. SparkUp Creative is a Wyoming LLC and we serve clients globally. Our team operates across time zones and all delivery is remote-first.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q"><span class="faq-q-text">How do I get started?</span><span class="faq-icon">+</span></div>
+          <div class="faq-a"><p>Simply fill in the contact form or WhatsApp us. We'll schedule a free discovery call within 24 hours to understand your needs and recommend the right service.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+<script src="js/common.js"></script>
+<script>
+  fillMarquee('mq1',['AI Automation','Content Creation','AI Training','YouTube Automation','Performance Marketing','Social Media AI','Business Growth','SparkUp Creative']);
+  initTilt('.svc-card');
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>

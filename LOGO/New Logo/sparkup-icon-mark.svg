@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" rx="32" fill="#0C1E3F"/>
+  <g transform="translate(100,100)">
+    <ellipse cx="0" cy="0" rx="72" ry="24" fill="none" stroke="#E3C96E" stroke-width="2.4" opacity="0.7" transform="rotate(-30)"/>
+    <ellipse cx="0" cy="0" rx="72" ry="24" fill="none" stroke="#C9A84C" stroke-width="2.4" opacity="0.65" transform="rotate(30)"/>
+    <ellipse cx="0" cy="0" rx="72" ry="24" fill="none" stroke="#E3C96E" stroke-width="2.8" opacity="0.85" transform="rotate(90)"/>
+    <circle cx="0" cy="-72" r="6.5" fill="#E3C96E"/>
+    <circle cx="63" cy="33" r="5.5" fill="#E3C96E" opacity="0.85"/>
+    <circle cx="-60" cy="-21" r="5" fill="#C9A84C" opacity="0.7"/>
+    <circle cx="0" cy="0" r="28" fill="#C9A84C" opacity="0.06"/>
+    <circle cx="0" cy="0" r="20" fill="#C9A84C" opacity="0.1"/>
+    <rect x="-17" y="-17" width="34" height="34" rx="9" fill="#E3C96E"/>
+    <text x="0" y="1" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="24" font-weight="700" fill="#0C1E3F" text-anchor="middle" dominant-baseline="central">S</text>
+  </g>
+</svg>

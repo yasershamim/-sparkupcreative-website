@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SparkUp Creative — AI Agency | Home</title>
+  <meta name="description" content="SparkUp Creative — AI-Powered Creativity. People-Powered Growth. Build with AI. Grow with Purpose. Lead with Vision."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    .page-body { opacity:0; transition:opacity .5s; }
+
+    /* ── HERO ─────────────────────────────── */
+    #hero {
+      position:relative; height:100vh;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      text-align:center; overflow:hidden;
+      padding:80px 24px 0;
+    }
+    #hero-canvas { position:absolute; inset:0; z-index:0; }
+    .hero-vignette {
+      position:absolute; inset:0; z-index:1; pointer-events:none;
+      background:radial-gradient(ellipse at center, transparent 25%, rgba(6,8,6,.88) 78%);
+    }
+    .hero-content { position:relative; z-index:2; max-width:900px; }
+
+    .hero-h1 {
+      font-family:var(--F1);
+      font-size:clamp(72px,11vw,158px);
+      line-height:.88; letter-spacing:.025em;
+      margin-top:16px; opacity:0;
+      animation:fadeUp .9s .5s var(--ease-out) forwards;
+    }
+    .hero-h1 .glitch {
+      color:var(--lime); position:relative; display:inline-block;
+    }
+    .hero-h1 .glitch::before, .hero-h1 .glitch::after {
+      content:attr(data-text); position:absolute;
+      top:0; left:0; overflow:hidden; clip-path:inset(0);
+    }
+    .hero-h1 .glitch::before {
+      left:2px; text-shadow:-2px 0 #ff003c;
+      animation:gl1 4s infinite linear;
+    }
+    .hero-h1 .glitch::after {
+      left:-2px; text-shadow:-2px 0 #00fff9;
+      animation:gl2 4s infinite linear;
+    }
+    @keyframes gl1 {
+      0%,88%,100%{clip-path:inset(100% 0 0 0);opacity:0}
+      89%{clip-path:inset(15% 0 55% 0);opacity:1}
+      91%{clip-path:inset(50% 0 25% 0);opacity:1}
+      93%{clip-path:inset(75% 0 5% 0);opacity:1}
+    }
+    @keyframes gl2 {
+      0%,90%,100%{clip-path:inset(100% 0 0 0);opacity:0}
+      91%{clip-path:inset(25% 0 60% 0);opacity:1}
+      93%{clip-path:inset(60% 0 18% 0);opacity:1}
+      95%{clip-path:inset(82% 0 2% 0);opacity:1}
+    }
+    .hero-sub {
+      font-size:clamp(16px,2vw,21px); color:var(--muted);
+      font-weight:300; margin-top:22px;
+      opacity:0; animation:fadeUp .8s .75s var(--ease-out) forwards;
+    }
+    .hero-actions {
+      display:flex; gap:16px; justify-content:center;
+      flex-wrap:wrap; margin-top:44px;
+      opacity:0; animation:fadeUp .8s .95s var(--ease-out) forwards;
+    }
+    .scroll-hint {
+      position:absolute; bottom:28px; left:50%;
+      transform:translateX(-50%); z-index:2;
+      display:flex; flex-direction:column;
+      align-items:center; gap:8px;
+      opacity:0; animation:fadeIn .6s 1.3s forwards;
+    }
+    .sh-line {
+      width:1px; height:44px;
+      background:linear-gradient(to bottom, var(--lime), transparent);
+      animation:shPulse 2s ease-in-out infinite;
+    }
+    .sh-txt {
+      font-family:var(--F3); font-size:8px;
+      letter-spacing:.22em; text-transform:uppercase;
+      color:var(--dim); writing-mode:vertical-rl;
+    }
+    @keyframes shPulse { 0%,100%{opacity:.3;transform:scaleY(.6);transform-origin:top} 50%{opacity:1;transform:scaleY(1)} }
+
+    /* ── STRIP / TICKER ──────────────────── */
+    .home-strip {
+      position:relative; z-index:1;
+      background:var(--bg1);
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      padding:12px 0;
+      overflow:hidden;
+    }
+
+    /* ── INTRO TEXT BLOCK ─────────────────── */
+    #intro {
+      position:relative; z-index:1;
+      padding:128px 52px;
+    }
+    .intro-inner {
+      max-width:1180px; margin:0 auto;
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:80px; align-items:center;
+    }
+    .intro-big {
+      font-family:var(--F1);
+      font-size:clamp(52px,6.5vw,90px);
+      line-height:.9; letter-spacing:.02em;
+    }
+    .intro-big .hl { color:var(--lime); }
+    .intro-right {}
+    .intro-right p {
+      font-size:16px; color:var(--muted);
+      line-height:1.8; font-weight:300;
+      margin-bottom:14px;
+    }
+    .intro-right .actions { margin-top:36px; display:flex; gap:14px; flex-wrap:wrap; }
+
+    /* ── SERVICES PREVIEW ─────────────────── */
+    #svc-preview {
+      position:relative; z-index:1;
+      background:var(--bg1);
+      border-top:1px solid var(--border);
+      padding:120px 52px;
+    }
+    .sp-hd {
+      max-width:1180px; margin:0 auto 64px;
+      display:flex; justify-content:space-between;
+      align-items:flex-end; flex-wrap:wrap; gap:24px;
+    }
+    .sp-list {
+      max-width:1180px; margin:0 auto;
+      display:flex; flex-direction:column;
+    }
+    .sp-item {
+      display:flex; align-items:center;
+      gap:32px; padding:28px 32px;
+      border-top:1px solid var(--border);
+      cursor:none; transition:background .3s, padding-left .3s;
+      position:relative; overflow:hidden;
+    }
+    .sp-item:last-child { border-bottom:1px solid var(--border); }
+    .sp-item::after {
+      content:''; position:absolute;
+      left:0; top:0; bottom:0; width:3px;
+      background:var(--lime);
+      transform:scaleY(0); transform-origin:bottom;
+      transition:transform .3s var(--ease-out);
+    }
+    .sp-item:hover { background:var(--bg2); padding-left:44px; }
+    .sp-item:hover::after { transform:scaleY(1); }
+    .sp-n {
+      font-family:var(--F1); font-size:16px;
+      color:var(--lime); letter-spacing:.08em;
+      width:36px; flex-shrink:0;
+    }
+    .sp-icon { width:44px; height:44px; flex-shrink:0; }
+    .sp-icon svg { width:44px; height:44px; stroke:var(--muted); fill:none; stroke-width:1.2; }
+    .sp-item:hover .sp-icon svg { stroke:var(--lime); }
+    .sp-name {
+      font-family:var(--F1); font-size:clamp(22px,2.5vw,30px);
+      letter-spacing:.04em; flex:1;
+      transition:color .2s;
+    }
+    .sp-item:hover .sp-name { color:var(--lime); }
+    .sp-desc { font-size:13px; color:var(--muted); max-width:340px; line-height:1.65; font-weight:300; }
+    .sp-arrow {
+      font-family:var(--F1); font-size:24px; color:var(--lime);
+      opacity:0; transform:translateX(-12px);
+      transition:opacity .25s, transform .25s;
+    }
+    .sp-item:hover .sp-arrow { opacity:1; transform:translateX(0); }
+
+    /* ── STATS ──────────────────────────── */
+    #stats-strip {
+      position:relative; z-index:1;
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      padding:80px 52px;
+      overflow:hidden;
+    }
+    #stats-strip::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse 50% 80% at 50% 50%, var(--lime-06) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .stats-row {
+      max-width:1180px; margin:0 auto;
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:0;
+    }
+    .stat-cell {
+      text-align:center; padding:20px;
+      border-right:1px solid var(--border);
+    }
+    .stat-cell:last-child { border-right:none; }
+    .stat-val {
+      font-family:var(--F1); font-size:clamp(56px,6vw,86px);
+      color:var(--lime); line-height:1; letter-spacing:-.02em;
+    }
+    .stat-suf { color:rgba(200,255,0,.45); }
+    .stat-lbl {
+      font-family:var(--F3); font-size:9px;
+      letter-spacing:.2em; text-transform:uppercase;
+      color:var(--muted); margin-top:10px;
+    }
+
+    /* ── VIDEO SHOWREEL ─────────────────── */
+    #showreel {
+      position:relative; z-index:1;
+      padding:120px 52px;
+    }
+    .sr-inner { max-width:1180px; margin:0 auto; }
+    .sr-hd { margin-bottom:48px; }
+    .video-wrap {
+      position:relative; width:100%;
+      aspect-ratio:16/9;
+      background:#000;
+      border:1px solid var(--border-lime);
+      overflow:hidden;
+    }
+    .video-wrap video, .video-wrap iframe {
+      width:100%; height:100%; border:none; object-fit:cover;
+    }
+    .video-placeholder {
+      position:absolute; inset:0;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:20px;
+      background:linear-gradient(135deg,#040704 0%,#0d1a08 50%,#040704 100%);
+    }
+    .video-placeholder::before {
+      content:''; position:absolute; inset:0;
+      background:repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(200,255,0,.012) 2px, rgba(200,255,0,.012) 4px
+      );
+    }
+    .vp-grid {
+      position:absolute; inset:0;
+      background-image:
+        linear-gradient(rgba(200,255,0,.04) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(200,255,0,.04) 1px,transparent 1px);
+      background-size:80px 80px;
+    }
+    .vp-btn {
+      position:relative; z-index:1;
+      width:88px; height:88px; border-radius:50%;
+      background:var(--lime-12); border:2px solid var(--lime);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:transform .2s, background .2s;
+    }
+    .vp-btn:hover { transform:scale(1.1); background:var(--lime-20); }
+    .vp-btn::after {
+      content:''; position:absolute; inset:-10px; border-radius:50%;
+      border:1px solid rgba(200,255,0,.3); animation:pingOut 2s ease-out infinite;
+    }
+    .vp-triangle {
+      width:0; height:0;
+      border-top:14px solid transparent;
+      border-bottom:14px solid transparent;
+      border-left:22px solid var(--lime);
+      margin-left:5px;
+    }
+    .vp-label {
+      position:relative; z-index:1;
+      font-family:var(--F3); font-size:10px;
+      letter-spacing:.18em; text-transform:uppercase;
+      color:var(--muted);
+    }
+    .vc { position:absolute; width:18px; height:18px; }
+    .vc svg { width:100%; height:100%; stroke:var(--lime); fill:none; stroke-width:2; }
+    .vc.tl { top:14px; left:14px; }
+    .vc.tr { top:14px; right:14px; transform:scaleX(-1); }
+    .vc.bl { bottom:14px; left:14px; transform:scaleY(-1); }
+    .vc.br { bottom:14px; right:14px; transform:scale(-1); }
+
+    /* ── MINI TEAM PREVIEW ──────────────── */
+    #team-preview {
+      position:relative; z-index:1;
+      background:var(--bg2);
+      border-top:1px solid var(--border);
+      padding:120px 52px;
+    }
+    .tp-inner { max-width:1180px; margin:0 auto; }
+    .tp-hd { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px; margin-bottom:64px; }
+    .tp-row { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; }
+    .tp-card {
+      border:1px solid var(--border);
+      background:var(--bg1);
+      padding:28px 24px;
+      text-align:center;
+      transition:border-color .3s, transform .3s;
+      position:relative; overflow:hidden;
+    }
+    .tp-card:hover { border-color:var(--border-lime); transform:translateY(-5px); }
+    .tp-card::after {
+      content:''; position:absolute;
+      top:0; left:0; right:0; height:2px;
+      background:var(--lime);
+      transform:scaleX(0); transform-origin:left;
+      transition:transform .4s var(--ease-out);
+    }
+    .tp-card:hover::after { transform:scaleX(1); }
+    .tp-av {
+      width:52px; height:52px; border-radius:50%;
+      background:var(--lime-12); border:1.5px solid var(--border-lime);
+      display:flex; align-items:center; justify-content:center;
+      font-family:var(--F1); font-size:22px; color:var(--lime);
+      margin:0 auto 16px;
+    }
+    .tp-name { font-family:var(--F1); font-size:16px; letter-spacing:.04em; }
+    .tp-role {
+      font-family:var(--F3); font-size:8.5px;
+      letter-spacing:.14em; text-transform:uppercase;
+      color:var(--lime); margin-top:4px;
+    }
+
+    /* ── HOME CTA ───────────────────────── */
+    #home-cta {
+      position:relative; z-index:1;
+      padding:140px 52px;
+      text-align:center; overflow:hidden;
+      border-top:1px solid var(--border);
+    }
+    #home-cta::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse 60% 70% at 50% 50%, var(--lime-06) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .hc-inner { position:relative; z-index:1; max-width:720px; margin:0 auto; }
+    .hc-h { font-family:var(--F1); font-size:clamp(52px,8vw,110px); line-height:.9; letter-spacing:.02em; }
+    .hc-h .hl { color:var(--lime); }
+    .hc-sub { font-size:17px; color:var(--muted); font-weight:300; margin-top:20px; line-height:1.7; }
+    .hc-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:48px; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(36px)} to{opacity:1;transform:none} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+    @media(max-width:900px){
+      #intro { padding:80px 20px; }
+      .intro-inner { grid-template-columns:1fr; gap:40px; }
+      #svc-preview, #stats-strip, #showreel, #team-preview, #home-cta { padding:80px 20px; }
+      .stats-row { grid-template-columns:repeat(2,1fr); }
+      .stat-cell { border:none; border-bottom:1px solid var(--border); }
+      .tp-row { grid-template-columns:repeat(2,1fr); }
+      .sp-desc { display:none; }
+    }
+    @media(max-width:520px){ .tp-row{ grid-template-columns:1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="page-body">
+    <!-- HERO -->
+    <section id="hero">
+      <canvas id="hero-canvas"></canvas>
+      <div class="hero-vignette"></div>
+      <div class="hero-content">
+        <div class="tag-badge rv" style="opacity:0;animation:fadeUp .7s .25s var(--ease-out) forwards">
+          <span class="badge-dot"></span>
+          AI-Powered Agency &nbsp;·&nbsp; Wyoming, USA
+        </div>
+        <h1 class="hero-h1">
+          BUILD WITH <span class="glitch" data-text="AI.">AI.</span><br/>
+          GROW WITH<br/>PURPOSE.
+        </h1>
+        <p class="hero-sub">AI-Powered Creativity. People-Powered Growth.</p>
+        <div class="hero-actions">
+          <a href="services.html" class="btn btn-lime">Explore Services →</a>
+          <a href="contact.html"  class="btn btn-outline">Let's Talk</a>
+        </div>
+      </div>
+      <div class="scroll-hint">
+        <div class="sh-txt">Scroll</div>
+        <div class="sh-line"></div>
+      </div>
+    </section>
+
+    <!-- MARQUEE STRIP -->
+    <div class="home-strip marquee-bar">
+      <div class="mq-track" id="mq1"></div>
+    </div>
+
+    <!-- INTRO -->
+    <section id="intro">
+      <div class="intro-inner">
+        <div class="intro-big rv lft">
+          WHERE <span class="hl">AI</span><br/>MEETS<br/>AMBITION.
+        </div>
+        <div class="intro-right rv rgt">
+          <p>SparkUp Creative bridges the gap between AI capability and business reality. We don't just use AI — we build with it, train it, and deploy it to drive measurable results.</p>
+          <p>From automated pipelines to full-scale performance marketing — we're the AI agency that actually delivers. Wyoming-registered. India-operated. Globally minded.</p>
+          <div class="actions">
+            <a href="about.html" class="btn btn-lime">Our Story</a>
+            <a href="services.html" class="btn btn-outline">Services</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES PREVIEW -->
+    <section id="svc-preview">
+      <div class="sp-hd">
+        <div class="rv lft">
+          <div class="tag">// What We Do</div>
+          <div class="section-h">OUR<br/><span class="hl">SERVICES</span></div>
+        </div>
+        <a href="services.html" class="btn btn-outline rv rgt">View All Services →</a>
+      </div>
+      <div class="sp-list rv">
+        <div class="sp-item">
+          <span class="sp-n">01</span>
+          <div class="sp-icon"><svg viewBox="0 0 48 48"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="sp-name">AI Automation for Businesses</span>
+          <span class="sp-desc">Eliminate repetitive work with custom AI agents and intelligent pipelines.</span>
+          <span class="sp-arrow">→</span>
+        </div>
+        <div class="sp-item">
+          <span class="sp-n">02</span>
+          <div class="sp-icon"><svg viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="24" rx="2"/><path d="M18 42h12M24 34v8"/><path d="M14 20l6 6-6 6"/><path d="M28 30h8"/></svg></div>
+          <span class="sp-name">AI Content Creation</span>
+          <span class="sp-desc">Scripts, visuals, blogs — AI-generated content that converts at scale.</span>
+          <span class="sp-arrow">→</span>
+        </div>
+        <div class="sp-item">
+          <span class="sp-n">03</span>
+          <div class="sp-icon"><svg viewBox="0 0 48 48"><path d="M24 8v8M34 12l-8 8M40 24H32M36 34l-8-6"/><circle cx="24" cy="32" r="8"/></svg></div>
+          <span class="sp-name">AI Training & Workshops</span>
+          <span class="sp-desc">Hands-on programs making AI practical for teams and entrepreneurs.</span>
+          <span class="sp-arrow">→</span>
+        </div>
+        <div class="sp-item">
+          <span class="sp-n">04</span>
+          <div class="sp-icon"><svg viewBox="0 0 48 48"><path d="M24 8C15.16 8 8 15.16 8 24s7.16 16 16 16 16-7.16 16-16S32.84 8 24 8z"/><path d="M20 16l12 8-12 8V16z"/></svg></div>
+          <span class="sp-name">YouTube & Social Automation</span>
+          <span class="sp-desc">Build faceless channels and automate entire content pipelines.</span>
+          <span class="sp-arrow">→</span>
+        </div>
+        <div class="sp-item">
+          <span class="sp-n">05</span>
+          <div class="sp-icon"><svg viewBox="0 0 48 48"><path d="M8 36l6-14 8 8 6-18 8 18 4-8"/><path d="M6 40h36"/></svg></div>
+          <span class="sp-name">AI-Powered Marketing</span>
+          <span class="sp-desc">Performance marketing supercharged by machine intelligence.</span>
+          <span class="sp-arrow">→</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section id="stats-strip">
+      <div class="stats-row">
+        <div class="stat-cell rv"><div class="stat-val"><span data-count="50">0</span><span class="stat-suf">+</span></div><div class="stat-lbl">Businesses Trained</div></div>
+        <div class="stat-cell rv"><div class="stat-val"><span data-count="5">0</span></div><div class="stat-lbl">Core AI Services</div></div>
+        <div class="stat-cell rv"><div class="stat-val"><span data-count="100">0</span><span class="stat-suf">%</span></div><div class="stat-lbl">AI-Powered Delivery</div></div>
+        <div class="stat-cell rv"><div class="stat-val"><span data-count="5">0</span></div><div class="stat-lbl">Expert Team Members</div></div>
+      </div>
+    </section>
+
+    <!-- SHOWREEL -->
+    <section id="showreel">
+      <div class="sr-inner">
+        <div class="sr-hd rv">
+          <div class="tag">// Showreel</div>
+          <div class="section-h">WATCH US<br/><span class="hl">BUILD THE FUTURE</span></div>
+        </div>
+        <div class="video-wrap rv scl">
+          <div class="vc tl"><svg viewBox="0 0 18 18"><path d="M2 10V2h8"/></svg></div>
+          <div class="vc tr"><svg viewBox="0 0 18 18"><path d="M2 10V2h8"/></svg></div>
+          <div class="vc bl"><svg viewBox="0 0 18 18"><path d="M2 10V2h8"/></svg></div>
+          <div class="vc br"><svg viewBox="0 0 18 18"><path d="M2 10V2h8"/></svg></div>
+          <!--
+            REPLACE WITH YOUR VIDEO:
+            YouTube: <iframe src="https://www.youtube.com/embed/YOUR_ID?autoplay=1&mute=1&loop=1&playlist=YOUR_ID" allow="autoplay;fullscreen" allowfullscreen></iframe>
+            MP4:     <video autoplay muted loop playsinline src="assets/showreel.mp4"></video>
+          -->
+          <div class="video-placeholder">
+            <div class="vp-grid"></div>
+            <div class="vp-btn"><div class="vp-triangle"></div></div>
+            <div class="vp-label">Add Your Showreel Here → See README</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM PREVIEW -->
+    <section id="team-preview">
+      <div class="tp-inner">
+        <div class="tp-hd">
+          <div class="rv lft">
+            <div class="tag">// The People</div>
+            <div class="section-h">MEET THE<br/><span class="hl">TEAM</span></div>
+          </div>
+          <a href="about.html" class="btn btn-outline rv rgt">Full Profiles →</a>
+        </div>
+        <div class="tp-row rv">
+          <div class="tp-card"><div class="tp-av">Y</div><div class="tp-name">Yaser Shamim</div><div class="tp-role">Founder & CEO</div></div>
+          <div class="tp-card"><div class="tp-av">A</div><div class="tp-name">Areeba Hasan</div><div class="tp-role">Co-Founder & COO</div></div>
+          <div class="tp-card"><div class="tp-av">J</div><div class="tp-name">Jamal Ahmed</div><div class="tp-role">CFO</div></div>
+          <div class="tp-card"><div class="tp-av">K</div><div class="tp-name">Kaleem Ansari</div><div class="tp-role">CSO</div></div>
+          <div class="tp-card"><div class="tp-av">N</div><div class="tp-name">Nadeem Aftab</div><div class="tp-role">Head of Growth</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="home-cta">
+      <div class="noise-layer"></div>
+      <div class="hc-inner rv scl">
+        <div class="tag">// Ready?</div>
+        <div class="hc-h">READY TO<br/><span class="hl">SPARK UP?</span></div>
+        <p class="hc-sub">Whether you're a startup, an institution, or an established brand — we'll build the AI stack that makes you unstoppable.</p>
+        <div class="hc-btns">
+          <a href="contact.html" class="btn btn-lime" id="ctaBtn" onclick="spawnBurst(event.clientX,event.clientY)">Get Started Today →</a>
+          <a href="services.html" class="btn btn-outline">View Services</a>
+        </div>
+      </div>
+    </section>
+  </div><!-- end .page-body -->
+
+  <script src="js/common.js"></script>
+  <script>
+    fillMarquee('mq1',['AI Automation','Content Creation','AI Training','YouTube Automation','Performance Marketing','Social Media AI','Business Growth','SparkUp Creative','Women Empowerment','AI Agency']);
+    initCounters();
+
+    /* THREE.JS NEURAL NETWORK */
+    (function(){
+      const canvas = document.getElementById('hero-canvas');
+      const R = new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+      R.setPixelRatio(Math.min(devicePixelRatio,2));
+      const scene = new THREE.Scene();
+      const cam   = new THREE.PerspectiveCamera(68,1,.1,1000);
+      cam.position.z = 270;
+      function resize(){
+        const w=canvas.parentElement.clientWidth, h=canvas.parentElement.clientHeight;
+        R.setSize(w,h); cam.aspect=w/h; cam.updateProjectionMatrix();
+      }
+      resize(); window.addEventListener('resize',resize);
+      const N=130, pos=new Float32Array(N*3), pts=[], vel=[];
+      const geo=new THREE.BufferGeometry();
+      for(let i=0;i<N;i++){
+        const x=(Math.random()-.5)*440,y=(Math.random()-.5)*300,z=(Math.random()-.5)*220;
+        pts.push(new THREE.Vector3(x,y,z));
+        vel.push(new THREE.Vector3((Math.random()-.5)*.2,(Math.random()-.5)*.2,(Math.random()-.5)*.12));
+        pos[i*3]=x;pos[i*3+1]=y;pos[i*3+2]=z;
+      }
+      geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+      const mat=new THREE.PointsMaterial({color:0xC8FF00,size:2.6,transparent:true,opacity:.75,sizeAttenuation:true});
+      scene.add(new THREE.Points(geo,mat));
+      const lineGroup=new THREE.Group(); scene.add(lineGroup);
+      let mx=0,my=0, f=0;
+      window.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=-(e.clientY/innerHeight-.5)*2;});
+      const THRESH=95;
+      function buildLines(){
+        while(lineGroup.children.length) lineGroup.remove(lineGroup.children[0]);
+        for(let i=0;i<N;i++) for(let j=i+1;j<N;j++){
+          const d=pts[i].distanceTo(pts[j]);
+          if(d<THRESH){
+            const g=new THREE.BufferGeometry().setFromPoints([pts[i],pts[j]]);
+            lineGroup.add(new THREE.Line(g,new THREE.LineBasicMaterial({color:0xC8FF00,transparent:true,opacity:(1-d/THRESH)*.18})));
+          }
+        }
+      }
+      buildLines();
+      (function anim(){
+        requestAnimationFrame(anim); f++;
+        for(let i=0;i<N;i++){
+          pts[i].add(vel[i]);
+          if(Math.abs(pts[i].x)>220)vel[i].x*=-1;
+          if(Math.abs(pts[i].y)>150)vel[i].y*=-1;
+          if(Math.abs(pts[i].z)>110)vel[i].z*=-1;
+          pos[i*3]=pts[i].x;pos[i*3+1]=pts[i].y;pos[i*3+2]=pts[i].z;
+        }
+        geo.attributes.position.needsUpdate=true;
+        if(f%3===0) buildLines();
+        cam.position.x+=(mx*22-cam.position.x)*.03;
+        cam.position.y+=(my*14-cam.position.y)*.03;
+        cam.lookAt(scene.position);
+        R.render(scene,cam);
+      })();
+    })();
+  </script>
+</body>
+</html>

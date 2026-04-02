@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SparkUp Creative — About Us & Team</title>
+  <meta name="description" content="Meet the team behind SparkUp Creative — the AI agency built on purpose, precision, and people."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    .page-body { opacity:0; transition:opacity .5s; }
+
+    /* ── ABOUT HERO (FULL-SCREEN) ─────────── */
+    #about-hero {
+      position:relative; min-height:100vh;
+      display:flex; align-items:center;
+      overflow:hidden;
+    }
+    #ah-canvas { position:absolute; inset:0; z-index:0; }
+    .ah-overlay {
+      position:absolute; inset:0; z-index:1;
+      background:linear-gradient(110deg,rgba(6,8,6,.95) 45%,rgba(6,8,6,.55) 100%);
+    }
+    .ah-content {
+      position:relative; z-index:2;
+      padding:140px 72px 80px;
+      max-width:860px;
+    }
+    .ah-content .tag-badge { margin-bottom:32px; }
+    .ah-h {
+      font-family:var(--F1);
+      font-size:clamp(72px,10vw,150px);
+      line-height:.87; letter-spacing:.02em;
+      margin-bottom:32px;
+    }
+    .ah-h span { color:var(--lime); }
+    .ah-sub {
+      font-size:clamp(16px,1.8vw,20px);
+      color:var(--muted); font-weight:300;
+      line-height:1.75; max-width:540px;
+    }
+    .ah-stats {
+      display:flex; gap:52px; flex-wrap:wrap;
+      margin-top:56px; padding-top:40px;
+      border-top:1px solid var(--border);
+    }
+    .ah-stat {}
+    .ah-sn {
+      font-family:var(--F1); font-size:52px;
+      color:var(--lime); line-height:1; letter-spacing:-.02em;
+    }
+    .ah-sl {
+      font-family:var(--F3); font-size:9px;
+      letter-spacing:.2em; text-transform:uppercase;
+      color:var(--muted); margin-top:4px;
+    }
+    /* Scroll indicator right side */
+    .ah-scroll-side {
+      position:absolute; right:48px; bottom:0; top:0;
+      z-index:2; display:flex; flex-direction:column;
+      align-items:center; justify-content:flex-end;
+      padding-bottom:40px; gap:12px;
+    }
+    .ah-scroll-line {
+      width:1px; height:80px;
+      background:linear-gradient(to bottom,var(--lime),transparent);
+      animation:scrollPulse 2s ease-in-out infinite;
+    }
+    .ah-scroll-text {
+      font-family:var(--F3); font-size:8px;
+      letter-spacing:.22em; text-transform:uppercase;
+      color:var(--dim); writing-mode:vertical-rl;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:.3;transform:scaleY(.5);transform-origin:top} 50%{opacity:1;transform:scaleY(1)} }
+
+    /* ── STORY SECTION ──────────────────── */
+    #story {
+      position:relative; z-index:1;
+      padding:128px 72px;
+      background:var(--bg1);
+      border-top:1px solid var(--border);
+    }
+    .story-inner {
+      max-width:1180px; margin:0 auto;
+      display:grid; grid-template-columns:1.1fr 1fr;
+      gap:80px; align-items:center;
+    }
+    .story-left {}
+    .story-left .section-h { margin-top:12px; margin-bottom:32px; }
+    .story-left p {
+      font-size:15px; color:var(--muted);
+      line-height:1.82; font-weight:300;
+      margin-bottom:18px;
+    }
+    .story-left blockquote {
+      border-left:3px solid var(--lime);
+      padding-left:24px; margin:36px 0;
+      font-family:var(--F1); font-size:24px;
+      letter-spacing:.04em; line-height:1.3;
+      color:var(--text);
+    }
+    .story-right {}
+    /* Terminal / code aesthetic */
+    .terminal {
+      background:var(--bg); border:1px solid var(--border-lime);
+      font-family:var(--F3); font-size:12.5px;
+      position:relative; overflow:hidden;
+    }
+    .term-bar {
+      display:flex; align-items:center; gap:8px;
+      background:rgba(255,255,255,.03); padding:12px 18px;
+      border-bottom:1px solid var(--border);
+    }
+    .td { width:10px; height:10px; border-radius:50%; }
+    .td.r{background:#FF5F57} .td.y{background:#FEBC2E} .td.g{background:#28C840}
+    .term-title { margin-left:auto; font-size:9px; letter-spacing:.14em; color:var(--dim); }
+    .term-body { padding:24px 20px; }
+    .tl { line-height:2.1; }
+    .tl .cmd { color:var(--lime); }
+    .tl .ok  { color:#28C840; }
+    .tl .c   { color:var(--dim); }
+    .term-cursor {
+      display:inline-block; width:8px; height:15px;
+      background:var(--lime); vertical-align:text-bottom;
+      animation:blink 1s step-end infinite;
+    }
+    .term-glow {
+      position:absolute; bottom:-40px; right:-40px;
+      width:180px; height:180px; border-radius:50%;
+      background:radial-gradient(circle,var(--lime-12),transparent 70%);
+      pointer-events:none;
+    }
+    /* Values strip */
+    .values-strip {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:1px; background:var(--border); margin-top:64px;
+      border:1px solid var(--border);
+    }
+    .val-item {
+      background:var(--bg); padding:32px 28px;
+      transition:background .3s;
+    }
+    .val-item:hover { background:var(--bg2); }
+    .val-n {
+      font-family:var(--F1); font-size:48px;
+      color:var(--lime); line-height:1; margin-bottom:12px;
+    }
+    .val-title { font-family:var(--F1); font-size:18px; letter-spacing:.04em; margin-bottom:8px; }
+    .val-desc { font-size:12.5px; color:var(--muted); line-height:1.65; font-weight:300; }
+
+    /* ── TEAM SECTION ─────────────────────── */
+    #team-section {
+      position:relative; z-index:1;
+      padding:140px 72px;
+      border-top:1px solid var(--border);
+    }
+    .team-intro {
+      max-width:1180px; margin:0 auto 96px;
+      display:flex; justify-content:space-between;
+      align-items:flex-end; flex-wrap:wrap; gap:32px;
+    }
+    .ti-left .section-h { margin-top:12px; }
+    .ti-right { max-width:360px; }
+    .ti-right p { font-size:15px; color:var(--muted); font-weight:300; line-height:1.75; }
+
+    /* FEATURED CEO card */
+    .team-featured {
+      max-width:1180px; margin:0 auto 48px;
+      background:var(--bg1); border:1px solid var(--border-lime);
+      display:grid; grid-template-columns:400px 1fr;
+      overflow:hidden; position:relative;
+    }
+    .team-featured::before {
+      content:''; position:absolute;
+      top:0; left:0; bottom:0; width:4px;
+      background:linear-gradient(to bottom,var(--lime),transparent);
+    }
+    .tf-photo {
+      position:relative;
+      background:linear-gradient(135deg,#0a1206 0%,#0f1a09 50%,#080a06 100%);
+      min-height:460px;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      overflow:hidden; border-right:1px solid var(--border);
+    }
+    .tf-photo-img {
+      width:200px; height:200px; border-radius:50%;
+      object-fit:cover;
+      border:3px solid var(--lime);
+      position:relative; z-index:2;
+      box-shadow:0 0 60px rgba(200,255,0,.25);
+    }
+    .tf-photo-placeholder {
+      width:200px; height:200px; border-radius:50%;
+      background:var(--lime-12); border:3px solid var(--lime);
+      display:flex; align-items:center; justify-content:center;
+      font-family:var(--F1); font-size:80px; color:var(--lime);
+      position:relative; z-index:2;
+      box-shadow:0 0 60px rgba(200,255,0,.25);
+    }
+    .tf-photo-ring {
+      position:absolute; z-index:1;
+      width:280px; height:280px; border-radius:50%;
+      border:1px solid rgba(200,255,0,.15);
+      animation:spinSlow 12s linear infinite;
+    }
+    .tf-photo-ring2 {
+      position:absolute; z-index:1;
+      width:340px; height:340px; border-radius:50%;
+      border:1px dashed rgba(200,255,0,.08);
+      animation:spinSlow 20s linear infinite reverse;
+    }
+    @keyframes spinSlow { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+    .tf-photo-bg {
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 60% 60% at 50% 50%,var(--lime-06) 0%,transparent 70%),
+        repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,255,0,.02) 40px,rgba(200,255,0,.02) 41px),
+        repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,255,0,.02) 40px,rgba(200,255,0,.02) 41px);
+    }
+    .tf-photo-badge {
+      position:absolute; bottom:20px; z-index:3;
+      background:var(--lime); color:var(--bg);
+      font-family:var(--F1); font-size:12px;
+      letter-spacing:.12em; padding:6px 20px;
+    }
+    .tf-info {
+      padding:52px 56px;
+      display:flex; flex-direction:column;
+      justify-content:center;
+    }
+    .tf-role-tag {
+      font-family:var(--F3); font-size:9.5px;
+      letter-spacing:.22em; text-transform:uppercase;
+      color:var(--lime); margin-bottom:12px;
+    }
+    .tf-name {
+      font-family:var(--F1); font-size:clamp(44px,5vw,72px);
+      letter-spacing:.02em; line-height:.95;
+      margin-bottom:24px;
+    }
+    .tf-bio {
+      font-size:15px; color:var(--muted);
+      line-height:1.8; font-weight:300;
+      margin-bottom:24px;
+    }
+    .tf-credentials {
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-bottom:32px;
+    }
+    .cred {
+      font-family:var(--F3); font-size:9px;
+      letter-spacing:.14em; text-transform:uppercase;
+      color:var(--text); background:var(--surface);
+      border:1px solid var(--border);
+      padding:6px 14px;
+    }
+    .tf-specialties {}
+    .tf-spec-label {
+      font-family:var(--F3); font-size:9px;
+      letter-spacing:.18em; text-transform:uppercase;
+      color:var(--dim); margin-bottom:10px;
+    }
+    .spec-tags { display:flex; flex-wrap:wrap; gap:8px; }
+    .spec-tag {
+      font-family:var(--F3); font-size:9px;
+      letter-spacing:.12em; text-transform:uppercase;
+      background:var(--lime-06); border:1px solid var(--border-lime);
+      color:var(--lime); padding:5px 14px;
+    }
+    .tf-social { margin-top:28px; display:flex; gap:12px; }
+    .tf-soc-link {
+      width:38px; height:38px; border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--muted); text-decoration:none;
+      transition:border-color .2s,color .2s,transform .2s;
+    }
+    .tf-soc-link:hover { border-color:var(--lime); color:var(--lime); transform:translateY(-3px); }
+    .tf-soc-link svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:1.8; }
+
+    /* TEAM GRID (remaining 4) */
+    .team-grid-4 {
+      max-width:1180px; margin:0 auto;
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:20px;
+    }
+    .tc {
+      background:var(--bg1); border:1px solid var(--border);
+      overflow:hidden; position:relative;
+      transition:border-color .3s, transform .4s var(--ease-out);
+    }
+    .tc:hover { border-color:var(--border-lime); transform:translateY(-8px); }
+    /* Top accent line */
+    .tc::after {
+      content:''; position:absolute;
+      top:0; left:0; right:0; height:2px;
+      background:var(--lime);
+      transform:scaleX(0); transform-origin:left;
+      transition:transform .5s var(--ease-out);
+    }
+    .tc:hover::after { transform:scaleX(1); }
+    /* Holographic shimmer */
+    .tc::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg,transparent 0%,var(--lime-06) 40%,var(--lime-12) 50%,var(--lime-06) 60%,transparent 100%);
+      background-size:200% 200%;
+      opacity:0; transition:opacity .3s;
+      animation:holoMove 3s linear infinite;
+    }
+    .tc:hover::before { opacity:1; }
+    @keyframes holoMove { 0%{background-position:0% 0%} 100%{background-position:200% 200%} }
+
+    .tc-photo-area {
+      height:220px; position:relative;
+      background:linear-gradient(135deg,#080c06 0%,#0e1a0a 100%);
+      display:flex; align-items:center; justify-content:center;
+      border-bottom:1px solid var(--border);
+      overflow:hidden;
+    }
+    .tc-photo-bg {
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 50%,var(--lime-06) 0%,transparent 70%),
+        repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(200,255,0,.025) 28px,rgba(200,255,0,.025) 29px);
+    }
+    .tc-photo-img {
+      width:120px; height:120px; border-radius:50%;
+      object-fit:cover; border:2px solid var(--lime);
+      position:relative; z-index:1;
+      box-shadow:0 0 30px rgba(200,255,0,.2);
+    }
+    .tc-photo-placeholder {
+      width:120px; height:120px; border-radius:50%;
+      background:var(--lime-12); border:2px solid var(--lime);
+      display:flex; align-items:center; justify-content:center;
+      font-family:var(--F1); font-size:48px; color:var(--lime);
+      position:relative; z-index:1;
+      box-shadow:0 0 30px rgba(200,255,0,.2);
+      transition:box-shadow .3s;
+    }
+    .tc:hover .tc-photo-placeholder { box-shadow:0 0 60px rgba(200,255,0,.35); }
+    .tc-spin-ring {
+      position:absolute; z-index:1;
+      width:148px; height:148px; border-radius:50%;
+      border:1px solid transparent;
+      border-top-color:var(--lime);
+      border-right-color:rgba(200,255,0,.3);
+      transition:animation .2s;
+      animation:none;
+    }
+    .tc:hover .tc-spin-ring { animation:spinSlow 3s linear infinite; }
+
+    .tc-info { padding:28px 24px 32px; }
+    .tc-role {
+      font-family:var(--F3); font-size:9px;
+      letter-spacing:.18em; text-transform:uppercase;
+      color:var(--lime); margin-bottom:8px;
+    }
+    .tc-name {
+      font-family:var(--F1); font-size:22px;
+      letter-spacing:.04em; margin-bottom:14px;
+    }
+    .tc-bio {
+      font-size:12.5px; color:var(--muted);
+      line-height:1.7; font-weight:300; margin-bottom:18px;
+    }
+    .tc-specs { display:flex; flex-wrap:wrap; gap:6px; }
+    .tc-spec {
+      font-family:var(--F3); font-size:8.5px;
+      letter-spacing:.1em; text-transform:uppercase;
+      color:var(--lime); background:var(--lime-06);
+      border:1px solid var(--border-lime); padding:4px 10px;
+    }
+    .tc-social-row { display:flex; gap:8px; margin-top:16px; }
+    .tc-soc {
+      width:30px; height:30px; border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--muted); text-decoration:none;
+      transition:border-color .2s,color .2s;
+    }
+    .tc-soc:hover { border-color:var(--lime); color:var(--lime); }
+    .tc-soc svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:1.8; }
+
+    /* ── CULTURE / MISSION ───────────────── */
+    #culture {
+      position:relative; z-index:1;
+      background:var(--bg2);
+      border-top:1px solid var(--border);
+      padding:128px 72px;
+    }
+    .culture-inner { max-width:1180px; margin:0 auto; }
+    .culture-grid {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:20px; margin-top:64px;
+    }
+    .culture-card {
+      padding:44px 36px;
+      border:1px solid var(--border);
+      background:var(--bg1);
+      position:relative; overflow:hidden;
+      transition:border-color .3s, transform .3s;
+    }
+    .culture-card:hover { border-color:var(--border-lime); transform:translateY(-4px); }
+    .cc-icon {
+      width:52px; height:52px; margin-bottom:24px;
+      border:1px solid var(--border-lime);
+      display:flex; align-items:center; justify-content:center;
+      background:var(--lime-06);
+    }
+    .cc-icon svg { width:24px; height:24px; stroke:var(--lime); fill:none; stroke-width:1.5; stroke-linecap:round; }
+    .cc-title { font-family:var(--F1); font-size:24px; letter-spacing:.04em; margin-bottom:12px; }
+    .cc-body { font-size:13.5px; color:var(--muted); line-height:1.75; font-weight:300; }
+
+    @media(max-width:1080px){
+      .team-featured { grid-template-columns:1fr; }
+      .tf-photo { min-height:340px; }
+      .team-grid-4 { grid-template-columns:repeat(2,1fr); }
+    }
+    @media(max-width:768px){
+      #about-hero, #story, #team-section, #culture { padding:80px 20px; }
+      .ah-content { padding:120px 24px 60px; }
+      .ah-scroll-side { display:none; }
+      .story-inner { grid-template-columns:1fr; gap:40px; }
+      .values-strip { grid-template-columns:1fr; }
+      .team-grid-4 { grid-template-columns:1fr; }
+      .culture-grid { grid-template-columns:1fr; }
+      .team-intro { flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-body">
+
+  <!-- ABOUT HERO (full-screen) -->
+  <section id="about-hero">
+    <canvas id="ah-canvas"></canvas>
+    <div class="ah-overlay"></div>
+    <div class="ah-content">
+      <div class="tag-badge rv" style="opacity:0;animation:fadeAh .7s .3s var(--ease-out) forwards">
+        <span class="badge-dot"></span>Our Story
+      </div>
+      <h1 class="ah-h rv" style="opacity:0;animation:fadeAh .9s .5s var(--ease-out) forwards">
+        BUILT ON<br/><span>PURPOSE.</span><br/>POWERED<br/>BY AI.
+      </h1>
+      <p class="ah-sub rv" style="opacity:0;animation:fadeAh .8s .75s var(--ease-out) forwards">
+        SparkUp Creative isn't just an AI agency. It's a movement built on the belief that artificial intelligence should serve human ambition — not replace it.
+      </p>
+      <div class="ah-stats rv" style="opacity:0;animation:fadeAh .8s 1s var(--ease-out) forwards">
+        <div class="ah-stat"><div class="ah-sn"><span data-count="50">0</span>+</div><div class="ah-sl">Businesses Impacted</div></div>
+        <div class="ah-stat"><div class="ah-sn"><span data-count="5">0</span></div><div class="ah-sl">Expert Team</div></div>
+        <div class="ah-stat"><div class="ah-sn"><span data-count="2">0</span></div><div class="ah-sl">Countries Active</div></div>
+        <div class="ah-stat"><div class="ah-sn"><span data-count="100">0</span>%</div><div class="ah-sl">AI-Powered</div></div>
+      </div>
+    </div>
+    <div class="ah-scroll-side">
+      <div class="ah-scroll-text">Scroll Down</div>
+      <div class="ah-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-bar"><div class="mq-track" id="mq1"></div></div>
+
+  <!-- STORY -->
+  <section id="story">
+    <div class="story-inner">
+      <div class="rv lft">
+        <div class="tag">// Our Origin</div>
+        <div class="section-h">WHY WE<br/>BUILT<br/><span class="hl">SPARKUP</span></div>
+        <p>SparkUp Creative was born from a frustration: the gap between what AI can do and what most businesses are actually doing with it. While Fortune 500s were deploying intelligent systems, small businesses and entrepreneurs were left behind — overwhelmed by hype, underwhelmed by practical guidance.</p>
+        <blockquote>"We don't just use AI — we build with it, teach it, and deploy it to drive real results for real people."</blockquote>
+        <p>Founded by Yaser Shamim with co-founder Areeba Hasan, SparkUp Creative is a Wyoming-registered LLC operating at the intersection of AI innovation and human-centred growth. We serve businesses globally from our base in Narnaul, Haryana, India.</p>
+        <p>Our Women Empowerment Initiative reflects our deepest value: AI education as a force for equity. Every batch of 10 women we train is a testament that the AI revolution belongs to everyone.</p>
+
+        <div class="values-strip rv">
+          <div class="val-item">
+            <div class="val-n">01</div>
+            <div class="val-title">EDUCATION FIRST</div>
+            <div class="val-desc">Free AI training for women. Community over competition. Knowledge as currency.</div>
+          </div>
+          <div class="val-item">
+            <div class="val-n">02</div>
+            <div class="val-title">RESULTS ONLY</div>
+            <div class="val-desc">No fluff. No buzzwords. Every deliverable is tied to measurable business outcomes.</div>
+          </div>
+          <div class="val-item">
+            <div class="val-n">03</div>
+            <div class="val-title">AI WITHOUT FEAR</div>
+            <div class="val-desc">We make AI accessible, practical, and profitable for every business size.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv rgt">
+        <div class="terminal">
+          <div class="term-bar">
+            <div class="td r"></div><div class="td y"></div><div class="td g"></div>
+            <span class="term-title">sparkup-creative-terminal v2.0</span>
+          </div>
+          <div class="term-body">
+            <div class="tl"><span class="cmd">$ </span>init sparkup_creative --year=2024</div>
+            <div class="tl c">// Founded with purpose...</div>
+            <div class="tl"><span class="cmd">$ </span>register --entity="LLC" --state="Wyoming"</div>
+            <div class="tl"><span class="ok">✓ </span>SparkUp Creative LLC registered</div>
+            <div class="tl"><span class="cmd">$ </span>deploy women_empowerment_initiative</div>
+            <div class="tl"><span class="ok">✓ </span>10 women trained per batch • Free</div>
+            <div class="tl"><span class="cmd">$ </span>launch ai_training_program --price=₹7000</div>
+            <div class="tl"><span class="ok">✓ </span>90-Day YouTube & TikTok Mastery live</div>
+            <div class="tl"><span class="cmd">$ </span>connect nas.io/sparkupacademy</div>
+            <div class="tl"><span class="ok">✓ </span>Academy platform connected</div>
+            <div class="tl"><span class="cmd">$ </span>status --global</div>
+            <div class="tl" style="color:var(--lime)">All systems operational. Growing globally. ↑↑</div>
+            <div class="tl"><span class="cmd">$ </span><span class="term-cursor"></span></div>
+          </div>
+          <div class="term-glow"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM SECTION -->
+  <section id="team-section">
+    <div class="team-intro">
+      <div class="rv lft">
+        <div class="tag">// Meet the Team</div>
+        <div class="section-h">THE HUMANS<br/>BEHIND THE<br/><span class="hl">AI</span></div>
+      </div>
+      <div class="ti-right rv rgt">
+        <p>Five specialists united by one mission: making AI work for your business. We're builders, strategists, and operators — not consultants who theorize from the sidelines.</p>
+      </div>
+    </div>
+
+    <!-- FEATURED: CEO -->
+    <div class="team-featured rv scl">
+      <div class="tf-photo">
+        <div class="tf-photo-bg"></div>
+        <div class="tf-photo-ring"></div>
+        <div class="tf-photo-ring2"></div>
+        <!--
+          REPLACE WITH REAL PHOTO:
+          <img class="tf-photo-img" src="assets/yaser.jpg" alt="Yaser Shamim"/>
+        -->
+        <div class="tf-photo-placeholder">Y</div>
+        <div class="tf-photo-badge">FOUNDER & CEO</div>
+      </div>
+      <div class="tf-info">
+        <div class="tf-role-tag">// Founder &amp; Chief Executive Officer</div>
+        <div class="tf-name">YASER<br/>SHAMIM</div>
+        <p class="tf-bio">Yaser Shamim is the architect of SparkUp Creative's vision, products, and growth engine. With a BCA and MBA in HRM, he combines academic depth with street-level execution — building AI systems that actually run, generate revenue, and create competitive advantage for his clients.</p>
+        <p class="tf-bio">As Education Consultant & AI Trainer at Islamic Junior High School Kalpi, he's also committed to bringing AI literacy to underserved communities. He's the driving force behind SparkUp Creative's Women Empowerment Initiative — free AI training for 10 women per batch.</p>
+        <div class="tf-credentials">
+          <span class="cred">BCA Graduate</span>
+          <span class="cred">MBA — Human Resource Management</span>
+          <span class="cred">AI Trainer & Consultant</span>
+          <span class="cred">Performance Marketer</span>
+        </div>
+        <div class="tf-specialties">
+          <div class="tf-spec-label">// Specialties</div>
+          <div class="spec-tags">
+            <span class="spec-tag">AI Strategy</span>
+            <span class="spec-tag">Automation</span>
+            <span class="spec-tag">YouTube & TikTok</span>
+            <span class="spec-tag">Performance Marketing</span>
+            <span class="spec-tag">AI Training</span>
+            <span class="spec-tag">Product Development</span>
+          </div>
+        </div>
+        <div class="tf-social">
+          <a href="#" class="tf-soc-link" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+          <a href="#" class="tf-soc-link" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" class="tf-soc-link" aria-label="Twitter/X"><svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEAM GRID: 4 members -->
+    <div class="team-grid-4">
+
+      <!-- Areeba -->
+      <div class="tc rv">
+        <div class="tc-photo-area">
+          <div class="tc-photo-bg"></div>
+          <div class="tc-spin-ring"></div>
+          <!--
+            REPLACE: <img class="tc-photo-img" src="assets/areeba.jpg" alt="Areeba Hasan"/>
+          -->
+          <div class="tc-photo-placeholder">A</div>
+        </div>
+        <div class="tc-info">
+          <div class="tc-role">Co-Founder &amp; COO</div>
+          <div class="tc-name">AREEBA HASAN</div>
+          <div class="tc-bio">Operations lead and strategic co-builder. Areeba ensures every project, training program, and client engagement runs at SparkUp's standards of excellence — on time and on point.</div>
+          <div class="tc-specs">
+            <span class="tc-spec">Operations</span>
+            <span class="tc-spec">Strategy</span>
+            <span class="tc-spec">Client Relations</span>
+          </div>
+          <div class="tc-social-row">
+            <a href="#" class="tc-soc" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+            <a href="#" class="tc-soc" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/></svg></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jamal -->
+      <div class="tc rv" style="transition-delay:.08s">
+        <div class="tc-photo-area">
+          <div class="tc-photo-bg"></div>
+          <div class="tc-spin-ring"></div>
+          <div class="tc-photo-placeholder">J</div>
+        </div>
+        <div class="tc-info">
+          <div class="tc-role">Chief Financial Officer</div>
+          <div class="tc-name">JAMAL AHMED</div>
+          <div class="tc-bio">Financial strategist keeping SparkUp's growth sustainable and intelligent. Jamal oversees revenue architecture, pricing models, financial planning, and investor-ready reporting.</div>
+          <div class="tc-specs">
+            <span class="tc-spec">Finance</span>
+            <span class="tc-spec">Revenue Strategy</span>
+            <span class="tc-spec">Pricing Models</span>
+          </div>
+          <div class="tc-social-row">
+            <a href="#" class="tc-soc" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kaleem -->
+      <div class="tc rv" style="transition-delay:.16s">
+        <div class="tc-photo-area">
+          <div class="tc-photo-bg"></div>
+          <div class="tc-spin-ring"></div>
+          <div class="tc-photo-placeholder">K</div>
+        </div>
+        <div class="tc-info">
+          <div class="tc-role">Chief Sales Officer</div>
+          <div class="tc-name">KALEEM ANSARI</div>
+          <div class="tc-bio">Sales and partnerships lead driving client acquisition, B2B relationships, and expansion of SparkUp Creative's market footprint across India and internationally.</div>
+          <div class="tc-specs">
+            <span class="tc-spec">B2B Sales</span>
+            <span class="tc-spec">Partnerships</span>
+            <span class="tc-spec">Market Expansion</span>
+          </div>
+          <div class="tc-social-row">
+            <a href="#" class="tc-soc" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nadeem -->
+      <div class="tc rv" style="transition-delay:.24s">
+        <div class="tc-photo-area" style="background:linear-gradient(135deg,#0a0e06,#141f0a);">
+          <div class="tc-photo-bg"></div>
+          <div class="tc-spin-ring"></div>
+          <div class="tc-photo-placeholder" style="background:rgba(200,255,0,0.18);box-shadow:0 0 40px rgba(200,255,0,.35);">N</div>
+        </div>
+        <div class="tc-info">
+          <div class="tc-role" style="color:var(--lime);font-weight:600;">Head of Growth &amp; Execution</div>
+          <div class="tc-name">NADEEM AFTAB</div>
+          <div class="tc-bio">The engine behind SparkUp's growth machine. Nadeem drives execution at speed — from campaign launches to client delivery timelines — ensuring ideas become reality and results beat expectations.</div>
+          <div class="tc-specs">
+            <span class="tc-spec">Growth Strategy</span>
+            <span class="tc-spec">Execution</span>
+            <span class="tc-spec">Campaign Management</span>
+            <span class="tc-spec">KPI Delivery</span>
+          </div>
+          <div class="tc-social-row">
+            <a href="#" class="tc-soc" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Add Real Photos Note -->
+    <p style="text-align:center;margin-top:32px;font-family:var(--F3);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);">// Replace placeholder initials with real photos — see README for instructions</p>
+  </section>
+
+  <!-- CULTURE / VALUES -->
+  <section id="culture">
+    <div class="culture-inner">
+      <div class="rv" style="text-align:center;margin-bottom:8px;">
+        <div class="tag">// How We Work</div>
+        <div class="section-h">OUR <span class="hl">CULTURE</span></div>
+        <p class="section-sub" style="max-width:480px;margin:16px auto 0;">Three principles that guide every decision, every delivery, and every relationship at SparkUp Creative.</p>
+      </div>
+      <div class="culture-grid">
+        <div class="culture-card rv">
+          <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+          <div class="cc-title">AI-FIRST THINKING</div>
+          <div class="cc-body">Every solution we design starts with the question: how can AI make this better, faster, or more scalable? We don't retrofit AI — we build with it from the ground up.</div>
+        </div>
+        <div class="culture-card rv" style="transition-delay:.1s">
+          <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+          <div class="cc-title">PEOPLE-POWERED</div>
+          <div class="cc-body">AI is our tool. People are our purpose. From the Women Empowerment Initiative to client relationships — human connection drives everything we build.</div>
+        </div>
+        <div class="culture-card rv" style="transition-delay:.2s">
+          <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div class="cc-title">OUTCOMES OBSESSED</div>
+          <div class="cc-body">We measure ourselves by your results. Revenue growth, time saved, leads generated, audiences built — these are the KPIs we care about, not vanity metrics.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end .page-body -->
+
+<style>
+  @keyframes fadeAh { from{opacity:0;transform:translateY(36px)} to{opacity:1;transform:none} }
+</style>
+
+<script src="js/common.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  fillMarquee('mq1',['Yaser Shamim','Areeba Hasan','Jamal Ahmed','Kaleem Ansari','Nadeem Aftab','AI Agency','Built on Purpose','Powered by AI','SparkUp Creative','Wyoming LLC']);
+  initCounters();
+  initTilt('.tc,.culture-card');
+
+  /* About Hero Canvas — floating DNA helix style */
+  (function(){
+    const c = document.getElementById('ah-canvas');
+    const ctx = c.getContext('2d');
+    let W,H;
+    function resize(){W=c.width=c.parentElement.clientWidth;H=c.height=c.parentElement.clientHeight;}
+    resize(); window.addEventListener('resize',resize);
+
+    const dots = Array.from({length:90},()=>({
+      x:Math.random()*2000, y:Math.random()*1200,
+      r:Math.random()*2+.5,
+      vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
+      a:Math.random()*.7+.15
+    }));
+
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      // Draw connections
+      for(let i=0;i<dots.length;i++) for(let j=i+1;j<dots.length;j++){
+        const dx=dots[i].x-dots[j].x, dy=dots[i].y-dots[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<160){
+          ctx.beginPath();
+          ctx.moveTo(dots[i].x,dots[i].y);
+          ctx.lineTo(dots[j].x,dots[j].y);
+          ctx.strokeStyle=`rgba(200,255,0,${(1-d/160)*.1})`;
+          ctx.stroke();
+        }
+      }
+      // Draw dots
+      dots.forEach(p=>{
+        p.x+=p.vx; p.y+=p.vy;
+        if(p.x<0||p.x>W) p.vx*=-1;
+        if(p.y<0||p.y>H) p.vy*=-1;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(200,255,0,${p.a})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+</script>
+</body>
+</html>
