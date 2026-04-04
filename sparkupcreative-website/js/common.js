@@ -32,7 +32,7 @@ document.body.insertAdjacentHTML('afterbegin', [
   '</div>',
   '<nav id="nav">',
   '  <a href="index.html" class="nav-logo">',
-  '    <div class="logo-icon"><img src="assets/logo.png" style="height:44px;width:auto;" alt="SparkUp Creative"/></div>',
+  '    <img src="assets/logo.png" style="height:44px;width:auto;display:block;" alt="SparkUp Creative"/>',
   '    <span class="logo-text">SparkUp <em>Creative</em></span>',
   '  </a>',
   '  <ul class="nav-links">',
