@@ -111,7 +111,7 @@ body.hovering #cur-ring { width:56px; height:56px; }
   display:flex; align-items:center; justify-content:center;
   position:relative;
 }
-.logo-icon::after {
+@keyframes logoPulse { 0%,100%{filter:drop-shadow(0 0 6px #C8FF00)} 50%{filter:drop-shadow(0 0 18px #C8FF00)} } .logo-icon::after {
   content:''; position:absolute; inset:-5px; border-radius:50%;
   border:1px solid var(--lime);
   animation:pingOut 2.2s ease-out infinite;
