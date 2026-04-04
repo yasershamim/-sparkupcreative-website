@@ -111,7 +111,7 @@ body.hovering #cur-ring { width:56px; height:56px; }
   display:flex; align-items:center; justify-content:center;
   position:relative;
 }
-@keyframes logoPulse { 0%,100%{filter:drop-shadow(0 0 6px #C8FF00)} 50%{filter:drop-shadow(0 0 18px #C8FF00)} } .logo-icon::after {
+.logo-icon::after {
   content:''; position:absolute; inset:-5px; border-radius:50%;
   border:1px solid var(--lime);
   animation:pingOut 2.2s ease-out infinite;
@@ -408,3 +408,36 @@ body.hovering #cur-ring { width:56px; height:56px; }
   .footer-top { grid-template-columns:1fr; }
   .page-hero { padding:60px 20px 52px; }
 }
+
+/* ── GLOBAL BACKGROUND CANVAS INTEGRATION ─────────────────
+   All sections get a semi-transparent bg so the particle
+   network canvas underneath bleeds through subtly.
+──────────────────────────────────────────────────────────── */
+.page-body { position: relative; z-index: 1; }
+
+/* Give every section a very slightly transparent bg */
+section, #hero, .page-hero, .marquee-bar,
+#intro, #svc-preview, #stats-strip, #showreel,
+#team-preview, #home-cta, #services-main,
+#process, #faq, #about-hero, #story,
+#team-section, #culture, #contact-main,
+#locations, #footer {
+  background-color: transparent !important;
+  position: relative;
+  z-index: 1;
+}
+
+/* Re-apply the dark backgrounds as semi-transparent overlays
+   so the particle canvas still glows through slightly */
+#intro, #showreel, #faq, #contact-main { background: rgba(6,8,6,0.82) !important; }
+#svc-preview, #process, #team-section, #story { background: rgba(9,11,7,0.85) !important; }
+#stats-strip, #home-cta, #about-hero { background: rgba(6,8,6,0.75) !important; }
+#team-preview, #culture, #locations { background: rgba(12,15,9,0.86) !important; }
+.page-hero { background: rgba(6,8,6,0.80) !important; }
+.marquee-bar { background: rgba(9,11,7,0.90) !important; }
+#footer { background: rgba(9,11,7,0.94) !important; }
+
+/* Ensure hero canvas still sits above bg canvas */
+#hero-canvas, #ah-canvas { z-index: 1; }
+.hero-vignette, .ah-overlay { z-index: 2; }
+.hero-content, .ah-content { z-index: 3; }

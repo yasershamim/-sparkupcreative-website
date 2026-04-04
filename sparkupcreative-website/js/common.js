@@ -25,6 +25,7 @@ document.body.insertAdjacentHTML('afterbegin', [
   '<div id="cur-dot"></div>',
   '<div id="cur-ring"></div>',
   '<canvas id="burst-canvas" style="position:fixed;inset:0;z-index:8999;pointer-events:none;"></canvas>',
+  '<canvas id="bg-canvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>',
   '<div id="preloader">',
   '  <div class="pre-wordmark">SPARK<span class="hl">UP</span></div>',
   '  <div class="pre-track"><div class="pre-fill"></div></div>',
@@ -32,7 +33,7 @@ document.body.insertAdjacentHTML('afterbegin', [
   '</div>',
   '<nav id="nav">',
   '  <a href="index.html" class="nav-logo">',
-  '    <img src="assets/logo.png" style="height:44px;width:44px;border-radius:50%;object-fit:cover;animation:logoPulse 2s ease-in-out infinite;" alt="SparkUp Creative"/>',
+  '    <div class="logo-icon"><svg viewBox="0 0 16 16" fill="currentColor"><polygon points="8,1 15,13 1,13"/></svg></div>',
   '    <span class="logo-text">SparkUp <em>Creative</em></span>',
   '  </a>',
   '  <ul class="nav-links">',
@@ -268,3 +269,122 @@ function initTilt(sel) {
 
 /* Placeholder — real burst overrides this in STEP 11 above */
 function spawnBurst(x, y) { /* no-op until canvas initialises */ }
+
+/* ════════════════════════════════════════════════════════════
+   GLOBAL BACKGROUND — particle neural network across all pages
+════════════════════════════════════════════════════════════ */
+(function () {
+  var canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W, H;
+  var mouse = { x: -9999, y: -9999 };
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = document.documentElement.scrollHeight;
+  }
+  resize();
+  window.addEventListener('resize', function () {
+    setTimeout(resize, 100);
+  });
+  /* Update canvas height on scroll so it always covers full page */
+  window.addEventListener('scroll', function () {
+    var newH = document.documentElement.scrollHeight;
+    if (Math.abs(newH - H) > 100) { H = canvas.height = newH; }
+  });
+  document.addEventListener('mousemove', function (e) {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY + window.scrollY;
+  });
+
+  /* ── PARTICLES ── */
+  var COUNT = 90;
+  var CONNECT_DIST = 160;
+  var particles = [];
+
+  function makeParticle() {
+    return {
+      x:  Math.random() * window.innerWidth,
+      y:  Math.random() * document.documentElement.scrollHeight,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r:  Math.random() * 1.8 + 0.4,
+      a:  Math.random() * 0.55 + 0.15
+    };
+  }
+
+  for (var i = 0; i < COUNT; i++) particles.push(makeParticle());
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    /* Mouse repel — particles drift away from cursor */
+    particles.forEach(function (p) {
+      var dx = p.x - mouse.x;
+      var dy = p.y - mouse.y;
+      var d  = Math.sqrt(dx * dx + dy * dy);
+      if (d < 120 && d > 0) {
+        var force = (120 - d) / 120 * 0.6;
+        p.vx += (dx / d) * force;
+        p.vy += (dy / d) * force;
+      }
+
+      /* Speed cap */
+      var speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+      if (speed > 1.2) { p.vx = (p.vx / speed) * 1.2; p.vy = (p.vy / speed) * 1.2; }
+
+      p.x += p.vx;
+      p.y += p.vy;
+
+      /* Wrap edges */
+      if (p.x < 0)  p.x = W;
+      if (p.x > W)  p.x = 0;
+      if (p.y < 0)  p.y = H;
+      if (p.y > H)  p.y = 0;
+
+      /* Draw dot */
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(200,255,0,' + p.a + ')';
+      ctx.fill();
+    });
+
+    /* Draw connections */
+    for (var a = 0; a < COUNT; a++) {
+      for (var b = a + 1; b < COUNT; b++) {
+        var dx = particles[a].x - particles[b].x;
+        var dy = particles[a].y - particles[b].y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CONNECT_DIST) {
+          var alpha = (1 - dist / CONNECT_DIST) * 0.12;
+          ctx.beginPath();
+          ctx.moveTo(particles[a].x, particles[a].y);
+          ctx.lineTo(particles[b].x, particles[b].y);
+          ctx.strokeStyle = 'rgba(200,255,0,' + alpha + ')';
+          ctx.lineWidth   = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+
+    /* Mouse attraction lines — particles near cursor glow brighter */
+    particles.forEach(function (p) {
+      var dx   = p.x - mouse.x;
+      var dy   = p.y - (mouse.y);
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 180) {
+        var alpha = (1 - dist / 180) * 0.35;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.strokeStyle = 'rgba(200,255,0,' + alpha + ')';
+        ctx.lineWidth   = 0.6;
+        ctx.stroke();
+      }
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+}());
