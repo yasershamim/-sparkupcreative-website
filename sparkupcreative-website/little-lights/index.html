@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Little Lights | Bible Coloring Books for Ages 3 to 6</title>
+<meta name="description" content="Faith-filled coloring books for ages 3 to 6. Bible verses in easy words, big pictures to color, and stories about everyday faith. Get free Christmas coloring pages.">
+<meta property="og:title" content="Little Lights | Bible Coloring Books for Ages 3 to 6">
+<meta property="og:description" content="Get 4 free Christmas coloring pages from The First Christmas, and meet the Little Lights series.">
+<meta property="og:image" content="https://sparkupcreative.com/little-lights/img/first-christmas-cover.jpg">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#fffdf8;--panel:#faf1dc;--line:#f1d9a8;--gold:#e8a94a;--deep:#b97a22;--ink:#2b2118;--soft:#6b5a45;--navy:#0b1f5c;--navy2:#132b78;--r:18px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}a{color:inherit}
+.wrap{width:min(1100px,100% - 32px);margin:0 auto}
+h1,h2,h3{font-family:"Playfair Display",Georgia,serif;line-height:1.15;margin:0}
+.eyebrow{font-size:12.5px;letter-spacing:.22em;font-weight:800;color:var(--deep);text-transform:uppercase}
+.rule{width:80px;height:3px;background:var(--gold);border-radius:2px;margin:18px auto}
+.btn{display:inline-block;background:var(--gold);color:#2b1a05;font-weight:800;text-decoration:none;padding:14px 26px;border-radius:999px;box-shadow:0 6px 16px rgba(185,122,34,.28);transition:transform .15s,box-shadow .15s;border:0;cursor:pointer;font-size:16px;font-family:inherit}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(185,122,34,.35)}
+.btn.ghost{background:transparent;color:var(--deep);box-shadow:none;border:2px solid var(--gold)}
+.btn.small{padding:9px 18px;font-size:14px}
+.star{color:var(--gold)}
+/* top bar */
+.top{position:sticky;top:0;z-index:20;background:rgba(255,253,248,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+.logo{font-family:"Playfair Display",serif;font-weight:700;font-size:22px;text-decoration:none}.logo span{color:var(--gold)}
+.nav{display:flex;gap:22px;align-items:center;font-weight:700;font-size:15px}.nav a{text-decoration:none;color:var(--soft)}.nav a:hover{color:var(--deep)}
+@media(max-width:760px){.nav a:not(.btn){display:none}.fan img{width:19%}}
+/* hero */
+.hero{text-align:center;padding:64px 0 40px}
+.hero h1{font-size:clamp(36px,6vw,62px);margin-top:12px}
+.hero p.lead{font-size:clamp(17px,2.2vw,20px);color:var(--soft);max-width:640px;margin:18px auto 0}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+.fan{display:flex;justify-content:center;margin:46px auto 0;max-width:900px;padding:0 10px}
+.fan img{width:17%;border-radius:8px;border:2px solid #fff;box-shadow:0 10px 24px rgba(60,35,5,.22);margin:0 -1.2%}
+.fan img:nth-child(1){transform:rotate(-9deg) translateY(18px)}.fan img:nth-child(2){transform:rotate(-5deg) translateY(6px)}
+.fan img:nth-child(3){transform:rotate(-1.5deg)}.fan img:nth-child(4){transform:rotate(1.5deg)}
+.fan img:nth-child(5){transform:rotate(5deg) translateY(6px)}.fan img:nth-child(6){transform:rotate(9deg) translateY(18px);z-index:2}
+.pills{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:56px}
+.pills span{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-weight:700;font-size:14.5px}
+section{padding:72px 0}
+.center{text-align:center}.center h2{font-size:clamp(28px,4vw,42px);margin-top:8px}
+.sub{color:var(--soft);max-width:640px;margin:14px auto 0}
+/* free pages */
+.free{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.free-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;margin-top:40px}
+.previews{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.previews img{border-radius:10px;box-shadow:0 8px 20px rgba(60,35,5,.15);background:#fff}
+.formcard{background:#fff;border-radius:var(--r);padding:30px;box-shadow:0 14px 34px rgba(60,35,5,.12);border:1px solid var(--line)}
+.formcard h3{font-size:26px}.formcard ul{padding-left:20px;margin:14px 0 20px;color:var(--soft)}
+.formcard li{margin:4px 0}.note{font-size:13px;color:var(--soft);margin-top:12px}
+#brevo-form{min-height:60px}
+@media(max-width:860px){.free-grid{grid-template-columns:1fr}.formcard{order:-1}}
+/* christmas feature */
+.xmas{background:radial-gradient(1200px 500px at 70% 0%,var(--navy2),var(--navy));color:#fdf6e6;position:relative;overflow:hidden}
+.xmas:before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 10% 20%,#fff6d0 50%,transparent 51%),radial-gradient(1.5px 1.5px at 30% 70%,#fff6d0 50%,transparent 51%),radial-gradient(2px 2px at 55% 15%,#fff6d0 50%,transparent 51%),radial-gradient(1.5px 1.5px at 80% 60%,#fff6d0 50%,transparent 51%),radial-gradient(2px 2px at 92% 25%,#fff6d0 50%,transparent 51%),radial-gradient(1.5px 1.5px at 45% 90%,#fff6d0 50%,transparent 51%);opacity:.7}
+.xgrid{position:relative;display:grid;grid-template-columns:1fr 1.15fr;gap:48px;align-items:center}
+.xgrid>*{min-width:0}.free-grid>*{min-width:0}
+.xgrid img.cover{width:100%;border-radius:12px;box-shadow:0 22px 50px rgba(0,0,0,.45)}
+.xmas .eyebrow{color:#f3c870}.xmas h2{font-size:clamp(32px,4.5vw,48px);color:#fff6dc}
+.xmas p{color:#e6dcc4}.xlist{list-style:none;padding:0;margin:20px 0}.xlist li{padding:6px 0 6px 30px;position:relative}
+.xlist li:before{content:"\2726";position:absolute;left:0;color:#f3c870}
+.advent{background:rgba(255,255,255,.08);border:1px solid rgba(243,200,112,.45);border-radius:14px;padding:16px 18px;margin:22px 0}
+.advent b{color:#f3c870}
+@media(max-width:860px){.xgrid{grid-template-columns:1fr}.xgrid img.cover{max-width:420px;margin:0 auto}}
+/* inside */
+.inside{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
+.inside figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px 12px 16px;text-align:center}
+.inside img{border-radius:8px}.inside figcaption{font-weight:800;margin-top:10px}.inside figcaption span{display:block;font-weight:400;color:var(--soft);font-size:14.5px}
+@media(max-width:760px){.inside{grid-template-columns:1fr}}
+/* books */
+.books{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:40px}
+.book{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;text-align:center}
+.book img{border-radius:8px;box-shadow:0 8px 18px rgba(60,35,5,.15)}
+.book .n{font-size:12px;letter-spacing:.18em;font-weight:800;color:var(--deep);margin-top:14px}
+.book h3{font-size:21px;margin-top:4px}.book p{color:var(--soft);font-size:15px;margin:6px 0 14px;flex:1}
+.book.new{border:2px solid var(--gold)}.badge{display:inline-block;background:var(--navy);color:#f3c870;font-size:11px;font-weight:800;letter-spacing:.12em;padding:3px 10px;border-radius:999px;margin-top:10px}
+@media(max-width:860px){.books{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.books{grid-template-columns:1fr}}
+.geo{font-size:14px;color:var(--soft);margin-top:22px}
+/* churches */
+.church{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
+.card{background:#fff;border-radius:var(--r);padding:26px;border:1px solid var(--line)}
+.card .ic{font-size:30px}.card h3{font-size:21px;margin:8px 0 6px}.card p{color:var(--soft);margin:0;font-size:15.5px}
+@media(max-width:860px){.cards{grid-template-columns:1fr}}
+/* about + faq */
+.about{max-width:720px;margin:0 auto;text-align:center}.about p{color:var(--soft)}
+.faq{max-width:760px;margin:36px auto 0}
+details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:12px}
+summary{font-weight:800;cursor:pointer;list-style:none}summary::-webkit-details-marker{display:none}
+summary:after{content:"+";float:right;color:var(--deep);font-size:20px;line-height:1}details[open] summary:after{content:"\2013"}
+details p{color:var(--soft);margin:10px 0 0}
+footer{background:#241a0e;color:#d9ccb4;padding:40px 0;font-size:14px;text-align:center}footer a{color:#f3c870}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="logo" href="#">Little <span>Lights</span> &#10022;</a>
+  <nav class="nav"><a href="#christmas">The First Christmas</a><a href="#books">All Books</a><a href="#churches">For Churches</a><a class="btn small" href="#free">Free Pages</a></nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <div class="eyebrow">Little Lights Series &#183; Ages 3 to 6</div>
+  <h1>Faith-Filled Coloring Books<br>for Little Hearts</h1>
+  <p class="lead">Bible verses in easy words, big pictures to color, and short stories that show little ones what faith looks like every day.</p>
+  <div class="cta"><a class="btn" href="#free">Get Free Christmas Pages</a><a class="btn ghost" href="#books">See All 6 Books</a></div>
+  <div class="fan" aria-hidden="true">
+    <img src="/little-lights/img/book1.jpg" alt=""><img src="/little-lights/img/book2.jpg" alt=""><img src="/little-lights/img/book3.jpg" alt=""><img src="/little-lights/img/book4.jpg" alt=""><img src="/little-lights/img/book5.jpg" alt=""><img src="/little-lights/img/book6.jpg" alt="">
+  </div>
+  <div class="pills"><span><span class="star">&#10022;</span> Bible verses in easy words</span><span><span class="star">&#10022;</span> Thick lines for small hands</span><span><span class="star">&#10022;</span> Stories about everyday faith</span><span><span class="star">&#10022;</span> Loved by Sunday schools</span></div>
+</div></section>
+
+<section class="free" id="free"><div class="wrap">
+  <div class="center"><div class="eyebrow">Free Download</div><h2>4 Free Christmas Coloring Pages</h2>
+  <p class="sub">Printable pages from <i>The First Christmas</i>. Print them tonight and share the story of Jesus' birth together.</p></div>
+  <div class="free-grid">
+    <div class="previews">
+      <img src="/little-lights/img/free-nativity.jpg" alt="Nativity coloring page" loading="lazy">
+      <img src="/little-lights/img/free-star.jpg" alt="Christmas star dot-to-dot page" loading="lazy">
+      <img src="/little-lights/img/free-advent.jpg" alt="Advent ornament countdown page" loading="lazy">
+      <img src="/little-lights/img/free-reason.jpg" alt="Jesus Is the Reason letters to color" loading="lazy">
+    </div>
+    <div class="formcard">
+      <h3>Send me the free pages</h3>
+      <ul><li>A Nativity scene to color</li><li>A Christmas star dot-to-dot</li><li>An Advent ornament countdown</li><li>"Jesus Is the Reason" letters</li></ul>
+      <div id="brevo-form">
+        <!-- ============================================================
+             PASTE YOUR BREVO FORM EMBED CODE HERE
+             (Brevo > Contacts > Forms > your form > Share > Embed)
+             Then delete the fallback button below.
+             ============================================================ -->
+        <a class="btn" style="width:100%;text-align:center" href="BREVO_FORM_SHARE_LINK">Send Me the Free Pages</a>
+      </div>
+      <p class="note">Free to print for home, church and classroom use. We'll also send a couple of short emails about the series. Unsubscribe anytime.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="xmas" id="christmas"><div class="wrap"><div class="xgrid">
+  <img class="cover" src="/little-lights/img/first-christmas-cover.jpg" alt="The First Christmas, Little Lights Book 6 cover" loading="lazy">
+  <div>
+    <div class="eyebrow">New &#183; Book 6</div>
+    <h2>The First Christmas</h2>
+    <p>The Nativity story in 10 simple parts, from the angel's visit to Mary to the wise men's gifts. A Christmas gift that helps little ones remember whose birthday it is.</p>
+    <ul class="xlist">
+      <li>10 Bible stories in words a 3-year-old understands</li>
+      <li>21 big coloring pages with thick, simple lines</li>
+      <li>"Christmas in My Home" stories and "Let's Talk" questions</li>
+      <li>Tracing, a maze, carols, gift tags and verse cards</li>
+      <li>A "Presented to" page for gifts from family or church</li>
+    </ul>
+    <div class="advent"><b>A family tradition:</b> start on December 15 and read one part each evening. You'll reach baby Jesus on Christmas Eve.</div>
+    <!-- When Book 6 has its own Booklinker link, replace the href below -->
+    <a class="btn" href="https://mybook.to/LittleLightsSeries" target="_blank" rel="noopener">Get The First Christmas on Amazon</a>
+  </div>
+</div></div></section>
+
+<section><div class="wrap">
+  <div class="center"><div class="eyebrow">A Look Inside</div><h2>Simple, Gentle, Bible-Based</h2></div>
+  <div class="inside">
+    <figure><img src="/little-lights/img/inside-bible.jpg" alt="Bible page with a simple verse" loading="lazy"><figcaption>Bible verses in easy words<span>Each verse retold so little ones can understand it.</span></figcaption></figure>
+    <figure><img src="/little-lights/img/inside-color.jpg" alt="Coloring page of the angel visiting Mary" loading="lazy"><figcaption>Big pictures to color<span>Thick lines and large shapes for small hands.</span></figcaption></figure>
+    <figure><img src="/little-lights/img/inside-story.jpg" alt="Story page with a Let's Talk question" loading="lazy"><figcaption>Stories and questions<span>Faith in everyday life, with a question to talk about.</span></figcaption></figure>
+  </div>
+</div></section>
+
+<section id="books" style="padding-top:20px"><div class="wrap">
+  <div class="center"><div class="eyebrow">The Series</div><h2>Collect All 6 Books</h2><p class="sub">Every link opens Amazon in your own country.</p></div>
+  <div class="books">
+    <article class="book"><img src="/little-lights/img/book1.jpg" alt="Jesus Loves Me! cover" loading="lazy"><div class="n">BOOK 1</div><h3>Jesus Loves Me!</h3><p>A gentle first book about God's kindness, with 18 Bible scenes to color.</p><a class="btn small" href="https://mybook.to/JesusLovesMeKids" target="_blank" rel="noopener">View on Amazon</a></article>
+    <article class="book"><img src="/little-lights/img/book2.jpg" alt="The Fruit of the Spirit cover" loading="lazy"><div class="n">BOOK 2</div><h3>The Fruit of the Spirit</h3><p>All nine fruits with stories, activities and a 9-week Sunday school plan.</p><a class="btn small" href="https://mybook.to/FruitOfTheSpirit" target="_blank" rel="noopener">View on Amazon</a></article>
+    <article class="book"><img src="/little-lights/img/book3.jpg" alt="The Easter Story cover" loading="lazy"><div class="n">BOOK 3</div><h3>The Easter Story</h3><p>From Palm Sunday to the empty tomb, told gently for little ones.</p><a class="btn small" href="https://mybook.to/EasterStoryKids" target="_blank" rel="noopener">View on Amazon</a></article>
+    <article class="book"><img src="/little-lights/img/book4.jpg" alt="What Would Jesus Do? cover" loading="lazy"><div class="n">BOOK 4</div><h3>What Would Jesus Do?</h3><p>An activity book of kind choices at home, at school and with friends.</p><a class="btn small" href="https://mybook.to/WWJDKids" target="_blank" rel="noopener">View on Amazon</a></article>
+    <article class="book"><img src="/little-lights/img/book5.jpg" alt="Bible Heroes cover" loading="lazy"><div class="n">BOOK 5</div><h3>Bible Heroes</h3><p>Brave and faithful friends from God's Word, one big page at a time.</p><a class="btn small" href="https://mybook.to/BibleHeroesKids" target="_blank" rel="noopener">View on Amazon</a></article>
+    <article class="book new"><img src="/little-lights/img/book6.jpg" alt="The First Christmas cover" loading="lazy"><div class="n">BOOK 6</div><h3>The First Christmas</h3><p>The Nativity story in 10 parts, with an Advent plan for families.</p><a class="btn small" href="https://mybook.to/LittleLightsSeries" target="_blank" rel="noopener">View on Amazon</a><div><span class="badge">NEW FOR CHRISTMAS</span></div></article>
+  </div>
+  <p class="geo center">Paperback, 8.5 x 8.5 in. Printed on demand by Amazon.</p>
+</div></section>
+
+<section class="church" id="churches"><div class="wrap">
+  <div class="center"><div class="eyebrow">For Churches &amp; Sunday Schools</div><h2>Ready-Made for Your Classroom</h2>
+  <p class="sub">Little Lights books work just as well in a classroom as at home.</p></div>
+  <div class="cards">
+    <div class="card"><div class="ic">&#127873;</div><h3>A gift for every child</h3><p><i>The First Christmas</i> has a "Presented to" page, ready to sign from your church, class or children's ministry.</p></div>
+    <div class="card"><div class="ic">&#128214;</div><h3>Lesson plans inside</h3><p><i>The First Christmas</i> fits a 10-part Christmas series. <i>The Fruit of the Spirit</i> includes a 9-week plan.</p></div>
+    <div class="card"><div class="ic">&#128172;</div><h3>Questions to talk about</h3><p>Simple "Let's Talk" questions in <i>The First Christmas</i> and <i>The Fruit of the Spirit</i> help small groups share.</p></div>
+  </div>
+  <div class="center" style="margin-top:32px"><a class="btn ghost" href="mailto:littlelights@sparkupcreative.com?subject=Little%20Lights%20for%20our%20church">Ordering for a class? Email us</a></div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="about"><div class="eyebrow">About the Author</div><h2 style="font-size:34px;margin-top:8px">Yasham H.</h2><div class="rule"></div>
+  <p>Yasham H. is the creator of Little Lights, a series of gentle, Bible-based coloring and activity books for children ages 3 to 6. Each book helps the youngest children discover God's love in a way they can understand: big, simple pictures for small hands, Bible verses retold in easy words, and short stories that show how faith looks in everyday life.</p>
+  <p>Yasham's hope is simple: that every child who opens a Little Lights book will close it knowing they are deeply and completely loved by God.</p></div>
+  <div class="faq">
+    <details><summary>What ages are the books for?</summary><p>Ages 3 to 6. The pictures have thick lines and large shapes, and the Bible verses are written in simple words. Older siblings enjoy the activities too.</p></details>
+    <details><summary>Can I buy from outside the USA?</summary><p>Yes. Every link on this page opens Amazon in your own country, including the UK, Canada, Australia and much of Europe.</p></details>
+    <details><summary>When should I order for Christmas?</summary><p>The books are printed when you order, so allow a few extra days. For delivery before Christmas, order by mid-December and check Amazon's delivery date at checkout.</p></details>
+    <details><summary>Can I print the free pages for my class?</summary><p>Yes. The free Christmas pages are free to print for home, church and classroom use.</p></details>
+    <details><summary>Which Bible verses are used?</summary><p>Each verse is short and simple, and marked with its Bible reference so you can read the full passage together.</p></details>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <p>Little Lights is a series by Yasham H., published by SparkUp Creative LLC.</p>
+  <p><a href="#free">Free Christmas pages</a> &#183; <a href="https://mybook.to/LittleLightsSeries" target="_blank" rel="noopener">All books on Amazon</a> &#183; <a href="mailto:littlelights@sparkupcreative.com">littlelights@sparkupcreative.com</a></p>
+  <p>&#169; 2026 SparkUp Creative LLC. All rights reserved.</p>
+</div></footer>
+</body>
+</html>
