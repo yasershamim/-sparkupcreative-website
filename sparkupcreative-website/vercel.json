@@ -45,6 +45,11 @@
       "source": "/ig",
       "destination": "/little-lights?utm_source=instagram&utm_medium=video&utm_campaign=christmas_sampler",
       "permanent": false
+    },
+    {
+      "source": "/first-christmas",
+      "destination": "https://www.amazon.com/dp/B0HN283Y67",
+      "permanent": false
     }
   ]
 }
