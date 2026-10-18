@@ -33,22 +33,37 @@
   "redirects": [
     {
       "source": "/free",
-      "destination": "/little-lights?utm_source=reel&utm_medium=video&utm_campaign=christmas_sampler#free",
+      "destination": "https://www.wrenglow.com/?utm_source=reel&utm_medium=video&utm_campaign=christmas_sampler#free",
       "permanent": false
     },
     {
       "source": "/yt",
-      "destination": "/little-lights?utm_source=youtube&utm_medium=video&utm_campaign=christmas_sampler",
+      "destination": "https://www.wrenglow.com/?utm_source=youtube&utm_medium=video&utm_campaign=christmas_sampler#lights",
       "permanent": false
     },
     {
       "source": "/ig",
-      "destination": "/little-lights?utm_source=instagram&utm_medium=video&utm_campaign=christmas_sampler",
+      "destination": "https://www.wrenglow.com/?utm_source=instagram&utm_medium=video&utm_campaign=christmas_sampler#lights",
       "permanent": false
     },
     {
       "source": "/first-christmas",
       "destination": "https://mybook.to/TheFirstChristmass",
+      "permanent": false
+    },
+    {
+      "source": "/little-lights/free-christmas-pages.pdf",
+      "destination": "https://www.wrenglow.com/little-lights/free-christmas-pages.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/little-lights",
+      "destination": "https://www.wrenglow.com/#lights",
+      "permanent": false
+    },
+    {
+      "source": "/little-lights/",
+      "destination": "https://www.wrenglow.com/#lights",
       "permanent": false
     }
   ]
