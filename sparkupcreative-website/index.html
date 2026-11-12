@@ -16,25 +16,25 @@
 <main>
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" id="hero">
   <div class="hero-bg"><picture><source media="(max-width:700px)" srcset="/img/hero-m.jpg"><img src="/img/hero.jpg" alt="Portrait crowned with glowing lime crystal pyramids" fetchpriority="high"></picture></div>
-  <div class="side-ticks" aria-hidden="true"><span>// 00.01</span><span>// 00.02</span><span>// 00.03</span><span>// 00.04</span></div>
+  <div class="side-ticks i-fade" style="--d:.9s" aria-hidden="true"><span>// 00.01</span><span>// 00.02</span><span>// 00.03</span><span>// 00.04</span></div>
   <div class="hero-top">
-    <h1 class="rv">AI systems, brands and books that teach, build and sell</h1>
-    <div class="hero-count rv d1">
-      <div class="n"><span data-count="6">6</span>+</div>
-      <p class="mono">Brands quietly building<br>for creators worldwide</p>
+    <h1 class="i-words">AI systems, brands and books that teach, build and sell</h1>
+    <div class="hero-count i-fade" style="--d:1.5s">
+      <div class="n"><span class="roll" data-to="6"><span class="roll-col">0<br>1<br>2<br>3<br>4<br>5<br>6</span></span>+</div>
+      <p class="mono scr">Brands quietly building<br>for creators worldwide</p>
       <div class="hero-ticker"><div><p>Legacy Égérie</p><p>Wrenglow</p><p>Little Lights</p><p>Glim's Little Whys</p><p>CreatorOS</p><p>Creator Academy</p></div></div>
     </div>
   </div>
-  <div class="hero-mid"><div class="hero-mark rv d2"><b>SparkUp</b>\Creative</div></div>
+  <div class="hero-mid"><div class="hero-mark i-letters"><b>SparkUp</b>\Creative</div></div>
   <div class="hero-bot">
-    <div class="rv d3">
-      <p class="mono">An AI training and publishing studio trusted by creators, schools and families.<br>We build things people keep using.</p>
-      <p class="mono clock" id="clock">Our time</p>
-      <div class="hero-btns"><a class="btn btn-lime" href="#brands">See brands <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a><a class="btn btn-white" href="/contact">Let's talk</a></div>
+    <div class="hero-left">
+      <p class="mono scr">An AI training and publishing studio trusted by creators, schools and families.<br>We build things people keep using.</p>
+      <p class="mono clock i-fade" style="--d:2s" id="clock">Our time</p>
+      <div class="hero-btns bars"><a class="btn btn-lime" href="#brands">See brands <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a><a class="btn btn-white" href="/contact">Let's talk</a></div>
     </div>
-    <div class="reel rv d4">
+    <div class="reel i-reel">
       <div class="reel-head mono"><span>Showreel</span><i></i><span>\\2026</span></div>
       <div class="reel-box" data-reel role="button" aria-label="Play the SparkUp Creative showreel">
         <video autoplay muted loop playsinline preload="metadata" poster="/video/brand-film-poster.jpg"><source src="/video/brand-film.mp4" type="video/mp4"></video>
@@ -43,6 +43,7 @@
       <p class="mono cap">◐ Six brands · one studio · built with AI</p>
     </div>
   </div>
+  <div class="hero-ghost" aria-hidden="true">let's <span>spark</span></div>
 </section>
 
 <!-- MANIFESTO -->
@@ -309,5 +310,6 @@
 <footer class="ftr"></footer>
 <div class="lb" role="dialog" aria-label="Showreel"><button>Close ✕</button><video controls playsinline preload="none" poster="/video/brand-film-poster.jpg"><source src="/video/brand-film.mp4" type="video/mp4"></video></div>
 <script src="/js/common.js"></script>
+<script src="/js/motion.js"></script>
 </body>
 </html>

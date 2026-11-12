@@ -99,10 +99,10 @@ if(mf){
   const size=()=>{W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr};size();addEventListener('resize',size);
   let prog=0;
   const upd=()=>{const r=mf.getBoundingClientRect();prog=Math.min(1,Math.max(0,-r.top/(r.height-innerHeight)));
-    lines.forEach((l,i)=>{const a=i*.2,b=a+.2;const p=Math.min(1,Math.max(0,(prog-a+.06)/(b-a)));
+    lines.forEach((l,i)=>{const a=i*.21,b=a+.24;const p=Math.min(1,Math.max(0,(prog-a+.06)/(b-a)));
       const isBig=l.classList.contains('mf-big');
-      const s=isBig?1+ (1-p)*1.6:1+(1-p)*2.2;
-      l.style.opacity=p;l.style.transform=`translateY(${(1-p)*60}px) scale(${s})`;l.style.filter=`blur(${(1-p)*10}px)`;})};
+      const e=1-Math.pow(1-p,3);const s=1+(1-e)*(isBig?1.8:2.6);
+      l.style.opacity=Math.min(1,p*3);l.style.transform=`translateY(${(1-e)*42}vh) scale(${s})`;l.style.filter='';})};
   addEventListener('scroll',upd,{passive:true});upd();
   const draw=t=>{cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,H);
     for(const p of P){const y=((p.y-t*.00002*p.v-prog*.4*p.v)%1+1)%1;const x=p.x*W+Math.sin(t*.0006+p.ph)*14;
