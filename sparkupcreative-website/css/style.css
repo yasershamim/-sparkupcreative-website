@@ -628,3 +628,14 @@ main{padding-top:var(--hdr)}
 .menu.open{visibility:visible;transition:transform .5s cubic-bezier(.7,0,.2,1)}
 .ftr-mark{font-size:12.1vw;white-space:nowrap}
 @media (max-width:860px){.ftr-mark{font-size:11.4vw}}
+/* hero photo */
+.hero-bg img{object-position:center 30%;animation:heroZoom 22s ease-in-out infinite alternate;transform-origin:50% 35%}
+@keyframes heroZoom{from{transform:scale(1.02)}to{transform:scale(1.09)}}
+.hero-bg:after{background:linear-gradient(180deg,rgba(6,7,6,.25),rgba(6,7,6,0) 25%,rgba(6,7,6,0) 55%,rgba(6,7,6,.75)),linear-gradient(90deg,rgba(6,7,6,.55),rgba(6,7,6,0) 30%,rgba(6,7,6,0) 70%,rgba(6,7,6,.45))}
+.hero-mark{text-shadow:0 10px 60px rgba(0,0,0,.35)}
+@media (max-width:700px){.hero-bg img{object-position:center 20%}}
+.hero-top h1,.hero-bot .mono{text-shadow:0 2px 18px rgba(0,0,0,.55)}
+@media (max-width:700px){
+  .hero-bg:after{background:linear-gradient(180deg,rgba(6,7,6,.55),rgba(6,7,6,.45) 40%,rgba(6,7,6,.8))}
+  .hero-mark b{text-shadow:0 0 24px rgba(0,0,0,.9),0 2px 6px rgba(0,0,0,.8)}
+}
