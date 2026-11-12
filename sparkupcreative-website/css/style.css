@@ -730,3 +730,7 @@ body.intro-wait .hdr{transform:translateY(-100%)}
 .ftr-bot .up{width:46px;height:46px;margin-top:auto}
 .ftr-bot .fcol:last-child{display:flex;flex-direction:column;min-height:100%}
 @media (max-width:860px){.ftr-bot{grid-template-columns:1fr}}
+.pill-ic{width:108px;height:62px;border-radius:40px;overflow:hidden;background:#0a0b08;position:relative;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.pill-ic video{width:100%;height:100%;object-fit:cover;display:block}
+.ftr-pill{gap:16px}
+.ftr-pill small{font-size:13px}

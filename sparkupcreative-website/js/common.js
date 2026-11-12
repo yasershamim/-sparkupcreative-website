@@ -33,7 +33,7 @@ if(f){f.innerHTML=`
 <div class="ftr-bot">
   <div class="ftr-brand"><p style="font-size:17px;letter-spacing:-.02em">AI systems, brands and books<br>that teach, build and sell.</p>
     <div class="ftr-mark"><b>SparkUp</b>\\Creative</div>
-    <div class="ftr-pill"><span class="pill-ic"><img src="/img/prism.png" alt=""></span><small>An AI training, content and publishing company.<br>Registered in Wyoming, USA. Built in Kanpur, India.</small></div>
+    <div class="ftr-pill"><span class="pill-ic"><video autoplay muted loop playsinline preload="none" poster="/video/logo-pill-poster.jpg" aria-hidden="true"><source src="/video/logo-pill.mp4" type="video/mp4"></video></span><small>An AI training, content and publishing company.<br>Registered in Wyoming, USA. Built in Kanpur, India.</small></div>
     <small class="copy">© ${new Date().getFullYear()} SparkUp Creative LLC. All rights reserved.</small></div>
   <div class="fcol"><p class="mono h">Offline</p><p style="font-size:14px">SparkUp Creative LLC<br>30 N Gould St, Ste R<br>Sheridan, WY 82801, USA</p>
     <p class="mono h" style="margin-top:40px">Phone · WhatsApp</p><a class="phone" style="text-transform:none;font-family:var(--sans);letter-spacing:-.04em" href="https://wa.me/919369671970">+91 93696 71970</a></div>
@@ -46,6 +46,9 @@ f.querySelector('.nl').onsubmit=e=>{e.preventDefault();const v=e.target.querySel
 /* CTA loop video */
 document.querySelectorAll('.cta').forEach(s=>{s.insertAdjacentHTML('afterbegin','<video class="cta-bg" autoplay muted loop playsinline preload="none" poster="/video/cta-loop-poster.jpg" aria-hidden="true"><source src="/video/cta-loop.mp4" type="video/mp4"></video>');
   const v=s.querySelector('video');const vo=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){v.preload='auto';v.play().catch(()=>{})}else v.pause()}));vo.observe(s)});
+
+/* footer pill video plays only when visible */
+document.querySelectorAll('.pill-ic video').forEach(v=>{new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){v.preload='auto';v.play().catch(()=>{})}else v.pause()})).observe(v)});
 
 /* rotating dot sphere ("keep you in the loop") */
 document.querySelectorAll('.dotsphere').forEach(cv=>{const c=cv.getContext('2d');const N=220;const P=[];
