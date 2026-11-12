@@ -1,791 +1,315 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>SparkUp Creative — AI Agency | Home</title>
-    <link rel="icon" type="image/png" href="assets/favicon.png"/>
-  <link rel="apple-touch-icon" href="assets/favicon.png"/>
-  <meta name="description" content="SparkUp Creative — AI-Powered Creativity. People-Powered Growth. Build with AI. Grow with Purpose. Lead with Vision."/>
-  <link rel="stylesheet" href="css/style.css"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <style>
-    .page-body { opacity:0; transition:opacity .5s; }
-
-    /* ── HERO ─────────────────────────────── */
-    #hero {
-      position:relative; height:100vh;
-      display:flex; flex-direction:column;
-      align-items:center; justify-content:center;
-      text-align:center; overflow:hidden;
-      padding:80px 24px 0;
-    }
-    #hero-canvas { position:absolute; inset:0; z-index:0; }
-    .hero-vignette {
-      position:absolute; inset:0; z-index:1; pointer-events:none;
-      background:radial-gradient(ellipse at center, transparent 25%, rgba(6,8,6,.88) 78%);
-    }
-    .hero-content { position:relative; z-index:2; max-width:900px; }
-
-    .hero-h1 {
-      font-family:var(--F1);
-      font-size:clamp(72px,11vw,158px);
-      line-height:.88; letter-spacing:.025em;
-      margin-top:16px; opacity:0;
-      animation:fadeUp .9s .5s var(--ease-out) forwards;
-    }
-    .hero-h1 .glitch {
-      color:var(--lime); position:relative; display:inline-block;
-    }
-    .hero-h1 .glitch::before, .hero-h1 .glitch::after {
-      content:attr(data-text); position:absolute;
-      top:0; left:0; overflow:hidden; clip-path:inset(0);
-    }
-    .hero-h1 .glitch::before {
-      left:2px; text-shadow:-2px 0 #ff003c;
-      animation:gl1 4s infinite linear;
-    }
-    .hero-h1 .glitch::after {
-      left:-2px; text-shadow:-2px 0 #00fff9;
-      animation:gl2 4s infinite linear;
-    }
-    @keyframes gl1 {
-      0%,88%,100%{clip-path:inset(100% 0 0 0);opacity:0}
-      89%{clip-path:inset(15% 0 55% 0);opacity:1}
-      91%{clip-path:inset(50% 0 25% 0);opacity:1}
-      93%{clip-path:inset(75% 0 5% 0);opacity:1}
-    }
-    @keyframes gl2 {
-      0%,90%,100%{clip-path:inset(100% 0 0 0);opacity:0}
-      91%{clip-path:inset(25% 0 60% 0);opacity:1}
-      93%{clip-path:inset(60% 0 18% 0);opacity:1}
-      95%{clip-path:inset(82% 0 2% 0);opacity:1}
-    }
-    .hero-sub {
-      font-size:clamp(16px,2vw,21px); color:var(--muted);
-      font-weight:300; margin-top:22px;
-      opacity:0; animation:fadeUp .8s .75s var(--ease-out) forwards;
-    }
-    .hero-actions {
-      display:flex; gap:16px; justify-content:center;
-      flex-wrap:wrap; margin-top:44px;
-      opacity:0; animation:fadeUp .8s .95s var(--ease-out) forwards;
-    }
-    .scroll-hint {
-      position:absolute; bottom:28px; left:50%;
-      transform:translateX(-50%); z-index:2;
-      display:flex; flex-direction:column;
-      align-items:center; gap:8px;
-      opacity:0; animation:fadeIn .6s 1.3s forwards;
-    }
-    .sh-line {
-      width:1px; height:44px;
-      background:linear-gradient(to bottom, var(--lime), transparent);
-      animation:shPulse 2s ease-in-out infinite;
-    }
-    .sh-txt {
-      font-family:var(--F3); font-size:8px;
-      letter-spacing:.22em; text-transform:uppercase;
-      color:var(--dim); writing-mode:vertical-rl;
-    }
-    @keyframes shPulse { 0%,100%{opacity:.3;transform:scaleY(.6);transform-origin:top} 50%{opacity:1;transform:scaleY(1)} }
-
-    /* ── STRIP / TICKER ──────────────────── */
-    .home-strip {
-      position:relative; z-index:1;
-      background:var(--bg1);
-      border-top:1px solid var(--border);
-      border-bottom:1px solid var(--border);
-      padding:12px 0;
-      overflow:hidden;
-    }
-
-    /* ── INTRO TEXT BLOCK ─────────────────── */
-    #intro {
-      position:relative; z-index:1;
-      padding:128px 52px;
-    }
-    .intro-inner {
-      max-width:1180px; margin:0 auto;
-      display:grid; grid-template-columns:1fr 1fr;
-      gap:80px; align-items:center;
-    }
-    .intro-big {
-      font-family:var(--F1);
-      font-size:clamp(52px,6.5vw,90px);
-      line-height:.9; letter-spacing:.02em;
-    }
-    .intro-big .hl { color:var(--lime); }
-    .intro-right {}
-    .intro-right p {
-      font-size:16px; color:var(--muted);
-      line-height:1.8; font-weight:300;
-      margin-bottom:14px;
-    }
-    .intro-right .actions { margin-top:36px; display:flex; gap:14px; flex-wrap:wrap; }
-
-    /* ── SERVICES PREVIEW ─────────────────── */
-    #svc-preview {
-      position:relative; z-index:1;
-      background:var(--bg1);
-      border-top:1px solid var(--border);
-      padding:120px 52px;
-    }
-    .sp-hd {
-      max-width:1180px; margin:0 auto 64px;
-      display:flex; justify-content:space-between;
-      align-items:flex-end; flex-wrap:wrap; gap:24px;
-    }
-    .sp-list {
-      max-width:1180px; margin:0 auto;
-      display:flex; flex-direction:column;
-    }
-    .sp-item {
-      display:flex; align-items:center;
-      gap:32px; padding:28px 32px;
-      border-top:1px solid var(--border);
-      cursor:none; transition:background .3s, padding-left .3s;
-      position:relative; overflow:hidden;
-    }
-    .sp-item:last-child { border-bottom:1px solid var(--border); }
-    .sp-item::after {
-      content:''; position:absolute;
-      left:0; top:0; bottom:0; width:3px;
-      background:var(--lime);
-      transform:scaleY(0); transform-origin:bottom;
-      transition:transform .3s var(--ease-out);
-    }
-    .sp-item:hover { background:var(--bg2); padding-left:44px; }
-    .sp-item:hover::after { transform:scaleY(1); }
-    .sp-n {
-      font-family:var(--F1); font-size:16px;
-      color:var(--lime); letter-spacing:.08em;
-      width:36px; flex-shrink:0;
-    }
-    .sp-icon { width:44px; height:44px; flex-shrink:0; }
-    .sp-icon svg { width:44px; height:44px; stroke:var(--muted); fill:none; stroke-width:1.2; }
-    .sp-item:hover .sp-icon svg { stroke:var(--lime); }
-    .sp-name {
-      font-family:var(--F1); font-size:clamp(22px,2.5vw,30px);
-      letter-spacing:.04em; flex:1;
-      transition:color .2s;
-    }
-    .sp-item:hover .sp-name { color:var(--lime); }
-    .sp-desc { font-size:13px; color:var(--muted); max-width:340px; line-height:1.65; font-weight:300; }
-    .sp-arrow {
-      font-family:var(--F1); font-size:24px; color:var(--lime);
-      opacity:0; transform:translateX(-12px);
-      transition:opacity .25s, transform .25s;
-    }
-    .sp-item:hover .sp-arrow { opacity:1; transform:translateX(0); }
-
-    /* ── STATS ──────────────────────────── */
-    #stats-strip {
-      position:relative; z-index:1;
-      border-top:1px solid var(--border);
-      border-bottom:1px solid var(--border);
-      padding:80px 52px;
-      overflow:hidden;
-    }
-    #stats-strip::before {
-      content:''; position:absolute; inset:0;
-      background:radial-gradient(ellipse 50% 80% at 50% 50%, var(--lime-06) 0%, transparent 70%);
-      pointer-events:none;
-    }
-    .stats-row {
-      max-width:1180px; margin:0 auto;
-      display:grid; grid-template-columns:repeat(4,1fr);
-      gap:0;
-    }
-    .stat-cell {
-      text-align:center; padding:20px;
-      border-right:1px solid var(--border);
-    }
-    .stat-cell:last-child { border-right:none; }
-    .stat-val {
-      font-family:var(--F1); font-size:clamp(56px,6vw,86px);
-      color:var(--lime); line-height:1; letter-spacing:-.02em;
-    }
-    .stat-suf { color:rgba(200,255,0,.45); }
-    .stat-lbl {
-      font-family:var(--F3); font-size:9px;
-      letter-spacing:.2em; text-transform:uppercase;
-      color:var(--muted); margin-top:10px;
-    }
-
-    /* ── VIDEO SHOWREEL ─────────────────── */
-    #showreel {
-      position:relative; z-index:1;
-      padding:120px 52px;
-    }
-    .sr-inner { max-width:1180px; margin:0 auto; }
-    .sr-hd { margin-bottom:48px; }
-    .video-wrap {
-      position:relative; width:100%;
-      aspect-ratio:16/9;
-      background:#000;
-      border:1px solid var(--border-lime);
-      overflow:hidden;
-    }
-    .video-wrap video, .video-wrap iframe {
-      width:100%; height:100%; border:none; object-fit:cover;
-    }
-    .video-placeholder {
-      position:absolute; inset:0;
-      display:flex; flex-direction:column;
-      align-items:center; justify-content:center; gap:20px;
-      background:linear-gradient(135deg,#040704 0%,#0d1a08 50%,#040704 100%);
-    }
-    .video-placeholder::before {
-      content:''; position:absolute; inset:0;
-      background:repeating-linear-gradient(
-        0deg, transparent, transparent 2px,
-        rgba(200,255,0,.012) 2px, rgba(200,255,0,.012) 4px
-      );
-    }
-    .vp-grid {
-      position:absolute; inset:0;
-      background-image:
-        linear-gradient(rgba(200,255,0,.04) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(200,255,0,.04) 1px,transparent 1px);
-      background-size:80px 80px;
-    }
-    .vp-btn {
-      position:relative; z-index:1;
-      width:88px; height:88px; border-radius:50%;
-      background:var(--lime-12); border:2px solid var(--lime);
-      display:flex; align-items:center; justify-content:center;
-      cursor:pointer; transition:transform .2s, background .2s;
-    }
-    .vp-btn:hover { transform:scale(1.1); background:var(--lime-20); }
-    .vp-btn::after {
-      content:''; position:absolute; inset:-10px; border-radius:50%;
-      border:1px solid rgba(200,255,0,.3); animation:pingOut 2s ease-out infinite;
-    }
-    .vp-triangle {
-      width:0; height:0;
-      border-top:14px solid transparent;
-      border-bottom:14px solid transparent;
-      border-left:22px solid var(--lime);
-      margin-left:5px;
-    }
-    .vp-label {
-      position:relative; z-index:1;
-      font-family:var(--F3); font-size:10px;
-      letter-spacing:.18em; text-transform:uppercase;
-      color:var(--muted);
-    }
-    .vc { position:absolute; width:18px; height:18px; }
-    .vc svg { width:100%; height:100%; stroke:var(--lime); fill:none; stroke-width:2; }
-    .vc.tl { top:14px; left:14px; }
-    .vc.tr { top:14px; right:14px; transform:scaleX(-1); }
-    .vc.bl { bottom:14px; left:14px; transform:scaleY(-1); }
-    .vc.br { bottom:14px; right:14px; transform:scale(-1); }
-
-    /* ── MINI TEAM PREVIEW ──────────────── */
-    #team-preview {
-      position:relative; z-index:1;
-      background:var(--bg2);
-      border-top:1px solid var(--border);
-      padding:120px 52px;
-    }
-    .tp-inner { max-width:1180px; margin:0 auto; }
-    .tp-hd { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px; margin-bottom:64px; }
-    .tp-row { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; }
-    .tp-card {
-      border:1px solid var(--border);
-      background:var(--bg1);
-      padding:28px 24px;
-      text-align:center;
-      transition:border-color .3s, transform .3s;
-      position:relative; overflow:hidden;
-    }
-    .tp-card:hover { border-color:var(--border-lime); transform:translateY(-5px); }
-    .tp-card::after {
-      content:''; position:absolute;
-      top:0; left:0; right:0; height:2px;
-      background:var(--lime);
-      transform:scaleX(0); transform-origin:left;
-      transition:transform .4s var(--ease-out);
-    }
-    .tp-card:hover::after { transform:scaleX(1); }
-    .tp-av {
-      width:52px; height:52px; border-radius:50%;
-      background:var(--lime-12); border:1.5px solid var(--border-lime);
-      display:flex; align-items:center; justify-content:center;
-      font-family:var(--F1); font-size:22px; color:var(--lime);
-      margin:0 auto 16px;
-    }
-    .tp-name { font-family:var(--F1); font-size:16px; letter-spacing:.04em; }
-    .tp-role {
-      font-family:var(--F3); font-size:8.5px;
-      letter-spacing:.14em; text-transform:uppercase;
-      color:var(--lime); margin-top:4px;
-    }
-
-    /* ── HOME CTA ───────────────────────── */
-    #home-cta {
-      position:relative; z-index:1;
-      padding:140px 52px;
-      text-align:center; overflow:hidden;
-      border-top:1px solid var(--border);
-    }
-    #home-cta::before {
-      content:''; position:absolute; inset:0;
-      background:radial-gradient(ellipse 60% 70% at 50% 50%, var(--lime-06) 0%, transparent 70%);
-      pointer-events:none;
-    }
-    .hc-inner { position:relative; z-index:1; max-width:720px; margin:0 auto; }
-    .hc-h { font-family:var(--F1); font-size:clamp(52px,8vw,110px); line-height:.9; letter-spacing:.02em; }
-    .hc-h .hl { color:var(--lime); }
-    .hc-sub { font-size:17px; color:var(--muted); font-weight:300; margin-top:20px; line-height:1.7; }
-    .hc-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:48px; }
-
-
-    /* ── SHOWREEL SLIDESHOW ─────────────── */
-    .showreel-wrap {
-      position:relative; width:100%;
-      aspect-ratio:16/9;
-      overflow:hidden;
-      border:1px solid var(--border-lime);
-    }
-    .vc { position:absolute; width:18px; height:18px; z-index:10; }
-    .vc svg { width:100%; height:100%; stroke:var(--lime); fill:none; stroke-width:2; }
-    .vc.tl { top:14px; left:14px; }
-    .vc.tr { top:14px; right:14px; transform:scaleX(-1); }
-    .vc.bl { bottom:14px; left:14px; transform:scaleY(-1); }
-    .vc.br { bottom:14px; right:14px; transform:scale(-1); }
-
-    .sr-slides { position:absolute; inset:0; }
-    .sr-slide {
-      position:absolute; inset:0;
-      background-size:cover; background-position:center;
-      opacity:0;
-      transition:opacity 1.2s ease;
-      animation:none;
-    }
-    .sr-slide.active {
-      opacity:1;
-      animation:kenBurns 6s ease-in-out forwards;
-    }
-    @keyframes kenBurns {
-      0%   { transform:scale(1)    translateX(0)    translateY(0); }
-      100% { transform:scale(1.08) translateX(-1%)  translateY(-1%); }
-    }
-    .sr-slide-overlay {
-      position:absolute; inset:0;
-      background:linear-gradient(
-        to right,
-        rgba(6,8,6,0.72) 0%,
-        rgba(6,8,6,0.35) 50%,
-        rgba(6,8,6,0.15) 100%
-      );
-    }
-    .sr-slide-caption {
-      position:absolute;
-      bottom:60px; left:40px;
-      z-index:2;
-      opacity:0;
-      transform:translateY(16px);
-      transition:opacity .8s .4s ease, transform .8s .4s ease;
-    }
-    .sr-slide.active .sr-slide-caption {
-      opacity:1; transform:translateY(0);
-    }
-    .sr-cap-tag {
-      font-family:var(--F3); font-size:10px;
-      letter-spacing:.2em; text-transform:uppercase;
-      color:var(--lime); margin-bottom:8px;
-    }
-    .sr-cap-h {
-      font-family:var(--F1);
-      font-size:clamp(28px,3.5vw,52px);
-      line-height:.92; letter-spacing:.04em;
-      color:var(--text);
-      text-shadow:0 2px 20px rgba(0,0,0,0.5);
-    }
-
-    /* Progress bar */
-    .sr-progress {
-      position:absolute; bottom:0; left:0; right:0;
-      height:3px; background:rgba(255,255,255,0.1); z-index:5;
-    }
-    .sr-progress-fill {
-      height:100%; width:0%;
-      background:var(--lime);
-      transition:width linear;
-    }
-
-    /* Dots */
-    .sr-dots {
-      position:absolute; bottom:20px; left:50%;
-      transform:translateX(-50%);
-      display:flex; gap:8px; z-index:5;
-    }
-    .sr-dot {
-      width:6px; height:6px; border-radius:50%;
-      background:rgba(255,255,255,0.3);
-      cursor:pointer; transition:background .3s, transform .3s;
-      border:none; padding:0;
-    }
-    .sr-dot.active { background:var(--lime); transform:scale(1.4); }
-
-    /* Counter */
-    .sr-counter {
-      position:absolute; top:18px; right:44px;
-      font-family:var(--F3); font-size:10px;
-      letter-spacing:.16em; color:rgba(255,255,255,0.4);
-      z-index:5;
-    }
-    #srCurrent { color:var(--lime); }
-
-    /* Arrows */
-    .sr-arrow {
-      position:absolute; top:50%; transform:translateY(-50%);
-      z-index:5; background:rgba(6,8,6,0.6);
-      border:1px solid rgba(200,255,0,0.25);
-      color:var(--lime); font-size:18px;
-      width:40px; height:40px;
-      display:flex; align-items:center; justify-content:center;
-      cursor:pointer; transition:background .2s, border-color .2s;
-    }
-    .sr-arrow:hover { background:var(--lime-20); border-color:var(--lime); }
-    .sr-prev { left:14px; }
-    .sr-next { right:14px; }
-    /* ANIMATIONS */
-    @keyframes fadeUp { from{opacity:0;transform:translateY(36px)} to{opacity:1;transform:none} }
-    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-
-    @media(max-width:900px){
-      #intro { padding:80px 20px; }
-      .intro-inner { grid-template-columns:1fr; gap:40px; }
-      #svc-preview, #stats-strip, #showreel, #team-preview, #home-cta { padding:80px 20px; }
-      .stats-row { grid-template-columns:repeat(2,1fr); }
-      .stat-cell { border:none; border-bottom:1px solid var(--border); }
-      .tp-row { grid-template-columns:repeat(2,1fr); }
-      .sp-desc { display:none; }
-    }
-    @media(max-width:520px){ .tp-row{ grid-template-columns:1fr 1fr; } }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SparkUp Creative | AI Training, Brands and Books</title>
+<meta name="description" content="SparkUp Creative LLC builds AI systems, trains creators and runs a family of brands: Legacy Égérie, Wrenglow, Little Lights, Glim's Little Whys, CreatorOS and the SparkUp Creator Academy.">
+<meta property="og:title" content="SparkUp Creative | Build with AI. Grow with purpose.">
+<meta property="og:description" content="One studio, six brands. AI training, content systems, digital products and children's books.">
+<meta property="og:image" content="https://www.sparkupcreative.com/video/brand-film-poster.jpg">
+<link rel="icon" href="/assets/favicon.png">
+<link rel="preload" href="/fonts/geist-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
-  <div class="page-body">
-    <!-- HERO -->
-    <section id="hero">
-      <canvas id="hero-canvas"></canvas>
-      <div class="hero-vignette"></div>
-      <div class="hero-content">
-        <div class="tag-badge rv" style="opacity:0;animation:fadeUp .7s .25s var(--ease-out) forwards">
-          <span class="badge-dot"></span>
-          AI-Powered Agency &nbsp;·&nbsp; Wyoming, USA
-        </div>
-        <h1 class="hero-h1">
-          BUILD WITH <span class="glitch" data-text="AI.">AI.</span><br/>
-          GROW WITH<br/>PURPOSE.
-        </h1>
-        <p class="hero-sub">AI-Powered Creativity. People-Powered Growth.</p>
-        <div class="hero-actions">
-          <a href="services.html" class="btn btn-lime">Explore Services →</a>
-          <a href="contact.html"  class="btn btn-outline">Let's Talk</a>
-        </div>
-      </div>
-      <div class="scroll-hint">
-        <div class="sh-txt">Scroll</div>
-        <div class="sh-line"></div>
-      </div>
-    </section>
+<body data-page="home">
+<main>
 
-    <!-- MARQUEE STRIP -->
-    <div class="home-strip marquee-bar">
-      <div class="mq-track" id="mq1"></div>
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"><picture><source media="(max-width:700px)" srcset="/img/hero-m.jpg"><img src="/img/hero.jpg" alt="Portrait crowned with glowing lime crystal pyramids" fetchpriority="high"></picture></div>
+  <div class="side-ticks i-fade" style="--d:.9s" aria-hidden="true"><span>// 00.01</span><span>// 00.02</span><span>// 00.03</span><span>// 00.04</span></div>
+  <div class="hero-top">
+    <h1 class="i-words">AI systems, brands and books that teach, build and sell</h1>
+    <div class="hero-count i-fade" style="--d:1.5s">
+      <div class="n"><span class="roll" data-to="6"><span class="roll-col">0<br>1<br>2<br>3<br>4<br>5<br>6</span></span>+</div>
+      <p class="mono scr">Brands quietly building<br>for creators worldwide</p>
+      <div class="hero-ticker"><div><p>Legacy Égérie</p><p>Wrenglow</p><p>Little Lights</p><p>Glim's Little Whys</p><p>CreatorOS</p><p>Creator Academy</p></div></div>
     </div>
-
-    <!-- INTRO -->
-    <section id="intro">
-      <div class="intro-inner">
-        <div class="intro-big rv lft">
-          WHERE <span class="hl">AI</span><br/>MEETS<br/>AMBITION.
-        </div>
-        <div class="intro-right rv rgt">
-          <p>SparkUp Creative bridges the gap between AI capability and business reality. We don't just use AI — we build with it, train it, and deploy it to drive measurable results.</p>
-          <p>From automated pipelines to full-scale performance marketing — we're the AI agency that actually delivers. Wyoming-registered. India-operated. Globally minded.</p>
-          <div class="actions">
-            <a href="about.html" class="btn btn-lime">Our Story</a>
-            <a href="services.html" class="btn btn-outline">Services</a>
-          </div>
-        </div>
+  </div>
+  <div class="hero-mid"><div class="hero-mark i-letters"><b>SparkUp</b>\Creative</div></div>
+  <div class="hero-bot">
+    <div class="hero-left">
+      <p class="mono scr">An AI training and publishing studio trusted by creators, schools and families.<br>We build things people keep using.</p>
+      <p class="mono clock i-fade" style="--d:2s" id="clock">Our time</p>
+      <div class="hero-btns bars"><a class="btn btn-lime" href="#brands">See brands <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a><a class="btn btn-white" href="/contact">Let's talk</a></div>
+    </div>
+    <div class="reel i-reel">
+      <div class="reel-head mono"><span>Showreel</span><i></i><span>\\2026</span></div>
+      <div class="reel-box" data-reel role="button" aria-label="Play the SparkUp Creative showreel">
+        <video autoplay muted loop playsinline preload="metadata" poster="/video/brand-film-poster.jpg"><source src="/video/brand-film.mp4" type="video/mp4"></video>
+        <div class="play"><i><svg width="18" height="18" viewBox="0 0 18 18"><path d="M5 3l10 6-10 6z" fill="currentColor"/></svg></i></div>
       </div>
-    </section>
+      <p class="mono cap">◐ Six brands · one studio · built with AI</p>
+    </div>
+  </div>
+</section>
 
-    <!-- SERVICES PREVIEW -->
-    <section id="svc-preview">
-      <div class="sp-hd">
-        <div class="rv lft">
-          <div class="tag">// What We Do</div>
-          <div class="section-h">OUR<br/><span class="hl">SERVICES</span></div>
-        </div>
-        <a href="services.html" class="btn btn-outline rv rgt">View All Services →</a>
-      </div>
-      <div class="sp-list rv">
-        <a href="service-automation.html" class="sp-item" style="text-decoration:none;color:inherit;">
-          <span class="sp-n">01</span>
-          <div class="sp-icon"><svg viewBox="0 0 48 48"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <a href="service-automation.html" class="sp-name" style="text-decoration:none;color:inherit;">AI Automation for Businesses</a>
-          <span class="sp-desc">Eliminate repetitive work with custom AI agents and intelligent pipelines.</span>
-          <span class="sp-arrow">→</span>
-        </a>
-        <a href="service-content.html" class="sp-item" style="text-decoration:none;color:inherit;">
-          <span class="sp-n">02</span>
-          <div class="sp-icon"><svg viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="24" rx="2"/><path d="M18 42h12M24 34v8"/><path d="M14 20l6 6-6 6"/><path d="M28 30h8"/></svg></div>
-          <a href="service-content.html" class="sp-name" style="text-decoration:none;color:inherit;">AI Content Creation</a>
-          <span class="sp-desc">Scripts, visuals, blogs — AI-generated content that converts at scale.</span>
-          <span class="sp-arrow">→</span>
-        </a>
-        <a href="service-training.html" class="sp-item" style="text-decoration:none;color:inherit;">
-          <span class="sp-n">03</span>
-          <div class="sp-icon"><svg viewBox="0 0 48 48"><path d="M24 8v8M34 12l-8 8M40 24H32M36 34l-8-6"/><circle cx="24" cy="32" r="8"/></svg></div>
-          <a href="service-training.html" class="sp-name" style="text-decoration:none;color:inherit;">AI Training & Workshops</a>
-          <span class="sp-desc">Hands-on programs making AI practical for teams and entrepreneurs.</span>
-          <span class="sp-arrow">→</span>
-        </a>
-        <a href="service-social.html" class="sp-item" style="text-decoration:none;color:inherit;">
-          <span class="sp-n">04</span>
-          <div class="sp-icon"><svg viewBox="0 0 48 48"><path d="M24 8C15.16 8 8 15.16 8 24s7.16 16 16 16 16-7.16 16-16S32.84 8 24 8z"/><path d="M20 16l12 8-12 8V16z"/></svg></div>
-          <a href="service-social.html" class="sp-name" style="text-decoration:none;color:inherit;">YouTube & Social Automation</a>
-          <span class="sp-desc">Build faceless channels and automate entire content pipelines.</span>
-          <span class="sp-arrow">→</span>
-        </a>
-        <a href="service-marketing.html" class="sp-item" style="text-decoration:none;color:inherit;">
-          <span class="sp-n">05</span>
-          <div class="sp-icon"><svg viewBox="0 0 48 48"><path d="M8 36l6-14 8 8 6-18 8 18 4-8"/><path d="M6 40h36"/></svg></div>
-          <a href="service-marketing.html" class="sp-name" style="text-decoration:none;color:inherit;">AI-Powered Marketing</a>
-          <span class="sp-desc">Performance marketing supercharged by machine intelligence.</span>
-          <span class="sp-arrow">→</span>
-        </a>
-      </div>
-    </section>
+<!-- MANIFESTO -->
+<section class="manifesto" aria-label="What we do">
+  <div class="mf-ghost" aria-hidden="true">let's <span>spark</span></div>
+  <div class="stick"><canvas aria-hidden="true"></canvas>
+    <div class="mf-line">we learn</div>
+    <div class="mf-line">we build</div>
+    <div class="mf-line acc">we spark</div>
+    <div class="mf-big">brands that <em>last</em></div>
+  </div>
+</section>
 
-    <!-- STATS -->
-    <section id="stats-strip">
-      <div class="stats-row">
-        <div class="stat-cell rv"><div class="stat-val"><span data-count="50">0</span><span class="stat-suf">+</span></div><div class="stat-lbl">Businesses Trained</div></div>
-        <div class="stat-cell rv"><div class="stat-val"><span data-count="5">0</span></div><div class="stat-lbl">Core AI Services</div></div>
-        <div class="stat-cell rv"><div class="stat-val"><span data-count="100">0</span><span class="stat-suf">%</span></div><div class="stat-lbl">AI-Powered Delivery</div></div>
-        <div class="stat-cell rv"><div class="stat-val"><span data-count="5">0</span></div><div class="stat-lbl">Expert Team Members</div></div>
-      </div>
-    </section>
+<!-- BRANDS -->
+<section class="stack" id="brands" aria-label="Our brands">
+  <a class="bcard" href="https://www.legacyegerie.com" target="_blank" rel="noopener" data-art="legacy">
+    <div class="meta mono"><span>Faceless career brand</span><span>Ebooks · Quiz · Email</span><span>Lemon Squeezy</span><span>US · UK · CA · AU</span></div>
+    <div class="yr mono">YR/2026</div>
+    <div class="title"><h3>Legacy Égérie</h3><p>Be heard the first time. A quiet authority library for professional women who are done being talked over.</p><p class="mono">The Quiet Authority Collection · 3 guides · $49.99</p></div>
+    <span class="circle"><span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg><span class="mono">View brand</span></span></span>
+  </a>
+  <a class="bcard" href="https://www.wrenglow.com" target="_blank" rel="noopener" data-art="wren">
+    <div class="meta mono"><span>Printables shop</span><span>Coloring pages</span><span>Crochet patterns</span><span>Planners</span></div>
+    <div class="yr mono">YR/2026</div>
+    <div class="title"><h3>Wrenglow</h3><p>Print it tonight. Keep it forever. One small studio shop for printables, patterns and our children's books.</p><p class="mono">Instant download · US Letter &amp; A4</p></div>
+    <span class="circle"><span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg><span class="mono">Visit shop</span></span></span>
+  </a>
+  <a class="bcard" href="https://mybook.to/LittleLightsSeries" target="_blank" rel="noopener" data-art="lights">
+    <div class="meta mono"><span>Christian coloring books</span><span>Ages 3 to 6</span><span>8.5 × 8.5 in</span><span>Amazon KDP</span></div>
+    <div class="yr mono">YR/2026</div>
+    <div class="title"><h3>Little Lights</h3><p>Six faith-filled coloring books, from Jesus Loves Me! to The First Christmas, live on Amazon worldwide.</p><p class="mono">6 books · paperback</p></div>
+    <span class="circle"><span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg><span class="mono">See books</span></span></span>
+  </a>
+  <a class="bcard" href="https://www.wrenglow.com/glim" target="_blank" rel="noopener" data-art="glim">
+    <div class="meta mono"><span>Toddler question books</span><span>Ages 2 to 5</span><span>80 questions per book</span><span>Amazon</span></div>
+    <div class="yr mono">YR/2026</div>
+    <div class="title"><h3>Glim's Little Whys</h3><p>Glim the Firefly answers the big questions little people ask, in words a toddler can hold on to.</p><p class="mono">2 books live · more on the way</p></div>
+    <span class="circle"><span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg><span class="mono">Meet Glim</span></span></span>
+  </a>
+  <a class="bcard" href="https://www.areebacreates.com/creatoros" target="_blank" rel="noopener" data-art="os">
+    <div class="meta mono"><span>AI systems for creators</span><span>Prompts</span><span>Academy</span><span>Pro</span></div>
+    <div class="yr mono">YR/2026</div>
+    <div class="title"><h3>CreatorOS</h3><p>The AI operating system for content creators. Stop guessing, start producing. Led by Areeba Hasan.</p><p class="mono">Prompt vaults from $29 · custom builds</p></div>
+    <span class="circle"><span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg><span class="mono">Explore</span></span></span>
+  </a>
+  <a class="bcard" href="/academy" data-art="academy">
+    <div class="meta mono"><span>Training</span><span>YouTube &amp; TikTok automation</span><span>AI tools</span><span>Online &amp; in person</span></div>
+    <div class="yr mono">YR/2026</div>
+    <div class="title"><h3>Creator Academy</h3><p>Learn. Build. Earn. Live AI programs that take beginners from first class to paid work on real channels.</p><p class="mono">100+ students trained</p></div>
+    <span class="circle"><span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg><span class="mono">See programs</span></span></span>
+  </a>
+  <div class="stack-foot mono"><span>2024 — 2026</span><i></i><a class="sq" href="/brands" style="text-transform:none;font-family:var(--sans);letter-spacing:0">All brands in detail<i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></i></a></div>
+</section>
 
-    <!-- SHOWREEL -->
-    <section id="showreel">
-      <div class="sr-inner">
-        <div class="sr-hd rv">
-          <div class="tag">// Showreel</div>
-          <div class="section-h">WATCH US<br/><span class="hl">BUILD THE FUTURE</span></div>
-        </div>
-        <!-- CINEMATIC SHOWREEL SLIDESHOW -->
-        <div class="showreel-wrap rv scl">
-          <!-- Corner brackets -->
-          <div class="vc tl"><svg viewBox="0 0 18 18"><path d="M2 10V2h8"/></svg></div>
-          <div class="vc tr"><svg viewBox="0 0 18 18"><path d="M2 10V2h8"/></svg></div>
-          <div class="vc bl"><svg viewBox="0 0 18 18"><path d="M2 10V2h8"/></svg></div>
-          <div class="vc br"><svg viewBox="0 0 18 18"><path d="M2 10V2h8"/></svg></div>
+<!-- PROOF -->
+<section class="proof dark sec wrap">
+  <div class="sec-head">
+    <div class="top-rule"><span class="redline"></span><span class="wordmark-sm"><b>spark</b>up</span></div>
+    <p class="tag mono">Performance</p>
+    <div><h2 class="display h1 rv" style="color:#d8d8d2">The proof behind<br>our work</h2><p class="lead dash rv d1" style="margin-top:22px">From first lessons to live products. Real numbers, nothing rounded up.</p></div>
+  </div>
+  <div class="stats">
+    <div class="stat rv"><div class="n"><span data-count="8">8</span></div><p class="mono">Books live on Amazon</p><div class="bar"><i style="--w:60%"></i>//001</div></div>
+    <div class="stat rv d1"><div class="n"><span data-count="6">6</span></div><p class="mono">Brands under one roof</p><div class="bar"><i style="--w:45%"></i>//002</div></div>
+    <div class="stat rv d2"><div class="n"><span data-count="100" data-suf="+">100+</span></div><p class="mono">Students trained</p><div class="bar"><i style="--w:75%"></i>//003</div></div>
+    <div class="stat rv d3"><div class="n"><span data-count="40" data-suf="%">40%</span></div><p class="mono">Revenue share for partners</p><div class="bar"><i style="--w:40%"></i>//004</div></div>
+  </div>
+  <div class="marquee">
+    <p class="mono">Brands that are part of our story</p>
+    <div class="mq"><div class="mq-track">
+      <span style="font-family:Cormorant,serif;font-style:italic">Legacy Égérie</span><span style="font-family:Jakarta,sans-serif;font-weight:800">Wrenglow</span><span style="font-family:Playfair,serif;font-weight:800">Little Lights</span><span style="font-family:Nunito,sans-serif;font-weight:900">Glim's Little Whys</span><span style="font-weight:600;letter-spacing:-.04em">CreatorOS</span><span style="font-weight:600;letter-spacing:-.04em">Creator Academy</span>
+      <span style="font-family:Cormorant,serif;font-style:italic">Legacy Égérie</span><span style="font-family:Jakarta,sans-serif;font-weight:800">Wrenglow</span><span style="font-family:Playfair,serif;font-weight:800">Little Lights</span><span style="font-family:Nunito,sans-serif;font-weight:900">Glim's Little Whys</span><span style="font-weight:600;letter-spacing:-.04em">CreatorOS</span><span style="font-weight:600;letter-spacing:-.04em">Creator Academy</span>
+    </div></div>
+  </div>
+</section>
 
-          <!-- Slides -->
-          <div class="sr-slides" id="srSlides">
-            <div class="sr-slide active" style="background-image:url('assets/showreel-1.png')">
-              <div class="sr-slide-overlay"></div>
-              <div class="sr-slide-caption"><div class="sr-cap-tag">// SparkUp Creative · AI Lab</div><div class="sr-cap-h">WHERE AI<br/>MEETS ACTION.</div></div>
-            </div>
-            <div class="sr-slide" style="background-image:url('assets/showreel-2.png')">
-              <div class="sr-slide-overlay"></div>
-              <div class="sr-slide-caption"><div class="sr-cap-tag">// Team at Work</div><div class="sr-cap-h">BUILDING THE<br/>FUTURE TOGETHER.</div></div>
-            </div>
-            <div class="sr-slide" style="background-image:url('assets/showreel-3.png')">
-              <div class="sr-slide-overlay"></div>
-              <div class="sr-slide-caption"><div class="sr-cap-tag">// Training Session</div><div class="sr-cap-h">REAL SKILLS.<br/>REAL RESULTS.</div></div>
-            </div>
-            <div class="sr-slide" style="background-image:url('assets/showreel-4.png')">
-              <div class="sr-slide-overlay"></div>
-              <div class="sr-slide-caption"><div class="sr-cap-tag">// Women Empowerment</div><div class="sr-cap-h">AI EDUCATION<br/>FOR EVERYONE.</div></div>
-            </div>
-            <div class="sr-slide" style="background-image:url('assets/showreel-5.png')">
-              <div class="sr-slide-overlay"></div>
-              <div class="sr-slide-caption"><div class="sr-cap-tag">// Collaboration</div><div class="sr-cap-h">IDEAS BECOME<br/>REALITY HERE.</div></div>
-            </div>
-            <div class="sr-slide" style="background-image:url('assets/showreel-6.png')">
-              <div class="sr-slide-overlay"></div>
-              <div class="sr-slide-caption"><div class="sr-cap-tag">// Innovation is Purpose</div><div class="sr-cap-h">CREATIVITY<br/>DRIVEN BY AI.</div></div>
-            </div>
-            <div class="sr-slide" style="background-image:url('assets/showreel-7.png')">
-              <div class="sr-slide-overlay"></div>
-              <div class="sr-slide-caption"><div class="sr-cap-tag">// SparkUp Creative</div><div class="sr-cap-h">BUILD WITH AI.<br/>LEAD WITH VISION.</div></div>
-            </div>
-          </div>
+<!-- SERVICES -->
+<section class="white wrap" id="services" style="padding-bottom:clamp(60px,8vw,120px)">
+  <div class="svc-giant"><div class="giant rv">services</div><p class="mono" style="margin-top:14px;color:var(--mute)">What we do best, and what your next project needs most.</p></div>
+  <div class="svc-list">
+    <article class="svc"><div class="svc-top mono"><span>Foundation<span class="redline"></span></span><span class="num">/01</span></div><h3>AI Training &amp; Workshops</h3>
+      <div class="svc-body"><div><img src="/assets/showreel-2.png" alt="A SparkUp Creative training session" loading="lazy"><p>Hands-on programs that make AI practical for teams, schools and first-time creators.</p></div>
+      <ul><li>Live cohorts, online and in person</li><li>Workshops for schools and institutions</li><li>Team training on ChatGPT, n8n and automation</li><li>Free certified training for women</li><li>Bilingual teaching in English and Hindi</li></ul></div></article>
+    <article class="svc"><div class="svc-top mono"><span>Systems<span class="redline"></span></span><span class="num">/02</span></div><h3>AI Automation</h3>
+      <div class="svc-body"><div><img src="/assets/showreel-6.png" alt="AI automation workstation" loading="lazy"><p>Custom AI agents and pipelines that take repetitive work off your team's desk.</p></div>
+      <ul><li>n8n and Make agents, no code needed</li><li>WhatsApp and email automation</li><li>AI call assistants</li><li>Lead capture to CRM flows</li><li>Research tools and dashboards</li></ul></div></article>
+    <article class="svc"><div class="svc-top mono"><span>Creative<span class="redline"></span></span><span class="num">/03</span></div><h3>AI Content Creation</h3>
+      <div class="svc-body"><div><img src="/assets/showreel-5.png" alt="Content creators at work" loading="lazy"><p>Scripts, visuals, carousels and short videos made with AI and finished by people.</p></div>
+      <ul><li>Scripting with our CRAFT prompt system</li><li>Carousels, reels and shorts</li><li>Thumbnails and brand visuals</li><li>Blogs and email sequences</li><li>Content banks for months ahead</li></ul></div></article>
+    <article class="svc"><div class="svc-top mono"><span>Channels<span class="redline"></span></span><span class="num">/04</span></div><h3>YouTube &amp; Social Automation</h3>
+      <div class="svc-body"><div><img src="/assets/showreel-4.png" alt="Team running YouTube channels" loading="lazy"><p>Faceless channels and posting pipelines that keep publishing while you build.</p></div>
+      <ul><li>Niche and competitor research</li><li>Voiceover and editing workflow</li><li>SEO, titles and posting strategy</li><li>Instagram, Facebook and Pinterest</li><li>Monetization and growth reports</li></ul></div></article>
+    <article class="svc"><div class="svc-top mono"><span>Growth<span class="redline"></span></span><span class="num">/05</span></div><h3>Performance Marketing</h3>
+      <div class="svc-body"><div><img src="/assets/showreel-7.png" alt="Marketing analytics on a laptop" loading="lazy"><p>Funnels, email and ads, guided by data and machine intelligence.</p></div>
+      <ul><li>Lead magnets, quizzes and funnels</li><li>Brevo email automation</li><li>Checkout setup with Lemon Squeezy and Stripe</li><li>Pinterest and social campaigns</li><li>Weekly metrics you can read</li></ul></div></article>
+    <article class="svc"><div class="svc-top mono"><span>Publishing<span class="redline"></span></span><span class="num">/06</span></div><h3>Books &amp; Digital Products</h3>
+      <div class="svc-body"><div><img src="/little-lights/img/book6.jpg" alt="The First Christmas, Little Lights book 6" loading="lazy" style="object-position:center 30%"><p>From idea to Amazon listing. We publish our own books and help others do the same.</p></div>
+      <ul><li>Amazon KDP books and A+ Content</li><li>Ebooks and printable products</li><li>Covers, interiors and listings</li><li>Shop websites and storefronts</li><li>Launch and festive season plans</li></ul></div></article>
+  </div>
+</section>
 
-          <!-- Progress bar -->
-          <div class="sr-progress"><div class="sr-progress-fill" id="srProgress"></div></div>
+<!-- PROCESS -->
+<section class="process sec wrap">
+  <div class="proc-grid">
+    <div><h2 class="display h2 rv" style="font-size:clamp(34px,3.6vw,56px)">Services built on process, precision and people.</h2>
+      <p class="rv d1" style="margin-top:20px;color:#bbb;max-width:40ch;font-size:15px">We combine training, strategy, content and technology, so one partner covers every stage of your growth.</p>
+      <a class="sq rv d2" style="margin-top:30px" href="https://wa.me/919369671970" target="_blank" rel="noopener"><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></i>Chat with our team on WhatsApp</a></div>
+    <div class="proc-cards">
+      <div class="pc rv"><div class="top mono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>/01</div><h4>Discover</h4><p>We listen first. Goals, audience, budget and what success looks like, written down before anything is built.</p></div>
+      <div class="pc rv d1"><div class="top mono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20l6-6M14 4l6 6-8 8-6-6z"/></svg>/02</div><h4>Build</h4><p>Systems, content and products made with AI and checked by people, with progress you can see every week.</p></div>
+      <div class="pc rv d2"><div class="top mono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2c4 3 6 7 6 11l-3 3H9l-3-3c0-4 2-8 6-11z"/><circle cx="12" cy="10" r="2"/><path d="M9 16l-2 5 3-2M15 16l2 5-3-2"/></svg>/03</div><h4>Launch</h4><p>Go live with a clear checklist: pages, payments, emails and the first wave of content all ready on day one.</p></div>
+      <div class="pc rv d3"><div class="top mono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>/04</div><h4>Scale</h4><p>Read the numbers, double down on what works, and train your team so the system keeps running without us.</p></div>
+    </div>
+  </div>
+</section>
 
-          <!-- Dots navigation -->
-          <div class="sr-dots" id="srDots"></div>
+<!-- WHY -->
+<section class="light sec wrap">
+  <div class="sec-head">
+    <div class="top-rule"><span class="redline"></span><span class="wordmark-sm"><b>spark</b>up</span></div>
+    <p class="tag mono">Why choose us</p>
+    <div><h2 class="display h1 rv">Designed to make<br>your work easier</h2><p class="lead dash rv d1" style="margin-top:22px">Clear steps, honest updates and a launch you can be proud of. We keep it simple so nothing gets stuck.</p></div>
+  </div>
+  <div class="bento">
+    <div class="bx wh rv"><h4>we learn.<br>we build.<br><span class="acc">we spark.</span></h4><div class="dots3"><i></i><i></i><i></i></div><div class="foot"><span><span class="acc">Ideas</span> that start with you</span></div></div>
+    <div class="bx rv d1"><h4>Student to<br>partner pathway</h4><span class="big-pct">40%</span>
+      <div class="chips"><span><b>01</b>Training</span><span><b>02</b>Certificate</span><span><b>03</b>Internship on live channels</span><span><b>04</b>Revenue partner</span><span><b>05</b>Core team</span></div>
+      <p class="small">Batch 1 graduates now work on our own brands.</p></div>
+    <div class="bx wh rv d2"><p class="small">No templates, no shortcuts.</p><h4>Every brand starts fresh.</h4><div class="ring"><div></div><b>spark</b></div><div class="foot"><span><span class="acc">Custom work</span> from day one</span></div></div>
+    <div class="bx wh rv"><h4 style="display:flex;gap:8px;align-items:center">Simple pricing</h4><p class="small" style="margin-top:8px">Programs that fit a student budget, with online and in-person options.</p>
+      <div style="margin:22px 0;font-size:clamp(40px,4vw,60px);font-weight:500;letter-spacing:-.05em">₹7,000<span class="small" style="letter-spacing:0;font-size:13px"> / program</span></div>
+      <a class="sq" href="#programs" style="margin-top:auto"><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></i>Explore programs</a></div>
+    <div class="bx rv d1"><p class="small">Built for the long run</p><h4>With you beyond launch</h4>
+      <div class="chips" style="margin-top:auto"><span><b>✓</b>Lifetime access to recordings</span><span><b>✓</b>Internship on real projects</span><span><b>✓</b>25% referral commission</span></div></div>
+    <div class="bx wh rv d2 chat"><p class="small">Quick intro call, no strings attached.</p><h4>Let's chat or just<br>say hello.</h4>
+      <div class="photo"><img src="/assets/yaser.jpg" alt="Yaser Shamim, Founder and CEO" loading="lazy"></div>
+      <div class="avail"><p class="small">◷ Replies within 24 hours</p><p style="margin:4px 0 10px">Admissions open on WhatsApp</p><a class="sq" href="https://wa.me/919369671970" target="_blank" rel="noopener"><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></i>Message us</a></div></div>
+  </div>
+</section>
 
-          <!-- Slide counter -->
-          <div class="sr-counter"><span id="srCurrent">01</span> / <span id="srTotal">07</span></div>
+<!-- PROGRAMS -->
+<section class="white sec wrap" id="programs">
+  <div class="sec-head">
+    <div class="top-rule"><span class="redline"></span><span class="wordmark-sm"><b>spark</b>up</span></div>
+    <p class="tag mono">Programs</p>
+    <div><h2 class="display h1 rv">Programs built to fit<br>your next step</h2><p class="lead dash rv d1" style="margin-top:22px">Every program gives you clear modules, real projects and a price you know up front.</p></div>
+  </div>
+  <div class="plans">
+    <div class="plan open"><button class="plan-h"><span class="nm"><span><h4>90-Day YouTube &amp; TikTok Automation Mastery</h4><p class="mono">Flagship · live cohort</p></span></span><span class="right"><span class="opt">36 live classes · beginners welcome</span><span class="pm"></span></span></button>
+      <div class="plan-b"><div><div class="plan-in">
+        <div><p style="font-size:14px;margin-bottom:10px">For complete beginners</p><div class="price">₹7,000<small>/online</small></div><p class="was">₹12,000 in person, Kanpur</p><img src="/assets/showreel-1.png" alt="Students in the academy lab" loading="lazy" style="width:150px;aspect-ratio:16/10;object-fit:cover;border-radius:6px;margin-top:18px"></div>
+        <ul><li>Phase 1: niche research, scripting, voiceover</li><li>Phase 2: CapCut, thumbnails, Midjourney, Sora, Veo 3</li><li>Phase 3: branding, SEO, titles, posting strategy</li><li>Phase 4: AdSense, TikTok, affiliates, funnels</li><li>Phase 5: multiple channels, repurposing, certificate</li><li>3 classes a week for 12 weeks</li></ul>
+        <div><ul class="why"><li>Work on live channels with the core team</li><li>Internship after certification</li><li>40% revenue share as a partner</li></ul><a class="btn btn-lime" href="https://www.yasershamim.com/#apply" target="_blank" rel="noopener">Apply now <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div>
+      </div></div></div></div>
+    <div class="plan"><button class="plan-h"><span class="nm"><span><h4>AI for Digital Marketing &amp; Performance Ads</h4><p class="mono">Self-paced · 6 modules</p></span></span><span class="right"><span class="opt">From ₹8,000</span><span class="pm"></span></span></button>
+      <div class="plan-b"><div><div class="plan-in"><div><div class="price">₹8,000<small>/online</small></div><p class="was">₹12,000 in person</p></div><ul><li>AI for ad copy and creative testing</li><li>Audience research with AI</li><li>Campaign setup and reporting</li></ul><div><a class="btn btn-lime" href="https://www.yasershamim.com/#apply" target="_blank" rel="noopener">Apply now <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div></div></div></div></div>
+    <div class="plan"><button class="plan-h"><span class="nm"><span><h4>AI-Powered Freelancing &amp; Client Automation</h4><p class="mono">Self-paced · 6 modules</p></span></span><span class="right"><span class="opt">From ₹7,500</span><span class="pm"></span></span></button>
+      <div class="plan-b"><div><div class="plan-in"><div><div class="price">₹7,500<small>/online</small></div><p class="was">₹12,000 in person</p></div><ul><li>Package and price AI services</li><li>Find and win first clients</li><li>Automate delivery and follow-ups</li></ul><div><a class="btn btn-lime" href="https://www.yasershamim.com/#apply" target="_blank" rel="noopener">Apply now <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div></div></div></div></div>
+    <div class="plan"><button class="plan-h"><span class="nm"><span><h4>Automate Everything with n8n AI Agents</h4><p class="mono">Online · 6 modules · no coding</p></span></span><span class="right"><span class="opt">₹9,000</span><span class="pm"></span></span></button>
+      <div class="plan-b"><div><div class="plan-in"><div><div class="price">₹9,000<small>/online</small></div></div><ul><li>Build AI agents in n8n</li><li>Connect WhatsApp, email and sheets</li><li>Ship real automations for clients</li></ul><div><a class="btn btn-lime" href="https://www.yasershamim.com/#apply" target="_blank" rel="noopener">Apply now <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div></div></div></div></div>
+    <div class="plan"><button class="plan-h"><span class="nm"><span><h4>AI Content Creation Mastery with ChatGPT</h4><p class="mono">Online · 5 modules · 150+ prompts</p></span></span><span class="right"><span class="opt">₹7,000</span><span class="pm"></span></span></button>
+      <div class="plan-b"><div><div class="plan-in"><div><div class="price">₹7,000<small>/online</small></div></div><ul><li>Prompting that sounds human</li><li>Scripts, posts, blogs and emails</li><li>Library of 150+ prompt templates</li></ul><div><a class="btn btn-lime" href="https://www.yasershamim.com/#apply" target="_blank" rel="noopener">Apply now <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div></div></div></div></div>
+    <div class="plan"><button class="plan-h"><span class="nm"><span><h4>Build &amp; Monetize AI Call Assistants</h4><p class="mono">Online · 6 modules · Vapi + Make</p></span></span><span class="right"><span class="opt">₹10,000</span><span class="pm"></span></span></button>
+      <div class="plan-b"><div><div class="plan-in"><div><div class="price">₹10,000<small>/online</small></div></div><ul><li>Voice agents with Vapi</li><li>Booking and lead flows with Make</li><li>Selling call assistants to businesses</li></ul><div><a class="btn btn-lime" href="https://www.yasershamim.com/#apply" target="_blank" rel="noopener">Apply now <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div></div></div></div></div>
+    <div class="plan"><button class="plan-h"><span class="nm"><span><h4>Women Empowerment Initiative</h4><p class="mono">Free · certified · for eligible women</p></span></span><span class="right"><span class="opt">Free</span><span class="pm"></span></span></button>
+      <div class="plan-b"><div><div class="plan-in"><div><div class="price">Free</div><p class="was">For women from rural or underserved backgrounds</p></div><ul><li>Certified AI training</li><li>Internship on real projects</li><li>40% revenue share as a partner</li></ul><div><a class="btn btn-lime" href="https://www.yasershamim.com/#apply" target="_blank" rel="noopener">Apply now <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div></div></div></div></div>
+  </div>
+  <div class="expert">
+    <h3 class="display" style="font-size:clamp(28px,2.6vw,40px)">Ask our expert</h3>
+    <p style="color:#444">Book a quick call and we will help you pick the right program for your goals.</p>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap"><div class="person"><img src="/assets/yaser.jpg" alt=""><div><b>Yaser Shamim</b><span>Founder &amp; CEO, AI Trainer</span></div></div><a class="btn btn-ink" href="https://wa.me/919369671970" target="_blank" rel="noopener">Book a call <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div>
+  </div>
+</section>
 
-          <!-- Prev/Next arrows -->
-          <button class="sr-arrow sr-prev" id="srPrev" aria-label="Previous">&#8592;</button>
-          <button class="sr-arrow sr-next" id="srNext" aria-label="Next">&#8594;</button>
-        </div>
-      </div>
-    </section>
+<!-- TEAM -->
+<section class="team dark sec wrap">
+  <div class="sec-head">
+    <div class="top-rule"><span class="redline"></span><span class="wordmark-sm"><b>spark</b>up</span></div>
+    <p class="tag mono">The team</p>
+    <div><h2 class="display h1 rv" style="color:#d8d8d2">Small team.<br>Serious systems.</h2><p class="lead dash rv d1" style="margin-top:22px">We bring sharp strategy and bold ideas without the stiff boardroom feel. Professional where it counts, human where it matters.</p></div>
+  </div>
+  <div class="team-row">
+    <div class="tm rv" style="--rot:-2deg"><img src="/assets/yaser.jpg" alt="Yaser Shamim" loading="lazy"><div class="cap"><b>Yaser Shamim</b><span>Founder &amp; CEO</span></div></div>
+    <div class="tm rv d1" style="--rot:1.5deg"><img src="/img/team/areeba.jpg" alt="Areeba Hasan" loading="lazy"><div class="cap"><b>Areeba Hasan</b><span>Co-Founder &amp; COO · Founder, CreatorOS</span></div></div>
+    <div class="tm kpi rv d2" style="--rot:-1deg"><p class="mono" style="text-align:left;color:#888">//KPI</p><img class="prism" src="/img/prism.png" alt=""><div><div class="n acc"><span data-count="100">100</span>+</div><p>Students trained across<br>our live programs</p></div></div>
+    <div class="tm rv d3" style="--rot:2deg"><img src="/assets/jamal.png" alt="Jamal Ahmed" loading="lazy"><div class="cap"><b>Jamal Ahmed</b><span>CFO</span></div></div>
+    <div class="tm rv d4" style="--rot:-1.5deg"><img src="/assets/kaleem.png" alt="Kaleem Ansari" loading="lazy"><div class="cap"><b>Kaleem Ansari</b><span>CSO</span></div></div>
+  </div>
+  <div class="team-foot">
+    <h3 class="rv">Our leadership team, involved from <span class="acc">first idea to final launch.</span></h3>
+    <p class="rv d1">Every milestone checked, every brand reviewed, every student kept in the loop. That is how our products ship clean and on time.</p>
+    <div class="rv d2"><h3 style="font-size:22px">Discover team SparkUp</h3><p style="margin:8px 0 18px">Meet the people, culture and energy that keep our work sharp.</p><a class="sq" href="/studio"><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></i>Visit the studio</a></div>
+  </div>
+</section>
 
-    <!-- TEAM PREVIEW -->
-    <section id="team-preview">
-      <div class="tp-inner">
-        <div class="tp-hd">
-          <div class="rv lft">
-            <div class="tag">// The People</div>
-            <div class="section-h">MEET THE<br/><span class="hl">TEAM</span></div>
-          </div>
-          <a href="about.html" class="btn btn-outline rv rgt">Full Profiles →</a>
-        </div>
-        <div class="tp-row rv">
-          <div class="tp-card"><div class="tp-av" style="background:none;padding:0;overflow:hidden;"><img src="assets/yaser.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div><div class="tp-name">Yaser Shamim</div><div class="tp-role">Founder & CEO</div></div>
-          <div class="tp-card"><div class="tp-av" style="background:none;padding:0;overflow:hidden;"><img src="assets/areeba.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div><div class="tp-name">Areeba Hasan</div><div class="tp-role">Co-Founder & COO</div></div>
-          <div class="tp-card"><div class="tp-av" style="background:none;padding:0;overflow:hidden;"><img src="assets/jamal.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div><div class="tp-name">Jamal Ahmed</div><div class="tp-role">CFO</div></div>
-          <div class="tp-card"><div class="tp-av" style="background:none;padding:0;overflow:hidden;"><img src="assets/kaleem.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div><div class="tp-name">Kaleem Ansari</div><div class="tp-role">CSO</div></div>
-        </div>
-      </div>
-    </section>
+<!-- FAQ -->
+<section class="light sec wrap">
+  <div class="faq-grid">
+    <div><p class="mono acc" style="border-top:1px solid var(--line);padding-top:16px;width:60%">FAQ</p>
+      <h2 class="display h1 rv" style="margin-top:30px;color:#55564f">Clearing doubts<br>and concerns</h2>
+      <p class="lead dash" style="margin-top:22px">The most common questions about our brands and programs, all in one place.</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:60px;flex-wrap:wrap"><div class="person"><img src="/img/team/areeba.jpg" alt=""><div><b>Areeba Hasan</b><span>Co-Founder &amp; COO</span></div></div><a class="btn btn-lime" href="/contact">Ask a question <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div></div>
+    <div class="faq">
+      <div class="q open"><button>What does SparkUp Creative actually do?<i>+</i></button><div class="a"><div><p>Three things. We train people to use AI for real income, we build AI systems and content for businesses, and we run our own brands: books, printables, ebooks and creator tools.</p></div></div></div>
+      <div class="q"><button>How are all the brands connected?<i>+</i></button><div class="a"><div><p>Every brand is owned and operated by SparkUp Creative LLC. Each one has its own audience and website, and they share one team, one set of systems and one standard of quality.</p></div></div></div>
+      <div class="q"><button>Do I need any AI knowledge to join a program?<i>+</i></button><div class="a"><div><p>No. You only need to be comfortable with a phone and a computer. A laptop is recommended for editing and automation work.</p></div></div></div>
+      <div class="q"><button>Are classes online or in person?<i>+</i></button><div class="a"><div><p>Both. Online and in-person classes cover the same content. In-person batches in Kanpur add hands-on time in the lab.</p></div></div></div>
+      <div class="q"><button>What happens after I finish a course?<i>+</i></button><div class="a"><div><p>You earn a SparkUp Creative Skill Certificate. Strong students are offered a two month internship on real channels, then a 40% revenue share on channels they manage.</p></div></div></div>
+      <div class="q"><button>Is the Women Empowerment program really free?<i>+</i></button><div class="a"><div><p>Yes. Eligible women from rural or underserved backgrounds get certified AI training at no cost, followed by the same internship and revenue share pathway.</p></div></div></div>
+      <div class="q"><button>Where can I buy the books?<i>+</i></button><div class="a"><div><p>Little Lights and Glim's Little Whys are on Amazon in the US and other marketplaces. Our links send you to your local Amazon store automatically.</p></div></div></div>
+      <div class="q"><button>Can you build an AI system for my business?<i>+</i></button><div class="a"><div><p>Yes. Tell us what slows your team down and we will scope an automation, content system or funnel that fixes it. Start with a message on WhatsApp or the contact page.</p></div></div></div>
+    </div>
+  </div>
+</section>
 
-    <!-- CTA -->
-    <section id="home-cta">
-      <div class="noise-layer"></div>
-      <div class="hc-inner rv scl">
-        <div class="tag">// Ready?</div>
-        <div class="hc-h">READY TO<br/><span class="hl">SPARK UP?</span></div>
-        <p class="hc-sub">Whether you're a startup, an institution, or an established brand — we'll build the AI stack that makes you unstoppable.</p>
-        <div class="hc-btns">
-          <a href="contact.html" class="btn btn-lime" id="ctaBtn" onclick="spawnBurst(event.clientX,event.clientY)">Get Started Today →</a>
-          <a href="services.html" class="btn btn-outline">View Services</a>
-        </div>
-      </div>
-    </section>
-  </div><!-- end .page-body -->
+<!-- SPOTLIGHT -->
+<section class="white sec wrap">
+  <div class="spot">
+    <div class="bx wh rv" style="padding:clamp(22px,3vw,36px)"><p class="mono" style="color:var(--mute)">From students to team</p><h3 class="display h2" style="margin-top:18px;font-size:clamp(32px,3.4vw,52px)">Partnerships that last,<br>results that stick.</h3>
+      <p style="margin-top:16px;color:#444;max-width:44ch">Our first academy batch did not just graduate. They stayed, and now they make the content behind our brands.</p>
+      <div class="foot" style="margin-top:auto;padding-top:30px"><a class="btn btn-lime" href="/academy">Join the next batch <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div></div>
+    <div class="bx spot-big rv d1" style="padding:clamp(22px,3vw,36px)"><div class="sp">Spotlight</div><p style="margin:14px 0 26px;color:#ddd;max-width:40ch">Batch 1 of the 90-Day YouTube &amp; TikTok Automation Mastery, now inside SparkUp's Content Creation Department.</p>
+      <div class="path"><div><b>Training</b><span>12 weeks</span></div><div><b>Certificate</b><span>Evaluated</span></div><div><b>Internship</b><span>Live channels</span></div><div><b>Team</b><span>Hired</span></div></div></div>
+  </div>
+  <div class="journey">
+    <div class="jc rv"><img class="jph" src="/img/team/farhan.jpg" alt="" loading="lazy"><div><b>Farhan Rayeen</b><span>Creative Strategist</span></div></div>
+    <div class="jc rv d1"><img class="jph" src="/img/team/saniya.jpg" alt="" loading="lazy"><div><b>Saniya Quraishi</b><span>Content Producer</span></div></div>
+    <div class="jc rv d2"><img class="jph" src="/img/team/ajna.jpg" alt="" loading="lazy"><div><b>Ajna Quraishi</b><span>Content Creator</span></div></div>
+    <div class="jc rv d3"><img class="jph" src="/img/team/jaafar.jpg" alt="" loading="lazy"><div><b>Jaafar Ansari</b><span>Creative Associate</span></div></div>
+  </div>
+</section>
 
-  <script src="js/common.js"></script>
-  <script>
-    fillMarquee('mq1',['AI Automation','Content Creation','AI Training','YouTube Automation','Performance Marketing','Social Media AI','Business Growth','SparkUp Creative','Women Empowerment','AI Agency']);
-    initCounters();
+<!-- FREE -->
+<section class="light sec wrap" id="free">
+  <div class="sec-head">
+    <div class="top-rule"><span class="redline"></span><span class="wordmark-sm"><b>spark</b>up</span></div>
+    <p class="tag mono">Free from our brands</p>
+    <div><h2 class="display h1 rv">What we make,<br>we share</h2><p class="lead dash rv d1" style="margin-top:22px">Free downloads, quizzes and tools from across the SparkUp family. Start here, no card needed.</p></div>
+  </div>
+  <div class="free-grid">
+    <div class="fc free-intro rv"><div><h3>Free resources</h3><p style="margin-top:10px;color:#bbb">From small sparks to big ideas. Pick the one that matches where you are today.</p></div>
+      <ul><li>Printable coloring pages</li><li>Career scripts and a 2-minute quiz</li><li>Creator prompt packs</li><li>YouTube research tool</li></ul></div>
+    <div class="free-stack">
+      <a class="fc rv d1" href="https://www.legacyegerie.com" target="_blank" rel="noopener" style="background:#3a2030"><img src="/img/brands/legacy-cheatsheet.jpg" alt="" loading="lazy" style="position:absolute;right:22px;bottom:90px;width:34%;border-radius:3px;box-shadow:0 20px 40px rgba(0,0,0,.4);transform:rotate(4deg);z-index:-1"><div class="who"><span>Legacy Égérie<br><small style="opacity:.7">Free download</small></span></div><h4 style="font-family:Cormorant,serif;font-style:italic;font-size:32px">The Quiet Authority Cheat Sheet</h4><p>Six phrases to retire and what to say instead. Plus a 2-minute quiz: which speaker are you?</p><span class="circle"><span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg><span class="mono">Get it</span></span></span></a>
+      <a class="fc rv d2" href="https://www.wrenglow.com/free" target="_blank" rel="noopener"><div class="bg"><img src="/little-lights/img/free-nativity.jpg" alt="" loading="lazy"></div><div class="who"><span>Wrenglow<br><small style="opacity:.7">Free pack</small></span></div><h4>Free Christmas coloring pages</h4><p>Print tonight for Sunday school, family time or a quiet afternoon.</p><span class="circle"><span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg><span class="mono">Download</span></span></span></a>
+      <a class="fc rv d3" href="https://www.areebacreates.com" target="_blank" rel="noopener" style="background:#0f100c"><div class="bg"><img src="/img/brands/creatoros-cohort.jpg" alt="" loading="lazy"></div><div class="who"><span>CreatorOS<br><small style="opacity:.7">Free pack</small></span></div><h4>YouTube Creator Prompt Pack</h4><p>The prompts behind our scripting workflow, ready to paste into ChatGPT.</p><span class="circle"><span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg><span class="mono">Get pack</span></span></span></a>
+      <a class="fc rv d4" href="https://www.yasershamim.com/research" target="_blank" rel="noopener"><div class="bg"><img src="/assets/showreel-6.png" alt="" loading="lazy"></div><div class="who"><span>Creator Academy<br><small style="opacity:.7">Tool · $19/month</small></span></div><h4>YouTube Research Tool</h4><p>Channel discovery, AI gap analysis and video ideas with Excel reports. Cancel anytime.</p><span class="circle"><span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg><span class="mono">Try it</span></span></span></a>
+    </div>
+  </div>
+</section>
 
-    /* THREE.JS NEURAL NETWORK */
-    (function(){
-      const canvas = document.getElementById('hero-canvas');
-      const R = new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
-      R.setPixelRatio(Math.min(devicePixelRatio,2));
-      const scene = new THREE.Scene();
-      const cam   = new THREE.PerspectiveCamera(68,1,.1,1000);
-      cam.position.z = 270;
-      function resize(){
-        const w=canvas.parentElement.clientWidth, h=canvas.parentElement.clientHeight;
-        R.setSize(w,h); cam.aspect=w/h; cam.updateProjectionMatrix();
-      }
-      resize(); window.addEventListener('resize',resize);
-      const N=130, pos=new Float32Array(N*3), pts=[], vel=[];
-      const geo=new THREE.BufferGeometry();
-      for(let i=0;i<N;i++){
-        const x=(Math.random()-.5)*440,y=(Math.random()-.5)*300,z=(Math.random()-.5)*220;
-        pts.push(new THREE.Vector3(x,y,z));
-        vel.push(new THREE.Vector3((Math.random()-.5)*.2,(Math.random()-.5)*.2,(Math.random()-.5)*.12));
-        pos[i*3]=x;pos[i*3+1]=y;pos[i*3+2]=z;
-      }
-      geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
-      const mat=new THREE.PointsMaterial({color:0xC8FF00,size:2.6,transparent:true,opacity:.75,sizeAttenuation:true});
-      scene.add(new THREE.Points(geo,mat));
-      const lineGroup=new THREE.Group(); scene.add(lineGroup);
-      let mx=0,my=0, f=0;
-      window.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=-(e.clientY/innerHeight-.5)*2;});
-      const THRESH=95;
-      function buildLines(){
-        while(lineGroup.children.length) lineGroup.remove(lineGroup.children[0]);
-        for(let i=0;i<N;i++) for(let j=i+1;j<N;j++){
-          const d=pts[i].distanceTo(pts[j]);
-          if(d<THRESH){
-            const g=new THREE.BufferGeometry().setFromPoints([pts[i],pts[j]]);
-            lineGroup.add(new THREE.Line(g,new THREE.LineBasicMaterial({color:0xC8FF00,transparent:true,opacity:(1-d/THRESH)*.18})));
-          }
-        }
-      }
-      buildLines();
-      (function anim(){
-        requestAnimationFrame(anim); f++;
-        for(let i=0;i<N;i++){
-          pts[i].add(vel[i]);
-          if(Math.abs(pts[i].x)>220)vel[i].x*=-1;
-          if(Math.abs(pts[i].y)>150)vel[i].y*=-1;
-          if(Math.abs(pts[i].z)>110)vel[i].z*=-1;
-          pos[i*3]=pts[i].x;pos[i*3+1]=pts[i].y;pos[i*3+2]=pts[i].z;
-        }
-        geo.attributes.position.needsUpdate=true;
-        if(f%3===0) buildLines();
-        cam.position.x+=(mx*22-cam.position.x)*.03;
-        cam.position.y+=(my*14-cam.position.y)*.03;
-        cam.lookAt(scene.position);
-        R.render(scene,cam);
-      })();
-    })();
+<!-- CTA -->
+<section class="cta sec wrap">
+  <div class="bgy" aria-hidden="true">Wyoming — Kanpur</div>
+  <div class="cta-grid">
+    <div><p style="font-size:clamp(26px,2.6vw,40px);font-weight:500;letter-spacing:-.04em">One studio</p><p style="font-size:14px;color:var(--mute);max-width:30ch;margin-top:6px">Training people, building systems and shipping brands that stand out.</p>
+      <ul style="margin-top:50px"><li>8 books live on Amazon</li><li>100+ students trained</li><li>6 brands, one team</li></ul></div>
+    <div><h2 class="rv">Let us <span class="acc">spark</span><br>your next<br>project</h2>
+      <div class="cta-row"><img src="/assets/yaser.jpg" alt="Yaser Shamim" loading="lazy"><div><blockquote>"Build with AI. Grow with purpose. Everything we make has to be useful to a real person on the other side."<cite>Yaser Shamim<br>Founder &amp; CEO, SparkUp Creative</cite></blockquote>
+      <a class="btn btn-lime" style="margin-top:22px" href="/contact">Book an intro call <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div></div></div>
+  </div>
+</section>
+</main>
 
-    /* ── SHOWREEL SLIDESHOW JS ── */
-    (function(){
-      const slides   = document.querySelectorAll('.sr-slide');
-      const dotsWrap = document.getElementById('srDots');
-      const progress = document.getElementById('srProgress');
-      const curr     = document.getElementById('srCurrent');
-      const total    = document.getElementById('srTotal');
-      const prevBtn  = document.getElementById('srPrev');
-      const nextBtn  = document.getElementById('srNext');
-      if (!slides.length) return;
-
-      let idx = 0;
-      const DURATION = 5000;
-      let timer, progTimer;
-
-      // Create dots
-      slides.forEach((_, i) => {
-        const d = document.createElement('button');
-        d.className = 'sr-dot' + (i===0?' active':'');
-        d.setAttribute('aria-label', 'Slide ' + (i+1));
-        d.addEventListener('click', () => goTo(i));
-        dotsWrap.appendChild(d);
-      });
-
-      function goTo(n) {
-        slides[idx].classList.remove('active');
-        dotsWrap.children[idx].classList.remove('active');
-        idx = (n + slides.length) % slides.length;
-        slides[idx].classList.add('active');
-        dotsWrap.children[idx].classList.add('active');
-        curr.textContent = String(idx+1).padStart(2,'0');
-        startProgress();
-      }
-
-      function startProgress() {
-        clearInterval(timer);
-        clearInterval(progTimer);
-        progress.style.transition = 'none';
-        progress.style.width = '0%';
-        setTimeout(() => {
-          progress.style.transition = 'width ' + DURATION + 'ms linear';
-          progress.style.width = '100%';
-        }, 30);
-        timer = setTimeout(() => goTo(idx + 1), DURATION);
-      }
-
-      if (prevBtn) prevBtn.addEventListener('click', () => goTo(idx - 1));
-      if (nextBtn) nextBtn.addEventListener('click', () => goTo(idx + 1));
-
-      total.textContent = String(slides.length).padStart(2,'0');
-      startProgress();
-    })();
-  </script>
+<footer class="ftr"></footer>
+<div class="lb" role="dialog" aria-label="Showreel"><button>Close ✕</button><video controls playsinline preload="none" poster="/video/brand-film-poster.jpg"><source src="/video/brand-film.mp4" type="video/mp4"></video></div>
+<script src="/js/common.js"></script>
+<script src="/js/motion.js"></script>
 </body>
 </html>
