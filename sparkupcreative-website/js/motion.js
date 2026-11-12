@@ -67,11 +67,9 @@ if(hero){
 
   /* hero scroll-out */
   const content=[...hero.querySelectorAll('.hero-top,.hero-mid,.hero-bot,.side-ticks')];
-  const ghost=hero.querySelector('.hero-ghost');const bar=hero.querySelector('.hero-btns');
-  let started=false;
-  const onScroll=()=>{const h=hero.offsetHeight;const p=clamp(scrollY/(h*.9));
-    content.forEach((c,i)=>{c.style.transform=`translateY(${-p*(90+i*30)}px)`;c.style.opacity=1-p*1.25;c.style.filter=p>.02?`blur(${p*8}px)`:''});
-    if(ghost){ghost.style.opacity=clamp(p*1.8);ghost.style.transform=`translateY(${(1-p)*80}px)`}
+  const bar=hero.querySelector('.hero-btns');
+  const onScroll=()=>{const y=Math.max(0,scrollY);const p=clamp(y/(hero.offsetHeight*.9));
+    content.forEach(c=>{c.style.transform=`translateY(${-y}px)`});
     if(hero.classList.contains('on')&&bar.classList.contains('open')!==(p<.12)){bar.classList.toggle('open',p<.12)}
   };
   addEventListener('scroll',onScroll,{passive:true});onScroll();

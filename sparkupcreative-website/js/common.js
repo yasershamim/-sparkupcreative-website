@@ -98,11 +98,16 @@ if(mf){
   const P=[...Array(70)].map(()=>({x:Math.random(),y:Math.random(),r:2+Math.random()*9,v:.2+Math.random(),ph:Math.random()*6.28}));
   const size=()=>{W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr};size();addEventListener('resize',size);
   let prog=0;
+  const ghost=mf.querySelector('.mf-ghost');
   const upd=()=>{const r=mf.getBoundingClientRect();prog=Math.min(1,Math.max(0,-r.top/(r.height-innerHeight)));
-    lines.forEach((l,i)=>{const a=i*.21,b=a+.24;const p=Math.min(1,Math.max(0,(prog-a+.06)/(b-a)));
-      const isBig=l.classList.contains('mf-big');
-      const e=1-Math.pow(1-p,3);const s=1+(1-e)*(isBig?1.8:2.6);
-      l.style.opacity=Math.min(1,p*3);l.style.transform=`translateY(${(1-e)*42}vh) scale(${s})`;l.style.filter='';})};
+    const ent=Math.min(1,Math.max(0,(innerHeight-r.top)/(innerHeight-56)));const ee=1-Math.pow(1-ent,2);
+    lines.forEach((l,i)=>{
+      if(i===0){l.style.opacity=1;l.style.transform=`scale(${1+(1-ee)*1.9})`;return}
+      const a=(i-1)*.28,b=a+.3;const p=Math.min(1,Math.max(0,(prog-a)/(b-a)));const e=1-Math.pow(1-p,3);
+      const isBig=l.classList.contains('mf-big');const s=1+(1-e)*(isBig?1.6:2.2);
+      l.style.opacity=Math.min(1,p*4);l.style.transform=`translateY(${(1-e)*55}vh) scale(${s})`;});
+    if(ghost){ghost.style.opacity=ent<1?Math.min(1,ent*3):Math.max(0,1-prog*6)}
+  };
   addEventListener('scroll',upd,{passive:true});upd();
   const draw=t=>{cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,H);
     for(const p of P){const y=((p.y-t*.00002*p.v-prog*.4*p.v)%1+1)%1;const x=p.x*W+Math.sin(t*.0006+p.ph)*14;
