@@ -32,6 +32,76 @@
   ],
   "redirects": [
     {
+      "source": "/about",
+      "destination": "/studio",
+      "permanent": true
+    },
+    {
+      "source": "/about.html",
+      "destination": "/studio",
+      "permanent": true
+    },
+    {
+      "source": "/services",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/services.html",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/service-automation",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/service-automation.html",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/service-content",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/service-content.html",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/service-training",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/service-training.html",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/service-social",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/service-social.html",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/service-marketing",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/service-marketing.html",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
       "source": "/free",
       "destination": "https://www.wrenglow.com/?utm_source=reel&utm_medium=video&utm_campaign=christmas_sampler#free",
       "permanent": false

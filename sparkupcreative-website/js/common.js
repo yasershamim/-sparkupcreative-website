@@ -1,390 +1,115 @@
-/* ═══════════════════════════════════════════════════════════
-   SPARKUP CREATIVE — common.js
-   IMPORTANT: window exports are at line 1.
-   JavaScript hoists function declarations, so assigning them
-   to window here works even though the bodies appear later.
-═══════════════════════════════════════════════════════════ */
+/* SparkUp Creative — shared UI */
+(function(){
+const page=document.body.dataset.page||'';
+const arrow='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg>';
+window.ARROW=arrow;
+const links=[['brands','Brands',true],['academy','Academy',false],['studio','Studio',false],['free','Free',true]];
 
-/* ── STEP 1: Export all shared functions to window FIRST ── */
-window.fillMarquee  = fillMarquee;
-window.initCounters = initCounters;
-window.initTilt     = initTilt;
-window.spawnBurst   = spawnBurst;
+/* header */
+const hdr=document.createElement('header');hdr.className='hdr';
+hdr.innerHTML=`<a class="logo" href="/" aria-label="SparkUp Creative home"><img src="/img/prism.png" alt="">sparkup</a>
+<nav class="nav">${links.map(([h,t,d])=>`<a href="${h==='free'?'/#free':'/'+h}" class="${page===h?'on':''}">${t}${d?'<sup></sup>':''}</a>`).join('')}</nav>
+<a class="hdr-cta" href="/contact">Contact</a>
+<button class="burger" aria-label="Menu"><span></span><span></span></button>`;
+document.body.prepend(hdr);
+const menu=document.createElement('div');menu.className='menu';
+menu.innerHTML=[['/','Home'],['/brands','Brands'],['/academy','Academy'],['/studio','Studio'],['/#free','Free'],['/contact','Contact']].map(([h,t],i)=>`<a class="big" href="${h}">${t}<span>0${i+1}</span></a>`).join('')+`<p class="mono">SparkUp Creative LLC · Sheridan, WY · Kanpur, IN</p>`;
+document.body.prepend(menu);
+hdr.querySelector('.burger').onclick=()=>menu.classList.toggle('open');
+menu.querySelectorAll('a').forEach(a=>a.onclick=()=>menu.classList.remove('open'));
 
-/* ── STEP 2: Determine active page ──────────────────────── */
-var _page = (function () {
-  var p = location.pathname;
-  if (p.indexOf('services') > -1) return 'services';
-  if (p.indexOf('about')    > -1) return 'about';
-  if (p.indexOf('contact')  > -1) return 'contact';
-  return 'home';
-}());
-
-/* ── STEP 3: Inject nav + cursor + burst canvas ─────────── */
-document.body.insertAdjacentHTML('afterbegin', [
-  '<div id="cur-dot"></div>',
-  '<div id="cur-ring"></div>',
-  '<canvas id="burst-canvas" style="position:fixed;inset:0;z-index:8999;pointer-events:none;"></canvas>',
-  '<canvas id="bg-canvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>',
-  '<div id="preloader">',
-  '  <div class="pre-wordmark">SPARK<span class="hl">UP</span></div>',
-  '  <div class="pre-track"><div class="pre-fill"></div></div>',
-  '  <div class="pre-status">Loading Creative Engine...</div>',
-  '</div>',
-  '<nav id="nav">',
-  '  <a href="index.html" class="nav-logo">',
-  '    <img src="assets/logo.png" style="height:44px;width:44px;border-radius:50%;object-fit:cover;animation:logoPulse 2s ease-in-out infinite;" alt="SparkUp Creative"/>',
-  '    <span class="logo-text">SparkUp <em>Creative</em></span>',
-  '  </a>',
-  '  <ul class="nav-links">',
-  '    <li><a href="index.html"    ' + (_page === 'home'     ? 'class="active"' : '') + '>Home</a></li>',
-  '    <li><a href="services.html" ' + (_page === 'services' ? 'class="active"' : '') + '>Services</a></li>',
-  '    <li><a href="about.html"    ' + (_page === 'about'    ? 'class="active"' : '') + '>About Us</a></li>',
-  '    <li><a href="contact.html"  ' + (_page === 'contact'  ? 'class="active"' : '') + '>Contact</a></li>',
-  '  </ul>',
-  '  <a href="contact.html" class="nav-cta">Spark Up \u2192</a>',
-  '  <div class="nav-ham" id="navHam"><span></span><span></span><span></span></div>',
-  '</nav>',
-  '<div class="nav-drawer" id="navDrawer">',
-  '  <ul>',
-  '    <li><a href="index.html">Home</a></li>',
-  '    <li><a href="services.html">Services</a></li>',
-  '    <li><a href="about.html">About Us</a></li>',
-  '    <li><a href="contact.html">Contact</a></li>',
-  '  </ul>',
-  '  <a href="contact.html" class="drawer-cta">Spark Up \u2192</a>',
-  '</div>'
-].join(''));
-
-/* ── STEP 4: Inject footer ───────────────────────────────── */
-document.body.insertAdjacentHTML('beforeend', [
-  '<footer id="footer">',
-  '  <div class="container">',
-  '    <div class="footer-top">',
-  '      <div class="ft-brand">',
-  '        <div class="logo-text">SparkUp <em>Creative</em></div>',
-  '        <p>AI-Powered Creativity. People-Powered Growth. We help businesses automate, create, and dominate with artificial intelligence.</p>',
-  '        <span class="ft-tagline">Build with AI. Grow with Purpose. Lead with Vision.</span>',
-  '      </div>',
-  '      <div class="footer-col"><h4>Navigation</h4><ul>',
-  '        <li><a href="index.html">Home</a></li>',
-  '        <li><a href="services.html">Services</a></li>',
-  '        <li><a href="about.html">About Us</a></li>',
-  '        <li><a href="contact.html">Contact</a></li>',
-  '      </ul></div>',
-  '      <div class="footer-col"><h4>Services</h4><ul>',
-  '        <li><a href="services.html#automation">AI Automation</a></li>',
-  '        <li><a href="services.html#content">AI Content</a></li>',
-  '        <li><a href="services.html#training">AI Training</a></li>',
-  '        <li><a href="services.html#social">Social Automation</a></li>',
-  '        <li><a href="services.html#marketing">AI Marketing</a></li>',
-  '      </ul></div>',
-  '      <div class="footer-col"><h4>Connect</h4>',
-  '        <div class="ft-contact">',
-  '          <p>hello@sparkupcreative.com</p>',
-  '          <p>nas.io/sparkupacademy</p>',
-  '          <p>Wyoming, USA &amp; India</p>',
-  '        </div>',
-  '      </div>',
-  '    </div>',
-  '    <div class="footer-bottom">',
-  '      <div class="footer-copy">&copy; 2024 SparkUp Creative LLC &mdash; Wyoming, USA.</div>',
-  '      <div class="footer-socials">',
-  '        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/></svg></a>',
-  '        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8" width="14" height="14"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>',
-  '        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8" width="14" height="14"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>',
-  '      </div>',
-  '    </div>',
-  '  </div>',
-  '</footer>'
-].join(''));
-
-/* ── STEP 5: Preloader ───────────────────────────────────── */
-window.addEventListener('load', function () {
-  setTimeout(function () {
-    var pre = document.getElementById('preloader');
-    if (!pre) return;
-    pre.style.transition = 'opacity .6s';
-    pre.style.opacity    = '0';
-    setTimeout(function () {
-      pre.remove();
-      var pb = document.querySelector('.page-body');
-      if (pb) pb.style.opacity = '1';
-    }, 600);
-  }, 1400);
-});
-
-/* ── STEP 6: Custom cursor ───────────────────────────────── */
-(function () {
-  var dot  = document.getElementById('cur-dot');
-  var ring = document.getElementById('cur-ring');
-  if (!dot || !ring) return;
-  var mx=0, my=0, rx=0, ry=0;
-  document.addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; });
-  (function tick() {
-    dot.style.left  = mx + 'px';
-    dot.style.top   = my + 'px';
-    rx += (mx - rx) * 0.13;
-    ry += (my - ry) * 0.13;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
-    requestAnimationFrame(tick);
-  }());
-  document.querySelectorAll('a, button, .btn').forEach(function (el) {
-    el.addEventListener('mouseenter', function () { document.body.classList.add('hovering'); });
-    el.addEventListener('mouseleave', function () { document.body.classList.remove('hovering'); });
-  });
-}());
-
-/* ── STEP 7: Mobile nav ──────────────────────────────────── */
-(function () {
-  var ham    = document.getElementById('navHam');
-  var drawer = document.getElementById('navDrawer');
-  if (!ham || !drawer) return;
-  ham.addEventListener('click', function () {
-    ham.classList.toggle('open');
-    drawer.classList.toggle('open');
-  });
-}());
-
-/* ── STEP 8: Nav scroll highlight ───────────────────────── */
-window.addEventListener('scroll', function () {
-  var nav = document.getElementById('nav');
-  if (nav) nav.classList.toggle('active', window.scrollY > 50);
-});
-
-/* ── STEP 9: Scroll reveal ───────────────────────────────── */
-(function () {
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
-}());
-
-/* ── STEP 10: Magnetic buttons ───────────────────────────── */
-document.querySelectorAll('.btn, .nav-cta').forEach(function (btn) {
-  btn.addEventListener('mousemove', function (e) {
-    var r = btn.getBoundingClientRect();
-    var x = (e.clientX - r.left - r.width  / 2) * 0.28;
-    var y = (e.clientY - r.top  - r.height / 2) * 0.28;
-    btn.style.transform = 'translate(' + x + 'px,' + y + 'px)';
-  });
-  btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
-});
-
-/* ── STEP 11: Burst canvas ───────────────────────────────── */
-(function () {
-  var canvas = document.getElementById('burst-canvas');
-  if (!canvas) return;
-  var ctx    = canvas.getContext('2d');
-  var bursts = [];
-
-  function resize() {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  /* Override placeholder spawnBurst with real implementation */
-  window.spawnBurst = function (x, y) {
-    var b = [];
-    for (var i = 0; i < 80; i++) {
-      var a = Math.random() * Math.PI * 2;
-      var s = Math.random() * 9 + 2;
-      b.push({ x:x, y:y, vx:Math.cos(a)*s, vy:Math.sin(a)*s, r:Math.random()*5+2, a:1, c:Math.random()<0.65?'#C8FF00':'#fff' });
-    }
-    bursts.push(b);
-  };
-
-  (function animBurst() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    bursts.forEach(function (b, bi) {
-      b.forEach(function (p) {
-        p.x += p.vx; p.y += p.vy; p.vy += 0.25; p.a -= 0.02; p.r *= 0.97;
-        if (p.a <= 0) return;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.globalAlpha = p.a;
-        ctx.fillStyle   = p.c;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      });
-      if (b[0] && b[0].a <= 0) bursts.splice(bi, 1);
-    });
-    requestAnimationFrame(animBurst);
-  }());
-}());
-
-/* ════════════════════════════════════════════════════════════
-   SHARED UTILITY FUNCTIONS
-   Declared with `function` keyword so JS hoists them.
-   window.X = X assignments at line 1 already point to these.
-════════════════════════════════════════════════════════════ */
-
-function fillMarquee(id, items) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  var html = items.map(function (t) {
-    return '<div class="mq-item">' + t + '<span class="star">\u2726</span></div>';
-  }).join('');
-  el.innerHTML = html + html;
+/* footer */
+const f=document.querySelector('footer.ftr');
+if(f){f.innerHTML=`
+<div class="ftr-top">
+  <div><h3>Keep you in<br>the loop.<span class="burst"></span></h3>
+    <p class="lead" style="margin-top:12px">New books, new programs and new tools from all our brands. One short email when something ships.</p>
+    <form class="nl"><input type="email" required placeholder="Enter your email" aria-label="Email"><button class="btn btn-lime" type="submit">Join our newsletter ${arrow}</button>
+    <p class="note">No spam, only real updates. You can leave any time.</p></form></div>
+  <div class="fcol"><p class="mono h">Navigate</p><a href="/">Home</a><a href="/brands">Brands</a><a href="/academy">Academy</a><a href="/studio">Studio</a><a href="/contact">Contact</a></div>
+  <div class="fcol"><p class="mono h">Our brands</p><a href="https://www.legacyegerie.com" target="_blank" rel="noopener">Legacy Égérie</a><a href="https://www.wrenglow.com" target="_blank" rel="noopener">Wrenglow</a><a href="https://mybook.to/LittleLightsSeries" target="_blank" rel="noopener">Little Lights</a><a href="https://www.wrenglow.com/glim" target="_blank" rel="noopener">Glim's Little Whys</a><a href="https://www.areebacreates.com" target="_blank" rel="noopener">CreatorOS</a><a href="https://www.yasershamim.com" target="_blank" rel="noopener">Creator Academy</a></div>
+  <div class="socials"><span>Follow us on socials</span><div><a href="https://www.youtube.com/@yasershamim" target="_blank" rel="noopener">YT</a><a href="https://www.facebook.com/sparkupcreative" target="_blank" rel="noopener">FB</a><a href="https://wa.me/919369671970" target="_blank" rel="noopener">WA</a></div></div>
+</div>
+<div class="ftr-bot">
+  <div><p style="font-size:17px;letter-spacing:-.02em">AI systems, brands and books<br>that teach, build and sell.</p>
+    <div class="ftr-mark"><b>SparkUp</b>\\Creative</div>
+    <small>An AI training, content and publishing company. Registered in Wyoming, USA. Built in Kanpur, India.<br>© ${new Date().getFullYear()} SparkUp Creative LLC. All rights reserved.</small></div>
+  <div class="fcol"><p class="mono h">Offline</p><p style="font-size:14px">SparkUp Creative LLC<br>30 N Gould St, Ste R<br>Sheridan, WY 82801, USA</p>
+    <p class="mono h" style="margin-top:40px">Phone · WhatsApp</p><a class="phone" style="text-transform:none;font-family:var(--sans);letter-spacing:-.04em" href="https://wa.me/919369671970">+91 93696 71970</a></div>
+  <div class="fcol"><p class="mono h">Online</p><a style="text-transform:none;font-family:var(--sans);font-size:15px;color:var(--lime-ink)" href="mailto:info@sparkupcreative.com">info@sparkupcreative.com</a>
+    <a href="#" class="up" aria-label="Back to top" onclick="window.scrollTo({top:0});return false"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 36V5M8 17L20 5l12 12"/></svg></a></div>
+</div>`;
+f.querySelector('.nl').onsubmit=e=>{e.preventDefault();const v=e.target.querySelector('input').value;location.href=`mailto:info@sparkupcreative.com?subject=${encodeURIComponent('Newsletter signup')}&body=${encodeURIComponent('Please add me to the SparkUp Creative newsletter: '+v)}`;};
 }
 
-function initCounters() {
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      var el   = e.target;
-      var end  = parseInt(el.dataset.count, 10);
-      var v    = 0;
-      var step = end / 70;
-      var t = setInterval(function () {
-        v = Math.min(v + step, end);
-        el.textContent = Math.round(v);
-        if (v >= end) clearInterval(t);
-      }, 16);
-      io.unobserve(el);
-    });
-  }, { threshold: 0.4 });
-  document.querySelectorAll('[data-count]').forEach(function (el) { io.observe(el); });
+/* brand art */
+const books=[1,2,3,4,5,6].map(i=>`<img src="/little-lights/img/book${i}.jpg" alt="Little Lights book ${i} cover" loading="lazy">`).join('');
+const ART={
+legacy:()=>`<div class="art art-legacy"><img class="lmark" src="/img/brands/legacy-mark-gold.png" alt=""><div class="fan">${[1,2,3].map(i=>`<img src="/img/brands/legacy-vol${i}.jpg" alt="The Quiet Authority Collection, volume ${i}" loading="lazy">`).join('')}</div></div>`,
+wren:()=>`<div class="art art-wren"><div class="shelf">${[['color','Color &amp; Create'],['hook','Hook &amp; Loop'],['paper','Paper Days']].map(([k,t])=>`<figure><img src="/img/brands/wren-${k}.jpg" alt="Wrenglow ${t} shelf" loading="lazy"><figcaption>${t}</figcaption></figure>`).join('')}</div><img class="wlogo" src="/img/brands/wren-logo.png" alt="Wrenglow logo"></div>`,
+lights:()=>`<div class="art art-lights"><div class="books">${books}</div></div>`,
+glim:()=>`<div class="art art-glim"><div class="stars">${[[12,18],[30,70],[48,12],[62,80],[88,22],[78,60],[22,44],[94,84]].map(([x,y],i)=>`<i style="left:${x}%;top:${y}%;animation-delay:${i*.4}s"></i>`).join('')}</div><div class="gbooks"><img src="/img/brands/glim-book1.jpg" alt="100,000 Whys for Toddlers with Glim the Firefly" loading="lazy"><img src="/img/brands/glim-book2.jpg" alt="But Why, Glim? Poop, Potty and My Busy Body" loading="lazy"></div><img class="fly" src="/img/brands/glim.png" alt="Glim the Firefly" loading="lazy"></div>`,
+os:()=>`<div class="art art-os"><img class="poster" src="/img/brands/creatoros-ecosystem.jpg" alt="The CreatorOS ecosystem" loading="lazy"><div class="term"><div class="dots"><i></i><i></i><i></i></div>
+<div>&gt; prompt vault <span>.......</span> loaded</div><div>&gt; script system <span>......</span> ready</div><div>&gt; thumbnail flow <span>.....</span> ready</div><div>&gt; publish pipeline <span>...</span> live</div><div>&gt; creator mode <span>.......</span> ON<b class="cur">▍</b></div></div></div>`,
+academy:()=>`<div class="art art-academy"><img src="/assets/showreel-3.png" alt="Students at work in the SparkUp Creative academy lab" loading="lazy"></div>`
+};
+document.querySelectorAll('[data-art]').forEach(el=>{el.insertAdjacentHTML('afterbegin',ART[el.dataset.art]())});
+
+/* reveal */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+/* counters */
+const co=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;co.unobserve(e.target);const el=e.target,end=+el.dataset.count,suf=el.dataset.suf||'';const t0=performance.now();
+  const step=t=>{const p=Math.min(1,(t-t0)/1600),v=Math.round(end*(1-Math.pow(1-p,3)));el.textContent=v+suf;if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)}),{threshold:.4});
+document.querySelectorAll('[data-count]').forEach(el=>co.observe(el));
+
+/* accordions */
+document.querySelectorAll('.plan-h').forEach(b=>b.onclick=()=>{const p=b.parentElement;const was=p.classList.contains('open');p.parentElement.querySelectorAll('.plan').forEach(x=>x.classList.remove('open'));if(!was)p.classList.add('open')});
+document.querySelectorAll('.q button').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('open'));
+
+/* clock */
+const ck=document.getElementById('clock');
+if(ck){const tick=()=>{const d=new Date();const f=(tz)=>d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:tz});ck.innerHTML=`Our time ${f('Asia/Kolkata')}<br>UTC+5:30 Kanpur, India`};tick();setInterval(tick,1000)}
+
+/* ticker */
+const tk=document.querySelector('.hero-ticker div');
+if(tk){let i=0;const n=tk.children.length;setInterval(()=>{i=(i+1)%n;tk.style.transform=`translateY(${-22*i}px)`},2200)}
+
+/* lightbox */
+const lb=document.querySelector('.lb');
+if(lb){const v=lb.querySelector('video');document.querySelectorAll('[data-reel]').forEach(b=>b.addEventListener('click',()=>{lb.classList.add('open');v.currentTime=0;v.play()}));
+  const close=()=>{lb.classList.remove('open');v.pause()};lb.querySelector('button').onclick=close;lb.onclick=e=>{if(e.target===lb)close()};addEventListener('keydown',e=>{if(e.key==='Escape')close()})}
+
+/* reveal-text (studio) */
+document.querySelectorAll('.reveal-text').forEach(el=>{
+  el.innerHTML=el.textContent.trim().split(/\s+/).map(w=>`<span>${w}</span>`).join(' ');
+  const sp=[...el.children];
+  const upd=()=>{const r=el.getBoundingClientRect();const p=Math.min(1,Math.max(0,(innerHeight*.85-r.top)/(r.height+innerHeight*.35)));const k=Math.floor(p*sp.length*1.15);sp.forEach((s,i)=>s.classList.toggle('on',i<k))};
+  addEventListener('scroll',upd,{passive:true});upd();
+});
+
+/* manifesto scroll */
+const mf=document.querySelector('.manifesto');
+if(mf){
+  const lines=[...mf.querySelectorAll('.mf-line,.mf-big')];
+  const cv=mf.querySelector('canvas'),cx=cv.getContext('2d');
+  let W,H,dpr=Math.min(2,devicePixelRatio||1);
+  const P=[...Array(70)].map(()=>({x:Math.random(),y:Math.random(),r:2+Math.random()*9,v:.2+Math.random(),ph:Math.random()*6.28}));
+  const size=()=>{W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr};size();addEventListener('resize',size);
+  let prog=0;
+  const upd=()=>{const r=mf.getBoundingClientRect();prog=Math.min(1,Math.max(0,-r.top/(r.height-innerHeight)));
+    lines.forEach((l,i)=>{const a=i*.2,b=a+.2;const p=Math.min(1,Math.max(0,(prog-a+.06)/(b-a)));
+      const isBig=l.classList.contains('mf-big');
+      const s=isBig?1+ (1-p)*1.6:1+(1-p)*2.2;
+      l.style.opacity=p;l.style.transform=`translateY(${(1-p)*60}px) scale(${s})`;l.style.filter=`blur(${(1-p)*10}px)`;})};
+  addEventListener('scroll',upd,{passive:true});upd();
+  const draw=t=>{cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,H);
+    for(const p of P){const y=((p.y-t*.00002*p.v-prog*.4*p.v)%1+1)%1;const x=p.x*W+Math.sin(t*.0006+p.ph)*14;
+      cx.beginPath();cx.arc(x,y*H,p.r,0,6.283);
+      cx.strokeStyle='rgba(10,11,8,.35)';cx.lineWidth=1.2;cx.stroke();
+      cx.beginPath();cx.arc(x-p.r*.35,y*H-p.r*.35,p.r*.28,0,6.283);cx.fillStyle='rgba(200,255,0,.9)';cx.fill();}
+    requestAnimationFrame(draw)};
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches)requestAnimationFrame(draw);
 }
-
-function initTilt(sel) {
-  document.querySelectorAll(sel).forEach(function (card) {
-    card.addEventListener('mousemove', function (e) {
-      var r = card.getBoundingClientRect();
-      var x = (e.clientX - r.left) / r.width  - 0.5;
-      var y = (e.clientY - r.top)  / r.height - 0.5;
-      card.style.transform = 'perspective(700px) rotateX(' + (-y * 9) + 'deg) rotateY(' + (x * 9) + 'deg) translateZ(6px)';
-    });
-    card.addEventListener('mouseleave', function () { card.style.transform = ''; });
-  });
-}
-
-/* Placeholder — real burst overrides this in STEP 11 above */
-function spawnBurst(x, y) { /* no-op until canvas initialises */ }
-
-/* ════════════════════════════════════════════════════════════
-   GLOBAL BACKGROUND — particle neural network across all pages
-════════════════════════════════════════════════════════════ */
-(function () {
-  var canvas = document.getElementById('bg-canvas');
-  if (!canvas) return;
-  var ctx = canvas.getContext('2d');
-  var W, H;
-  var mouse = { x: -9999, y: -9999 };
-
-  function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = document.documentElement.scrollHeight;
-  }
-  resize();
-  window.addEventListener('resize', function () {
-    setTimeout(resize, 100);
-  });
-  /* Update canvas height on scroll so it always covers full page */
-  window.addEventListener('scroll', function () {
-    var newH = document.documentElement.scrollHeight;
-    if (Math.abs(newH - H) > 100) { H = canvas.height = newH; }
-  });
-  document.addEventListener('mousemove', function (e) {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY + window.scrollY;
-  });
-
-  /* ── PARTICLES ── */
-  var COUNT = 90;
-  var CONNECT_DIST = 160;
-  var particles = [];
-
-  function makeParticle() {
-    return {
-      x:  Math.random() * window.innerWidth,
-      y:  Math.random() * document.documentElement.scrollHeight,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: (Math.random() - 0.5) * 0.35,
-      r:  Math.random() * 1.8 + 0.4,
-      a:  Math.random() * 0.55 + 0.15
-    };
-  }
-
-  for (var i = 0; i < COUNT; i++) particles.push(makeParticle());
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-
-    /* Mouse repel — particles drift away from cursor */
-    particles.forEach(function (p) {
-      var dx = p.x - mouse.x;
-      var dy = p.y - mouse.y;
-      var d  = Math.sqrt(dx * dx + dy * dy);
-      if (d < 120 && d > 0) {
-        var force = (120 - d) / 120 * 0.6;
-        p.vx += (dx / d) * force;
-        p.vy += (dy / d) * force;
-      }
-
-      /* Speed cap */
-      var speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-      if (speed > 1.2) { p.vx = (p.vx / speed) * 1.2; p.vy = (p.vy / speed) * 1.2; }
-
-      p.x += p.vx;
-      p.y += p.vy;
-
-      /* Wrap edges */
-      if (p.x < 0)  p.x = W;
-      if (p.x > W)  p.x = 0;
-      if (p.y < 0)  p.y = H;
-      if (p.y > H)  p.y = 0;
-
-      /* Draw dot */
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(200,255,0,' + p.a + ')';
-      ctx.fill();
-    });
-
-    /* Draw connections */
-    for (var a = 0; a < COUNT; a++) {
-      for (var b = a + 1; b < COUNT; b++) {
-        var dx = particles[a].x - particles[b].x;
-        var dy = particles[a].y - particles[b].y;
-        var dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < CONNECT_DIST) {
-          var alpha = (1 - dist / CONNECT_DIST) * 0.12;
-          ctx.beginPath();
-          ctx.moveTo(particles[a].x, particles[a].y);
-          ctx.lineTo(particles[b].x, particles[b].y);
-          ctx.strokeStyle = 'rgba(200,255,0,' + alpha + ')';
-          ctx.lineWidth   = 0.8;
-          ctx.stroke();
-        }
-      }
-    }
-
-    /* Mouse attraction lines — particles near cursor glow brighter */
-    particles.forEach(function (p) {
-      var dx   = p.x - mouse.x;
-      var dy   = p.y - (mouse.y);
-      var dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 180) {
-        var alpha = (1 - dist / 180) * 0.35;
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(mouse.x, mouse.y);
-        ctx.strokeStyle = 'rgba(200,255,0,' + alpha + ')';
-        ctx.lineWidth   = 0.6;
-        ctx.stroke();
-      }
-    });
-
-    requestAnimationFrame(draw);
-  }
-  draw();
-}());
+})();
