@@ -22,7 +22,7 @@ menu.querySelectorAll('a').forEach(a=>a.onclick=()=>menu.classList.remove('open'
 const f=document.querySelector('footer.ftr');
 if(f){f.innerHTML=`
 <div class="ftr-top">
-  <div><h3>Keep you in<br>the loop.<span class="burst"></span></h3>
+  <div><h3>Keep you in<br>the loop.<canvas class="dotsphere" width="160" height="160" aria-hidden="true"></canvas></h3>
     <p class="lead" style="margin-top:12px">New books, new programs and new tools from all our brands. One short email when something ships.</p>
     <form class="nl"><input type="email" required placeholder="Enter your email" aria-label="Email"><button class="btn btn-lime" type="submit">Join our newsletter ${arrow}</button>
     <p class="note">No spam, only real updates. You can leave any time.</p></form></div>
@@ -31,16 +31,35 @@ if(f){f.innerHTML=`
   <div class="socials"><span>Follow us on socials</span><div><a href="https://www.youtube.com/@yasershamim" target="_blank" rel="noopener">YT</a><a href="https://www.facebook.com/sparkupcreative" target="_blank" rel="noopener">FB</a><a href="https://wa.me/919369671970" target="_blank" rel="noopener">WA</a></div></div>
 </div>
 <div class="ftr-bot">
-  <div><p style="font-size:17px;letter-spacing:-.02em">AI systems, brands and books<br>that teach, build and sell.</p>
-    <small>An AI training, content and publishing company. Registered in Wyoming, USA. Built in Kanpur, India.<br>© ${new Date().getFullYear()} SparkUp Creative LLC. All rights reserved.</small></div>
+  <div class="ftr-brand"><p style="font-size:17px;letter-spacing:-.02em">AI systems, brands and books<br>that teach, build and sell.</p>
+    <div class="ftr-mark"><b>SparkUp</b>\\Creative</div>
+    <div class="ftr-pill"><span class="pill-ic"><img src="/img/prism.png" alt=""></span><small>An AI training, content and publishing company.<br>Registered in Wyoming, USA. Built in Kanpur, India.</small></div>
+    <small class="copy">© ${new Date().getFullYear()} SparkUp Creative LLC. All rights reserved.</small></div>
   <div class="fcol"><p class="mono h">Offline</p><p style="font-size:14px">SparkUp Creative LLC<br>30 N Gould St, Ste R<br>Sheridan, WY 82801, USA</p>
     <p class="mono h" style="margin-top:40px">Phone · WhatsApp</p><a class="phone" style="text-transform:none;font-family:var(--sans);letter-spacing:-.04em" href="https://wa.me/919369671970">+91 93696 71970</a></div>
   <div class="fcol"><p class="mono h">Online</p><a style="text-transform:none;font-family:var(--sans);font-size:15px;color:var(--lime-ink)" href="mailto:info@sparkupcreative.com">info@sparkupcreative.com</a>
     <a href="#" class="up" aria-label="Back to top" onclick="window.scrollTo({top:0});return false"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 36V5M8 17L20 5l12 12"/></svg></a></div>
-</div>
-<div class="ftr-mark" aria-hidden="true"><b>SparkUp</b>\\Creative</div>`;
+</div>`;
 f.querySelector('.nl').onsubmit=e=>{e.preventDefault();const v=e.target.querySelector('input').value;location.href=`mailto:info@sparkupcreative.com?subject=${encodeURIComponent('Newsletter signup')}&body=${encodeURIComponent('Please add me to the SparkUp Creative newsletter: '+v)}`;};
 }
+
+/* CTA loop video */
+document.querySelectorAll('.cta').forEach(s=>{s.insertAdjacentHTML('afterbegin','<video class="cta-bg" autoplay muted loop playsinline preload="none" poster="/video/cta-loop-poster.jpg" aria-hidden="true"><source src="/video/cta-loop.mp4" type="video/mp4"></video>');
+  const v=s.querySelector('video');const vo=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){v.preload='auto';v.play().catch(()=>{})}else v.pause()}));vo.observe(s)});
+
+/* rotating dot sphere ("keep you in the loop") */
+document.querySelectorAll('.dotsphere').forEach(cv=>{const c=cv.getContext('2d');const N=220;const P=[];
+  for(let i=0;i<N;i++){const y=1-2*(i+.5)/N,r=Math.sqrt(1-y*y),th=i*2.39996;P.push([Math.cos(th)*r,y,Math.sin(th)*r])}
+  const col=getComputedStyle(document.documentElement).getPropertyValue('--lime-ink').trim()||'#5a7a00';
+  const draw=t=>{c.clearRect(0,0,160,160);const a=t*.0006,b=Math.sin(t*.0004)*.5,pulse=1+Math.sin(t*.0012)*.06;
+    for(const [x,y,z] of P){let X=x*Math.cos(a)-z*Math.sin(a),Z=x*Math.sin(a)+z*Math.cos(a);let Y=y*Math.cos(b)-Z*Math.sin(b);Z=y*Math.sin(b)+Z*Math.cos(b);
+      const s=(2.4/(2.4-Z));const px=80+X*58*s*pulse,py=80+Y*58*s*pulse;c.globalAlpha=.25+.75*((Z+1)/2);c.fillStyle=col;c.beginPath();c.arc(px,py,1.1+1.4*((Z+1)/2),0,6.283);c.fill()}
+    c.globalAlpha=1;requestAnimationFrame(draw)};
+  requestAnimationFrame(draw)});
+
+/* fit footer wordmark to its column */
+const fitMark=()=>document.querySelectorAll('.ftr-mark').forEach(m=>{const box=m.parentElement.clientWidth;m.style.fontSize='100px';m.style.display='inline-block';const w=m.getBoundingClientRect().width;m.style.display='';m.style.fontSize=Math.min(100*box/w*.98,200)+'px'});
+(document.fonts?document.fonts.ready:Promise.resolve()).then(fitMark);addEventListener('resize',fitMark);
 
 /* brand art */
 const books=[1,2,3,4,5,6].map(i=>`<img src="/little-lights/img/book${i}.jpg" alt="Little Lights book ${i} cover" loading="lazy">`).join('');
