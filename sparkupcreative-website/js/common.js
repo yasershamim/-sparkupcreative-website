@@ -3,7 +3,7 @@
 const page=document.body.dataset.page||'';
 const arrow='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h11M9 4l4 4-4 4"/></svg>';
 window.ARROW=arrow;
-const links=[['brands','Brands',true],['academy','Academy',false],['studio','Studio',false],['free','Free',true]];
+const links=[['about','About',false],['brands','Brands',true],['academy','Academy',false],['studio','Studio',false],['free','Free',true]];
 
 /* header */
 const hdr=document.createElement('header');hdr.className='hdr';
@@ -13,7 +13,7 @@ hdr.innerHTML=`<a class="logo" href="/" aria-label="SparkUp Creative home"><img 
 <button class="burger" aria-label="Menu"><span></span><span></span></button>`;
 document.body.prepend(hdr);
 const menu=document.createElement('div');menu.className='menu';
-menu.innerHTML=[['/','Home'],['/brands','Brands'],['/academy','Academy'],['/studio','Studio'],['/#free','Free'],['/contact','Contact']].map(([h,t],i)=>`<a class="big" href="${h}">${t}<span>0${i+1}</span></a>`).join('')+`<p class="mono">SparkUp Creative LLC · Sheridan, WY · Kanpur, IN</p>`;
+menu.innerHTML=[['/','Home'],['/about','About'],['/brands','Brands'],['/academy','Academy'],['/studio','Studio'],['/#free','Free'],['/contact','Contact']].map(([h,t],i)=>`<a class="big" href="${h}">${t}<span>0${i+1}</span></a>`).join('')+`<p class="mono">SparkUp Creative LLC · Sheridan, WY · Kanpur, IN</p>`;
 document.body.prepend(menu);
 hdr.querySelector('.burger').onclick=()=>menu.classList.toggle('open');
 menu.querySelectorAll('a').forEach(a=>a.onclick=()=>menu.classList.remove('open'));
@@ -26,7 +26,7 @@ if(f){f.innerHTML=`
     <p class="lead" style="margin-top:12px">New books, new programs and new tools from all our brands. One short email when something ships.</p>
     <form class="nl"><input type="email" required placeholder="Enter your email" aria-label="Email"><button class="btn btn-lime" type="submit">Join our newsletter ${arrow}</button>
     <p class="note">No spam, only real updates. You can leave any time.</p></form></div>
-  <div class="fcol"><p class="mono h">Navigate</p><a href="/">Home</a><a href="/brands">Brands</a><a href="/academy">Academy</a><a href="/studio">Studio</a><a href="/contact">Contact</a></div>
+  <div class="fcol"><p class="mono h">Navigate</p><a href="/">Home</a><a href="/about">About</a><a href="/brands">Brands</a><a href="/academy">Academy</a><a href="/studio">Studio</a><a href="/contact">Contact</a></div>
   <div class="fcol"><p class="mono h">Our brands</p><a href="https://www.legacyegerie.com" target="_blank" rel="noopener">Legacy Égérie</a><a href="https://www.wrenglow.com" target="_blank" rel="noopener">Wrenglow</a><a href="https://mybook.to/LittleLightsSeries" target="_blank" rel="noopener">Little Lights</a><a href="https://www.wrenglow.com/glim" target="_blank" rel="noopener">Glim's Little Whys</a><a href="https://www.areebacreates.com" target="_blank" rel="noopener">CreatorOS</a><a href="https://www.yasershamim.com" target="_blank" rel="noopener">Creator Academy</a></div>
   <div class="socials"><span>Follow us on socials</span><div><a href="https://www.youtube.com/@yasershamim" target="_blank" rel="noopener">YT</a><a href="https://www.facebook.com/sparkupcreative" target="_blank" rel="noopener">FB</a><a href="https://wa.me/919369671970" target="_blank" rel="noopener">WA</a></div></div>
 </div>
