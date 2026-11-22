@@ -32,16 +32,6 @@
   ],
   "redirects": [
     {
-      "source": "/about",
-      "destination": "/studio",
-      "permanent": true
-    },
-    {
-      "source": "/about.html",
-      "destination": "/studio",
-      "permanent": true
-    },
-    {
       "source": "/services",
       "destination": "/#services",
       "permanent": true

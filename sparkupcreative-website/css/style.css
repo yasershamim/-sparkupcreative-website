@@ -735,3 +735,48 @@ body.intro-wait .hdr{transform:translateY(-100%)}
 .ftr-pill{gap:16px}
 .ftr-pill small{font-size:13px}
 .pill-ic{width:132px;height:76px}
+/* ===== About page ===== */
+.ceo{display:grid;grid-template-columns:1fr 1.05fr;min-height:calc(100vh - var(--hdr));background:var(--ink);color:#f2f2ee}
+.ceo-pic{position:relative;overflow:hidden;min-height:560px}
+.ceo-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;filter:grayscale(.15) contrast(1.05)}
+.ceo-pic:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,11,8,0) 60%,rgba(10,11,8,.9)),linear-gradient(0deg,rgba(10,11,8,.55),transparent 35%)}
+.ceo-tag{position:absolute;left:var(--pad);bottom:28px;z-index:2;display:flex;gap:14px;color:var(--lime)}
+.ceo-txt{padding:clamp(40px,6vw,96px) var(--pad);display:flex;flex-direction:column;gap:22px;justify-content:center}
+.ceo-name{font-size:clamp(64px,8.4vw,150px);font-weight:600;letter-spacing:-.065em;line-height:.86}
+.ceo-name b{color:var(--lime);font-weight:600}
+.ceo-role{font-size:clamp(16px,1.3vw,20px);color:#cfcfc8}
+.ceo-bio p{font-size:15.5px;color:#bdbdb5;max-width:58ch;margin-bottom:14px}
+.ceo-bio p:first-child{font-size:clamp(20px,1.7vw,26px);color:#fff;letter-spacing:-.02em;line-height:1.3}
+.ceo-stats{display:flex;gap:clamp(24px,4vw,60px);border-top:1px solid var(--line-d);padding-top:22px}
+.ceo-stats b{display:block;font-size:clamp(38px,3.6vw,58px);font-weight:500;letter-spacing:-.05em;color:var(--lime);line-height:1}
+.ceo-stats .mono{color:#aaa;margin-top:8px;display:block}
+.ceo-facts{display:grid;grid-template-columns:auto 1fr;gap:8px 22px;font-size:14px;color:#ddd}
+.ceo-facts dt{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--mute-d);padding-top:3px}
+.ceo-acts{display:flex;gap:10px;flex-wrap:wrap}
+@media (max-width:900px){.ceo{grid-template-columns:1fr}.ceo-pic{min-height:70vh}.ceo-pic:after{background:linear-gradient(0deg,rgba(10,11,8,.9),transparent 40%)}}
+.leader{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,4vw,64px);background:#fff;border-radius:18px;padding:clamp(14px,1.6vw,20px);margin-top:clamp(40px,5vw,70px);align-items:stretch}
+.leader.alt{grid-template-columns:1.1fr .9fr;background:var(--ink);color:#f2f2ee}
+.leader.alt .ld-pic{order:2}
+.ld-pic{position:relative;border-radius:12px;overflow:hidden;min-height:520px;background:#ddd}
+.ld-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 15%;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.leader:hover .ld-pic img{transform:scale(1.04)}
+.ld-num{position:absolute;left:16px;top:14px;background:var(--lime);color:var(--ink);padding:4px 8px;border-radius:4px}
+.ld-txt{padding:clamp(10px,2.4vw,36px) clamp(6px,1.6vw,24px);display:flex;flex-direction:column;gap:14px;justify-content:center}
+.ld-txt h3{font-size:clamp(40px,4.4vw,72px);font-weight:500;letter-spacing:-.05em;line-height:.95}
+.ld-sub{font-size:15px;color:var(--mute);margin-top:-4px}
+.leader.alt .ld-sub{color:var(--mute-d)}
+.ld-txt>p:not(.mono):not(.ld-sub){font-size:15px;color:#444;max-width:56ch}
+.leader.alt .ld-txt>p:not(.mono):not(.ld-sub){color:#c4c4bc}
+.ld-txt blockquote{font-size:clamp(18px,1.5vw,22px);letter-spacing:-.02em;font-style:italic;border-left:3px solid var(--lime-ink);padding-left:16px;color:var(--ink)}
+.ld-list{list-style:none;display:grid;gap:8px;font-size:14px;border-top:1px solid var(--line);padding-top:16px}
+.leader.alt .ld-list{border-color:var(--line-d)}
+.ld-list li{display:flex;gap:10px}
+.ld-list li:before{content:"+";color:var(--lime-ink);font-weight:600}
+.leader.alt .ld-list li:before{color:var(--lime)}
+.ld-stats{display:flex;gap:36px}
+.ld-stats b{display:block;font-size:clamp(30px,2.6vw,42px);font-weight:500;letter-spacing:-.05em;color:var(--lime-ink);line-height:1}
+.ld-stats .mono{color:var(--mute);display:block;margin-top:6px}
+@media (max-width:900px){.leader,.leader.alt{grid-template-columns:1fr}.leader.alt .ld-pic{order:0}.ld-pic{min-height:440px}}
+.team-row{grid-template-columns:repeat(6,1fr)}
+@media (max-width:1100px){.team-row,.team-row[style]{grid-template-columns:repeat(3,1fr) !important}}
+@media (max-width:600px){.team-row,.team-row[style]{grid-template-columns:repeat(2,1fr) !important}}
